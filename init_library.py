@@ -1,0 +1,10 @@
+def main():
+    names = ["Pride and Prejudice", "1984", "Crime and Punishment", "Hamlet", "One Hundred Years of Solitude", "Anna Karenina", "The Odyssey", "The Stranger", "The Brothers Karamazov", "Lolita", "Great Expectations", "The Old Man and the Sea", "War and Peace", "Don Quixote", "The Iliad", "The Trial", "The Divine Comedy", "Moby-Dick", "King Lear", "The Complete Fairy Tales", "Mrs. Dalloway", "Gulliver’s Travels", "Pippi Longstocking", "Beloved", "Blindness", "Zorba the Greek", "Middlemarch", "A Doll's House", "The Magic Mountain", "Wuthering Heights", "Gargantua and Pantagruel", "The Adventures of Huckleberry Finn", "Absalom, Absalom!", "Demons", "The Golden Notebook", "History", "To Kill a Mockingbird", "The Catcher in the Rye", "The Lord of the Rings", "The Great Gatsby", "Animal Farm", "Catch 22", "The Grapes of Wrath", "Gone with the Wind", "The Sun Also Rises", "All the King's Men", "To the Lighthouse", "Midnight's Children", "White Teeth", "Pale Fire"]
+    authors = ["Jane Austen", "George Orwell", "Fyodor Dostoevsky", "William Shakespeare", "Gabriel García Márquez", "Lev Tolstoy", "Homer", "Albert Camus", "Fyodor Dostoevsky", "Vladimir Nabokov", "Charles Dickens", "Ernest Hemingway", "Lev Tolstoy", "Miguel de Cervantes Saavedra", "Homer", "Franz Kafka", "Dante Alighieri", "Herman Melville", "William Shakespeare", "Hans Christian Andersen", "Virginia Woolf", "Jonathan Swift", "Astrid Lindgren", "Toni Morrison", "Jose Saramago", "Nikos Kazantzakis", "George Eliot", "Henrik Ibsen", "Thomas Mann", "Emily Bronte", "Francois Rabelais", "Mark Twain", "William Faulkner", "Fyodor Dostoevsky", "Doris Lessing", "Elsa Morante", "Harper Lee", "J.D. Salinger", "J.R.R. Tolkien", "F. Scott Fitzgerald", "George Orwell", "Joseph Heller", "John Steinbeck", "Margaret Mitchell", "Ernest Hemingway", "Robert Penn Warren", "Virginia Woolf", "Salman Rushdie", "Zadie Smith", "Vladimir Nabokov"]
+
+    full_list = []
+    for i in range(50):
+        full_list.append((i, names[i], authors[i], None, None))
+
+    return full_list
+
