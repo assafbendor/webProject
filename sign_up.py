@@ -2,6 +2,10 @@ import flet as ft
 import database
 
 def main(page: ft.Page):
+
+    def sign_up_clicked(par):
+      pass
+
     # Setting the background color of the page
     page.bgcolor = "#083b7a"
     page.padding = 50
@@ -120,8 +124,6 @@ def main(page: ft.Page):
     page.add(row)
 
     page.update()
-
-    def sign_up_clicked(par):
 
 
 
