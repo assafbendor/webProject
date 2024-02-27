@@ -66,6 +66,19 @@ def update_book(conn, book): # id last parameter
     cur.execute(sql, book)
     conn.commit()
 
+def update_specific_book(book_id, parameter, value):
+    conn = create_connection(DATABASE)
+    cur = conn.cursor()
+    sql = f'''
+    UPDATE books
+        SET {parameter} = ?
+    WHERE id = ?
+    '''
+    cur.execute(sql, (value, book_id))
+    conn.commit()
+    conn.close()
+
+
 def select_all_books(conn):
     """
     Query all rows in the tasks table
@@ -94,6 +107,14 @@ def delete_book(conn, id):
     cur = conn.cursor()
     cur.execute(sql, (id,))
     conn.commit()
+
+def get_book_list(username):
+    conn = create_connection(DATABASE)
+    curr = conn.cursor()
+    curr.execute("SELECT name FROM books WHERE username =?", (username,))
+    rows = curr.fetchall()
+    conn.close()
+    return rows
 def main():
 
     books_table = """
@@ -113,7 +134,13 @@ def main():
     password text NOT NULL,
     email text
     );"""
-    ''
+
+    normalization_table = """
+    CREATE TABLE IF NOT EXISTS normal(
+    book_name text PRIMARY KEY,
+    username text NOT NULL,
+    email text
+    """
     # create a database connection
     conn = create_connection(DATABASE)
 
@@ -134,6 +161,10 @@ def main():
                 create_book(conn, book)
 
     select_all_users(conn)
+    update_specific_book(0, "username", None)
+    select_all_books(conn)
+    print(get_book_list("Assaf Ben Dor"))
+
 
 if __name__ == '__main__':
     main()
