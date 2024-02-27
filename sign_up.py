@@ -5,8 +5,7 @@ import database
 def main(page: ft.Page):
 
     def sign_up_clicked(par):
-        user = (username_text.value, password_text.value, email_text.value)
-        database.create_user(user)
+      pass
 
     # Setting the background color of the page
     page.bgcolor = "#083b7a"
@@ -126,7 +125,6 @@ def main(page: ft.Page):
     page.add(row)
 
     page.update()
-
 
 # Running the app
 # ft.app(target=main,

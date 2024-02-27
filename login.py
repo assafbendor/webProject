@@ -9,7 +9,7 @@ def main(page: ft.Page):
     logo = ft.Image(
         src="/Users/assafbendor/PycharmProjects/webProject/img/logo.png",
         width=400,  # Set the width of the image
-        height=400,  # Set the height of the image
+        height=400  # Set the height of the image
     )
 
     text = ft.Text("Book for You",
@@ -29,9 +29,10 @@ def main(page: ft.Page):
     # Create a Container to act as a vertical line
     vertical_line = ft.Container(
         width=1,  # Width of the line
-        height=680,  # Height of the line, adjust as needed
+        height=page.window_height,  # Height of the line, adjust as needed
         bgcolor="#ea665e",  # Color of the line,
-        padding=ft.padding.only(top=90, left=140)
+        padding=ft.padding.only(top=90, left=140),
+        alignment=ft.alignment.center
     )
 
     vertical_line_container = ft.Container(
@@ -107,6 +108,7 @@ def main(page: ft.Page):
             logo_container, vertical_line_container, login_container  # Place the vertical line between the text controls
         ],
         alignment=ft.alignment.center,  # Center align the items vertically
+        width=page.window_width
     )
 
     # Add the row to the page
