@@ -28,7 +28,7 @@ def main(page: ft.Page):
                    text_align=ft.TextAlign.CENTER)
     
     logo = ft.Image(
-        src="C:\Work\webProject\img\logo.png",
+        src="..\img\logo.png",
         width=400,  # Set the width of the image
         height=400  # Set the height of the image
     )

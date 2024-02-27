@@ -11,7 +11,7 @@ def main(page: ft.Page):
     page.padding = 50
 
     logo = ft.Image(
-        src="/Users/assafbendor/PycharmProjects/webProject/img/logo.png",
+        src="..\img\logo.png",
         width=400,  # Set the width of the image
         height=400,  # Set the height of the image
     )

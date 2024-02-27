@@ -7,7 +7,7 @@ def main(page: ft.Page):
     page.padding = 50
 
     logo = ft.Image(
-        src="/Users/assafbendor/PycharmProjects/webProject/img/logo.png",
+        src="..\img\logo.png",
         width=400,  # Set the width of the image
         height=400  # Set the height of the image
     )
@@ -113,15 +113,17 @@ def main(page: ft.Page):
 
     # Add the row to the page
 
-    page.add(row)
+    main_container = ft.Container(row, 
+                                  alignment=ft.alignment.center)
+
+    page.add(main_container)
 
     page.update()
 
 
-# Running the app
-# ft.app(target=main,
-#      view=ft.AppView.WEB_BROWSER,
+#Running the app
+ft.app(target=main)
 #       assets_dir="/Users/assafbendor/PycharmProjects/webProject/img/")
 
 
-ft.app(target=main)
+#ft.app(target=main)
