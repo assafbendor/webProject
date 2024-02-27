@@ -1,6 +1,7 @@
 import flet as ft
 import database
 
+
 def main(page: ft.Page):
 
     def sign_up_clicked(par):
@@ -124,8 +125,6 @@ def main(page: ft.Page):
     page.add(row)
 
     page.update()
-
-
 
 # Running the app
 # ft.app(target=main,
