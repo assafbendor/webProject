@@ -2,7 +2,7 @@ import sqlite3
 from sqlite3 import Error
 import init_library
 
-DATABASE = r"/Users/assafbendor/PycharmProjects/webProject/db/ldb.db"
+DATABASE = "db\ldb.db"
 
 
 def create_connection(db_file):
@@ -10,7 +10,6 @@ def create_connection(db_file):
     conn = None
     try:
         conn = sqlite3.connect(db_file)
-        print(sqlite3.version)
     except Error as e:
         print(e)
 
@@ -79,19 +78,22 @@ def update_specific_book(book_id, parameter, value):
     conn.close()
 
 
-def select_all_books(conn):
+def select_all_books():
+    
     """
-    Query all rows in the tasks table
-    :param conn: the Connection object
-    :return:
+    Query all rows in the books table
+    :return: all books
     """
+    conn = create_connection(DATABASE)
     cur = conn.cursor()
     cur.execute("SELECT * FROM books")
 
     rows = cur.fetchall()
 
-    for row in rows:
-        print(row)
+    # for row in rows:
+    #     print(row)
+
+    return rows
 
 def select_all_users(conn):
     cur = conn.cursor()
@@ -160,10 +162,10 @@ def main():
             for book in book_list:
                 create_book(conn, book)
 
-    select_all_users(conn)
-    update_specific_book(0, "username", None)
-    select_all_books(conn)
-    print(get_book_list("Assaf Ben Dor"))
+    # select_all_users(conn)
+    # update_specific_book(0, "username", None)
+    # select_all_books(conn)
+    # print(get_book_list("Assaf Ben Dor"))
 
 
 if __name__ == '__main__':

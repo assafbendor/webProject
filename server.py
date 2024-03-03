@@ -1,12 +1,27 @@
 import socket
 import select
-import database
 
-MAX_MSG_LENGTH = 1024
+from flask import app, jsonify, Flask
+import database
+import requests
+import flask
+
+MAX_MSG_LENGTH = 128*1024
 SERVER_PORT = 5555
 SERVER_IP = '0.0.0.0'
 
+app = Flask(__name__)
+
+
+
+@app.get("/books")
+def get_books():
+    list = database.select_all_books()
+    print(list)
+    return jsonify(list)
+
 def get_book_list(user):
+   pass
 
 
 def print_client_sockets(client_sockets):
@@ -20,25 +35,26 @@ def main():
     server_socket.listen()
     print( "Listening for clients..." )
     client_sockets = []
-    while True:
-        ready_to_read, ready_to_write, in_error = select.select([server_socket] + client_sockets, [], [])
-        for current_socket in ready_to_read:
-            if current_socket is server_socket:
-                (client_socket,client_address) = current_socket.accept()
-                print( "New client joined!" ,client_address)
-                client_sockets.append(client_socket)
-                print_client_sockets(client_sockets)
-            else:
-                print("New data from client")
-                data = current_socket.recv(MAX_MSG_LENGTH).decode()
-                if data == "":
-                    print("Connection closed", )
-                    client_sockets.remove(current_socket)
-                    current_socket.close()
-                    print_client_sockets(client_sockets)
-                else:
-                    print(data)
-                    current_socket.send(data.encode())
+    app.run(host = '0.0.0.0')
+    # while True:
+    #     ready_to_read, ready_to_write, in_error = select.select([server_socket] + client_sockets, [], [])
+    #     for current_socket in ready_to_read:
+    #         if current_socket is server_socket:
+    #             (client_socket,client_address) = current_socket.accept()
+    #             print( "New client joined!" ,client_address)
+    #             client_sockets.append(client_socket)
+    #             print_client_sockets(client_sockets)
+    #         else:
+    #             print("New data from client")
+    #             data = current_socket.recv(MAX_MSG_LENGTH).decode()
+    #             if data == "":
+    #                 print("Connection closed", )
+    #                 client_sockets.remove(current_socket)
+    #                 current_socket.close()
+    #                 print_client_sockets(client_sockets)
+    #             else:
+    #                 print(data)
+    #                 current_socket.send(data.encode())
 
 
 main()

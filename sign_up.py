@@ -10,6 +10,8 @@ def main(page: ft.Page):
     # Setting the background color of the page
     page.bgcolor = "#083b7a"
     page.padding = 50
+    page.horizontal_alignment = ft.CrossAxisAlignment.START
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
 
     logo = ft.Image(
         src="..\img\logo.png",
@@ -118,11 +120,13 @@ def main(page: ft.Page):
             # Place the vertical line between the text controls
         ],
         alignment=ft.alignment.center,  # Center align the items vertically
+        width=page.window_width
     )
 
-    # Add the row to the page
+    main_container = ft.Container(row, 
+                                  alignment=ft.alignment.center)
 
-    page.add(row)
+    page.add(main_container)
 
     page.update()
 

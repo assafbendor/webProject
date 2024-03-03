@@ -1,4 +1,5 @@
 import flet as ft
+import server
 
 def main(page: ft.Page):
 
@@ -6,7 +7,7 @@ def main(page: ft.Page):
         pass
 
     def book_search_clicked():
-        pass
+        print(server.get_books())
 
     def recommend_clicked():
         pass
@@ -21,7 +22,6 @@ def main(page: ft.Page):
     page.padding = 50
 
     hello = str("Hello, " + username + "!" + '\n')
-    what_to_do = "What would you like to do today?"
     hello_text = ft.Text(hello,
                    font_family="Calibiri",
                    theme_style=ft.TextThemeStyle.DISPLAY_LARGE,
@@ -38,7 +38,7 @@ def main(page: ft.Page):
                    size=50,
                    text_align=ft.TextAlign.RIGHT)
 
-    column = ft.Column([logo, text],
+    column = ft.Column([hello_text, logo, text],
                        alignment=ft.alignment.center,
                        horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
@@ -61,6 +61,7 @@ def main(page: ft.Page):
         padding=ft.padding.only(top=60, left=150)
     )
     
+    what_to_do = "What would you like to do today?"
     what_to_do_text = ft.Text(what_to_do,
                    font_family="Calibiri",
                    theme_style=ft.TextThemeStyle.DISPLAY_SMALL,
@@ -123,15 +124,16 @@ def main(page: ft.Page):
     actions_row = ft.Row(controls=[my_books_button, search_books_button, recommend_button],
                          alignment=ft.alignment.center,
                          spacing=50)
+
+    actions_column = ft.Column([what_to_do_text, actions_row], spacing=100)                     
     
-    actions_container = ft.Container(actions_row, padding=150)
+    actions_container = ft.Container(actions_column, padding=150)
 
     page_row = ft.Row([logo_container, vertical_line_container, actions_container])
 
     logout_button = ft.FloatingActionButton(
         icon=ft.icons.LOGOUT, on_click=logout_clicked, bgcolor=ft.colors.WHITE54, tooltip="logout")
 
-    page.add(hello_text, what_to_do_text)
     page.add(page_row)
     page.add(logout_button)
     page.update()
