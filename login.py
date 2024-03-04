@@ -1,5 +1,5 @@
 import flet as ft
-
+import flet_fastapi
 
 def main(page: ft.Page):
     # Setting the background color of the page
@@ -122,8 +122,10 @@ def main(page: ft.Page):
 
 
 #Running the app
-ft.app(target=main)
+#ft.app(target=main)
 #       assets_dir="/Users/assafbendor/PycharmProjects/webProject/img/")
 
 
 #ft.app(target=main)
+    
+app = flet_fastapi.app(main)

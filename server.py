@@ -1,41 +1,24 @@
 import socket
-import select
 
-from flask import app, jsonify, Flask
+from fastapi import FastAPI
+
 import database
-import requests
-import flask
 
 MAX_MSG_LENGTH = 128*1024
 SERVER_PORT = 5555
 SERVER_IP = '0.0.0.0'
 
-app = Flask(__name__)
-
-
-
-@app.get("/books")
-def get_books():
-    list = database.select_all_books()
-    print(list)
-    return jsonify(list)
-
-def get_book_list(user):
-   pass
-
-
 def print_client_sockets(client_sockets):
      for c in client_sockets:
          print("\t", c.getpeername())
 
-def main():
-    print( "Setting up server..." )
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind((SERVER_IP, SERVER_PORT))
-    server_socket.listen()
-    print( "Listening for clients..." )
-    client_sockets = []
-    app.run(host = '0.0.0.0')
+# def main():
+#     print( "Setting up server..." )
+#     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#     server_socket.bind((SERVER_IP, SERVER_PORT))
+#     server_socket.listen()
+#     print( "Listening for clients..." )
+#     client_sockets = []
     # while True:
     #     ready_to_read, ready_to_write, in_error = select.select([server_socket] + client_sockets, [], [])
     #     for current_socket in ready_to_read:
@@ -57,4 +40,21 @@ def main():
     #                 current_socket.send(data.encode())
 
 
-main()
+app = FastAPI()
+
+@app.get("/")
+def root():
+    return {"message": "Hello World"}
+
+
+@app.get("/books")
+def get_books():
+    list = database.select_all_books()
+    print(list)
+    return jsonify(list)
+
+def get_book_list(user):
+   pass
+
+
+#main()

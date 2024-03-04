@@ -1,13 +1,15 @@
 import flet as ft
-import server
+import fastapi_server
+import requests
+
+server='http://127.0.0.1:8000'
 
 def main(page: ft.Page):
 
-    def my_books_clicked():
-        pass
-
-    def book_search_clicked():
-        print(server.get_books())
+    def book_search_clicked(self):
+        path = "/books"
+        r=requests.get(server+path)
+        return r.text
 
     def recommend_clicked():
         pass
