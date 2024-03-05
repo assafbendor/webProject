@@ -11,6 +11,15 @@ def main(page: ft.Page):
     def extend_book_clicked():
         pass
 
+    def add_book_clicked():
+        pass
+
+    def delete_book_clicked():
+        pass
+
+    def edit_book_clicked():
+        pass
+
     def logout_clicked():
         pass
 
@@ -107,8 +116,8 @@ def main(page: ft.Page):
         on_hover=on_action_hover,                
         on_click=return_books_clicked)
     
-    recommend_button = ft.Container(
-        content=ft.Text("Extend Book", font_family="Calibiry", size=20),
+    extend_button = ft.Container(
+        content=ft.Text("Extend a Book", font_family="Calibiry", size=20),
         margin=30,
         padding=30,
         alignment=ft.alignment.center,
@@ -123,11 +132,63 @@ def main(page: ft.Page):
         on_hover=on_action_hover,            
         on_click=extend_book_clicked)
     
-    actions_row = ft.Row(controls=[my_books_button, search_books_button, recommend_button],
+    add_book_button = ft.Container(
+        content=ft.Text("Add a Book", font_family="Calibiry", size=20),
+        margin=30,
+        padding=30,
+        alignment=ft.alignment.center,
+        bgcolor=ft.colors.BLACK54,
+        border_radius=20,
+        shadow=ft.BoxShadow(
+            spread_radius=1,
+            blur_radius=5,
+            color=ft.colors.BLUE_GREY_300,
+            offset=ft.Offset(0, 0),
+            blur_style=ft.ShadowBlurStyle.OUTER),
+        on_hover=on_action_hover,            
+        on_click=add_book_clicked)
+
+    delete_book_button = ft.Container(
+        content=ft.Text("Delete a Book", font_family="Calibiry", size=20),
+        margin=30,
+        padding=30,
+        alignment=ft.alignment.center,
+        bgcolor=ft.colors.BLACK54,
+        border_radius=20,
+        shadow=ft.BoxShadow(
+            spread_radius=1,
+            blur_radius=5,
+            color=ft.colors.BLUE_GREY_300,
+            offset=ft.Offset(0, 0),
+            blur_style=ft.ShadowBlurStyle.OUTER),
+        on_hover=on_action_hover,            
+        on_click=delete_book_clicked)            
+    
+    edit_book_button = ft.Container(
+        content=ft.Text("Edit a Book", font_family="Calibiry", size=20),
+        margin=30,
+        padding=30,
+        alignment=ft.alignment.center,
+        bgcolor=ft.colors.BLACK54,
+        border_radius=20,
+        shadow=ft.BoxShadow(
+            spread_radius=1,
+            blur_radius=5,
+            color=ft.colors.BLUE_GREY_300,
+            offset=ft.Offset(0, 0),
+            blur_style=ft.ShadowBlurStyle.OUTER),
+        on_hover=on_action_hover,            
+        on_click=edit_book_clicked)
+    
+    actions_row_1 = ft.Row(controls=[my_books_button, search_books_button, extend_button],
                          alignment=ft.alignment.center,
                          spacing=50)
+    
+    actions_row_2 = ft.Row(controls=[add_book_button, delete_book_button, edit_book_button],
+                         alignment=ft.alignment.center,
+                         spacing=50)    
 
-    actions_column = ft.Column([what_to_do_text, actions_row], spacing=100)                     
+    actions_column = ft.Column([what_to_do_text, actions_row_1, actions_row_2], spacing=100)                     
     
     actions_container = ft.Container(actions_column, padding=150)
 

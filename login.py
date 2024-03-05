@@ -1,44 +1,45 @@
 import flet as ft
-import flet_fastapi
+from components import Logo
 
 def main(page: ft.Page):
     # Setting the background color of the page
     page.bgcolor = "#083b7a"
     page.padding = 50
 
-    logo = ft.Image(
-        src="..\img\logo.png",
-        width=400,  # Set the width of the image
-        height=400  # Set the height of the image
-    )
 
-    text = ft.Text("Book for You",
-                   font_family="Calibiri",
-                   size=50,
-                   text_align=ft.TextAlign.RIGHT)
+    # logo = ft.Image(
+    #     src="..\img\logo.png",
+    #     width=400,  # Set the width of the image
+    #     height=400  # Set the height of the image
+    # )
 
-    column = ft.Column([logo, text],
-                       alignment=ft.alignment.center,
-                       horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+    # text = ft.Text("Book for You",
+    #                font_family="Calibiri",
+    #                size=50,
+    #                text_align=ft.TextAlign.RIGHT)
 
-    logo_container = ft.Container(
-        content=column,
-        padding=ft.padding.only(left=120),
-        alignment=ft.alignment.center_left)
+    # column = ft.Column([logo, text],
+    #                    alignment=ft.alignment.center,
+    #                    horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
-    # Create a Container to act as a vertical line
-    vertical_line = ft.Container(
-        width=1,  # Width of the line
-        height=page.window_height,  # Height of the line, adjust as needed
-        bgcolor="#ea665e",  # Color of the line,
-        padding=ft.padding.only(top=90, left=140),
-        alignment=ft.alignment.center
-    )
+    # logo_container = ft.Container(
+    #     content=column,
+    #     padding=ft.padding.only(left=120),
+    #     alignment=ft.alignment.center_left)
 
-    vertical_line_container = ft.Container(
-        content=vertical_line,
-        padding=ft.padding.only(top=60, left=150)
-    )
+    # # Create a Container to act as a vertical line
+    # vertical_line = ft.Container(
+    #     width=1,  # Width of the line
+    #     height=page.window_height,  # Height of the line, adjust as needed
+    #     bgcolor="#ea665e",  # Color of the line,
+    #     padding=ft.padding.only(top=90, left=140),
+    #     alignment=ft.alignment.center
+    # )
+
+    # vertical_line_container = ft.Container(
+    #     content=vertical_line,
+    #     padding=ft.padding.only(top=60, left=150)
+    # )
 
     username_text = ft.TextField(label="Username",
                                  focused_color=ft.colors.BLACK87,
@@ -103,29 +104,33 @@ def main(page: ft.Page):
         padding=ft.padding.only(left=150)
     )
 
-    row = ft.Row(
-        controls=[
-            logo_container, vertical_line_container, login_container  # Place the vertical line between the text controls
-        ],
-        alignment=ft.alignment.center,  # Center align the items vertically
-        width=page.window_width
-    )
+    # row = ft.Row(
+    #     controls=[
+    #         logo_container, vertical_line_container, login_container  # Place the vertical line between the text controls
+    #     ],
+    #     alignment=ft.alignment.center,  # Center align the items vertically
+    #     width=page.window_width
+    # )
 
     # Add the row to the page
+    
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
 
-    main_container = ft.Container(row, 
-                                  alignment=ft.alignment.center)
+    page.update()
 
-    page.add(main_container)
+    #logo = Logo()
+    #row=ft.Row(controls=[logo, login_container])
+    row = ft.Row(controls=[login_container])
+    row.controls.append(Logo())
+    page.add(row)
 
     page.update()
 
 
 #Running the app
-#ft.app(target=main)
+ft.app(target=main)
 #       assets_dir="/Users/assafbendor/PycharmProjects/webProject/img/")
 
 
 #ft.app(target=main)
-    
-app = flet_fastapi.app(main)
