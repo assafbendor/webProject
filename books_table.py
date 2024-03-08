@@ -19,8 +19,9 @@ def prepare_rows(books):
       row = ft.DataRow(cells=[
          ft.DataCell(ft.Text(book['Book Name'])),
                      ft.DataCell(ft.Text(book['Author'])),
-                     ft.DataCell(ft.Text(book['Availability']))
-      ])
+                     ft.DataCell(ft.Text(book['Availability'])),
+      ],
+      color = {"hovered": ft.colors.BLACK})
       dataRows.append(row)
   return dataRows
   
@@ -44,9 +45,12 @@ def main(page: ft.Page):
 
     page.add(
             ft.DataTable(
+                width = page.width,
                 horizontal_lines=ft.border.BorderSide(1, "white"),
                 #bgcolor=ft.colors.LIGHT_BLUE_900,
+                data_row_color={"hovered": ft.colors.WHITE},
                 heading_row_color=ft.colors.BLACK12,
+                column_spacing=200,
                 columns=[
                     ft.DataColumn(
                         ft.Text("Book Name"),
@@ -58,6 +62,7 @@ def main(page: ft.Page):
                     ),
                     ft.DataColumn(
                         ft.Text("Availability"),
+                        numeric=True,
                         on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
                     ),
                 ],
