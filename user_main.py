@@ -1,6 +1,6 @@
 import flet as ft
 import requests
-import books_table
+import components
 
 server='http://127.0.0.1:8000'
 
@@ -9,7 +9,7 @@ def main(page: ft.Page):
     def book_search_clicked(self):
         path = "/books"
         r=requests.get(server+path)
-        return r.json
+        return r.text
 
     def recommend_clicked():
         pass
@@ -29,42 +29,12 @@ def main(page: ft.Page):
     hello = str("Hello, " + username + "!" + '\n')
     hello_text = ft.Text(hello,
                    font_family="Calibiri",
-                   theme_style=ft.TextThemeStyle.DISPLAY_LARGE,
-                   text_align=ft.TextAlign.CENTER)
+                   theme_style=ft.TextThemeStyle.DISPLAY_LARGE)
     
-    logo = ft.Image(
-        src="..\img\logo.png",
-        width=400,  # Set the width of the image
-        height=400  # Set the height of the image
-    )
+    logo = components.Logo()
 
-    text = ft.Text("Book for You",
-                   font_family="Calibiri",
-                   size=50,
-                   text_align=ft.TextAlign.RIGHT)
+    column = ft.Column(controls = [hello_text, logo.build()])
 
-    column = ft.Column([hello_text, logo, text],
-                       alignment=ft.alignment.center,
-                       horizontal_alignment=ft.CrossAxisAlignment.CENTER)
-
-    logo_container = ft.Container(
-        content=column,
-        padding=ft.padding.only(left=120),
-        alignment=ft.alignment.center_left)
-
-    # Create a Container to act as a vertical line
-    vertical_line = ft.Container(
-        width=1,  # Width of the line
-        height=page.window_height,  # Height of the line, adjust as needed
-        bgcolor="#ea665e",  # Color of the line,
-        padding=ft.padding.only(top=90, left=140),
-        alignment=ft.alignment.center
-    )
-
-    vertical_line_container = ft.Container(
-        content=vertical_line,
-        padding=ft.padding.only(top=60, left=150)
-    )
     
     what_to_do = "What would you like to do today?"
     what_to_do_text = ft.Text(what_to_do,
@@ -134,7 +104,7 @@ def main(page: ft.Page):
     
     actions_container = ft.Container(actions_column, padding=150)
 
-    page_row = ft.Row([logo_container, vertical_line_container, actions_container])
+    page_row = ft.Row([column, actions_container])
 
     logout_button = ft.FloatingActionButton(
         icon=ft.icons.LOGOUT, on_click=logout_clicked, bgcolor=ft.colors.WHITE54, tooltip="logout")

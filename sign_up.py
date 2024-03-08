@@ -1,5 +1,5 @@
 import flet as ft
-import database
+import components
 
 
 def main(page: ft.Page):
@@ -10,41 +10,8 @@ def main(page: ft.Page):
     # Setting the background color of the page
     page.bgcolor = "#083b7a"
     page.padding = 50
-    page.horizontal_alignment = ft.CrossAxisAlignment.START
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
-
-    logo = ft.Image(
-        src="..\img\logo.png",
-        width=400,  # Set the width of the image
-        height=400,  # Set the height of the image
-    )
-
-    text = ft.Text("Book for You",
-                   font_family="Calibiri",
-                   size=50,
-                   text_align=ft.TextAlign.RIGHT)
-
-    column = ft.Column([logo, text],
-                       alignment=ft.alignment.center,
-                       horizontal_alignment=ft.CrossAxisAlignment.CENTER)
-
-    logo_container = ft.Container(
-        content=column,
-        padding=ft.padding.only(left=120),
-        alignment=ft.alignment.center_left)
-
-    # Create a Container to act as a vertical line
-    vertical_line = ft.Container(
-        width=1,  # Width of the line
-        height=680,  # Height of the line, adjust as needed
-        bgcolor="#ea665e",  # Color of the line,
-        padding=ft.padding.only(top=90, left=140)
-    )
-
-    vertical_line_container = ft.Container(
-        content=vertical_line,
-        padding=ft.padding.only(top=60, left=150)
-    )
 
     username_text = ft.TextField(label="Username",
                                  focused_color=ft.colors.BLACK87,
@@ -114,11 +81,11 @@ def main(page: ft.Page):
         padding=ft.padding.only(left=150)
     )
 
+    logo = components.Logo()
+
     row = ft.Row(
-        controls=[
-            logo_container, vertical_line_container, sign_up_container
-            # Place the vertical line between the text controls
-        ],
+        controls=[logo.build(), 
+                  sign_up_container],
         alignment=ft.alignment.center,  # Center align the items vertically
         width=page.window_width
     )

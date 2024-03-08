@@ -6,41 +6,8 @@ def main(page: ft.Page):
     page.bgcolor = "#083b7a"
     page.padding = 50
 
-
-    # logo = ft.Image(
-    #     src="..\img\logo.png",
-    #     width=400,  # Set the width of the image
-    #     height=400  # Set the height of the image
-    # )
-
-    # text = ft.Text("Book for You",
-    #                font_family="Calibiri",
-    #                size=50,
-    #                text_align=ft.TextAlign.RIGHT)
-
-    # column = ft.Column([logo, text],
-    #                    alignment=ft.alignment.center,
-    #                    horizontal_alignment=ft.CrossAxisAlignment.CENTER)
-
-    # logo_container = ft.Container(
-    #     content=column,
-    #     padding=ft.padding.only(left=120),
-    #     alignment=ft.alignment.center_left)
-
-    # # Create a Container to act as a vertical line
-    # vertical_line = ft.Container(
-    #     width=1,  # Width of the line
-    #     height=page.window_height,  # Height of the line, adjust as needed
-    #     bgcolor="#ea665e",  # Color of the line,
-    #     padding=ft.padding.only(top=90, left=140),
-    #     alignment=ft.alignment.center
-    # )
-
-    # vertical_line_container = ft.Container(
-    #     content=vertical_line,
-    #     padding=ft.padding.only(top=60, left=150)
-    # )
-
+    logo = Logo()
+ 
     username_text = ft.TextField(label="Username",
                                  focused_color=ft.colors.BLACK87,
                                  bgcolor=ft.colors.WHITE,
@@ -104,27 +71,16 @@ def main(page: ft.Page):
         padding=ft.padding.only(left=150)
     )
 
-    # row = ft.Row(
-    #     controls=[
-    #         logo_container, vertical_line_container, login_container  # Place the vertical line between the text controls
-    #     ],
-    #     alignment=ft.alignment.center,  # Center align the items vertically
-    #     width=page.window_width
-    # )
-
-    # Add the row to the page
-    
+   
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
 
     page.update()
 
-    #logo = Logo()
-    #row=ft.Row(controls=[logo, login_container])
-    row = ft.Row(controls=[login_container])
-    row.controls.append(Logo())
-    page.add(row)
+    row=ft.Row(controls=[logo.build(), login_container],
+                       width=page.window_width)
 
+    page.add(row)
     page.update()
 
 

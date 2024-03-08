@@ -1,6 +1,6 @@
 import flet as ft
 
-class Logo():
+class Logo(ft.UserControl):
     def build(self):
         self.logo = ft.Image(
             src="..\img\logo.png",
@@ -25,6 +25,7 @@ class Logo():
         # Create a Container to act as a vertical line
         self.vertical_line = ft.Container(
             width=1,  # Width of the line
+            height=800,
             bgcolor="#ea665e",  # Color of the line,
             padding=ft.padding.only(top=90, left=140),
             alignment=ft.alignment.center
