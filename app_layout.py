@@ -1,24 +1,23 @@
-from flet import (
-    Control,
-    Page,
-    Row,
-    Text)
+import flet as ft
 
-class AppLayout(Row):
+from login import Login
+
+class AppLayout(ft.Row):
     def __init__(
         self,
         app,
-        page: Page,
+        page: ft.Page,
         *args,
         **kwargs):
         
         super().__init__(*args, **kwargs)
         self.app = app
         self.page = page
-        self._active_view: Control = Row(controls=[Text("Active View")], 
-                                         alignment="center", 
-                                         horizontal_alignment="center")
-        
+        self.page.on_resize = self.page_resize
+        self.login = Login(self, page)
+        self.login_view = self.login.build()
+        self._active_view: ft.Control = self.login_view
+        self.controls = [self.active_view]
 
     @property
     def active_view(self):
@@ -28,3 +27,8 @@ class AppLayout(Row):
     def active_view(self, view):
         self._active_view = view
         self.update()
+
+    def page_resize(self, e=None):
+        self.active_view.resize(self.page.width, 
+                                self.page.height)
+        self.page.update()        
