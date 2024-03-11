@@ -5,9 +5,10 @@ import database
 
 app = FastAPI()
 
-def toJson(books):
-    keys = ('Index', 'Book Name', 'Author', 'Availability')
-    data = [dict(zip(keys, book)) for book in books]
+def toJson(objects, keys):
+    keys = ('Username', 'Password', 'Email')
+
+    data = [dict(zip(keys, book)) for book in objects]
 
     json_data = json.dumps(data)
     print(json_data)
@@ -16,9 +17,13 @@ def toJson(books):
 
 @app.get("/books")
 def get_books():
-    list = database.select_all_books()
-    return toJson(list)
+    lst = database.select_all_books()
+    return toJson(lst, ('Index', 'Book Name', 'Author', 'Availability'))
 
+@app.get("/users")
+def get_users():
+    lst = database.select_all_users()
+    return toJson(lst, ('Username', 'Password', 'Email'))
 
 def get_book_list(user):
    pass

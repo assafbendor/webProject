@@ -1,9 +1,18 @@
 import flet as ft
+import requests
+server='http://127.0.0.1:8000'
+
+
+def get_users():
+    path = "/users"
+    r = requests.get(server+path)
+    print(r.json())
+    return r.json()
 
 def main(page: ft.Page):
 
-    def loan_books_clicked():
-        pass
+    def loan_books_clicked(arg):
+        get_users()
 
     def return_books_clicked():
         pass

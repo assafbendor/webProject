@@ -95,14 +95,15 @@ def select_all_books():
 
     return rows
 
-def select_all_users(conn):
+def select_all_users():
+    conn = create_connection(DATABASE)
     cur = conn.cursor()
     cur.execute("SELECT * FROM users")
 
     rows = cur.fetchall()
+    conn.close()
 
-    for row in rows:
-        print(row)
+    return rows
 
 def delete_book(conn, id):
     sql = 'DELETE FROM books WHERE id=?'
@@ -166,7 +167,8 @@ def main():
     # update_specific_book(0, "username", None)
     # select_all_books(conn)
     # print(get_book_list("Assaf Ben Dor"))
-
+    create_user(("Assaf", "1234", "asaf.bendor2@gmail.com"))
+    print(select_all_users())
 
 if __name__ == '__main__':
     main()
