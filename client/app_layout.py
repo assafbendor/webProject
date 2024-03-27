@@ -47,6 +47,8 @@ class AppLayout(Row):
         self.sign_up = sign_up.SignUp(self)
         self.sign_up_view = self.sign_up.build()
 
+        self.members_view = Text("members view")
+
         self._active_view: Control = self.login_view
         print(type(self.active_view))
         self.controls = [self.sidebar, self.toggle_nav_rail_button, self.active_view]
@@ -59,21 +61,27 @@ class AppLayout(Row):
     def active_view(self, view):
         self._active_view = view
         self.controls[-1] = self._active_view
-        self.sidebar.sync_board_destinations()
+        #self.sidebar.sync_board_destinations()
         self.update()
 
     def set_login_view(self):
-        self._active_view=self.login_view
+        self.active_view=self.login_view
         self.sidebar.update()
         self.page.update()
         self.page_resize()
 
     def set_signup_view(self):
-        self._active_view=self.sign_up_view
+        self.active_view=self.sign_up_view
         self.sidebar.update()
         self.page.update()
         self.page_resize()
 
+    def set_members_view(self):
+        self.active_view = self.members_view
+        self.sidebar.top_nav_rail.selected_index = 1
+        self.sidebar.bottom_nav_rail.selected_index = None
+        self.sidebar.update()
+        self.page.update()
 
     def set_all_boards_view(self):
         self.active_view = self.all_boards_view

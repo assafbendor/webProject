@@ -101,16 +101,9 @@ class BookForYouApp(UserControl):
     def route_change(self, e):
         troute = TemplateRoute(self.page.route)
         if troute.match("/"):
-            self.page.go("/boards")
-        elif troute.match("/board/:id"):
-            if int(troute.id) > len(self.store.get_boards()):
-                self.page.go("/")
-                return
-            self.layout.set_board_view(int(troute.id))
-        elif troute.match("/boards"):
-            self.layout.set_all_boards_view()
-        elif troute.match("/members"):
-            self.layout.set_members_view()
+            self.page.go("/login")
+        elif troute.match("/sign_up"):
+            self.layout.set_signup_view()
         self.page.update()
 
     def add_board(self, e):

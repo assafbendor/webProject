@@ -2,14 +2,15 @@ import flet as ft
 
 import components
 
-class SignUp:
+class SignUp(ft.UserControl):
 
     def __init__(self, appLayout):
         super().__init__()
         self.appLayout = appLayout
 
     def sign_up_clicked(self, e):
-        self.appLayout.set_signup_view
+        print("Sign Up!")
+ 
 
     def build(self):
 

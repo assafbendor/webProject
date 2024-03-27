@@ -12,7 +12,9 @@ class Login:
         print("Login!")    
 
     def sign_up_clicked(self, e):
-        print("Sign Up!")    
+        print("login sign up")
+        self.appLayout.page.route = "/sign_up"
+        self.appLayout.page.update()
 
     def build(self):
 
