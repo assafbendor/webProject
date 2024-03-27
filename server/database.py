@@ -6,6 +6,9 @@ from sqlalchemy.orm import sessionmaker
 from server.config import DATABASE_URL
 from server.models import Book, Copy, Borrow
 
+import api
+import models
+
 engine = create_engine(DATABASE_URL)
 
 Session = sessionmaker(bind=engine)
@@ -23,6 +26,12 @@ def get_copies_by_username(username: str):
         return [borrow.copy for borrow in borrows]
 
 
+def add_reader_to_database(username: str, email: str, name: str, password: str):
+    reader = models.Reader(username=username, email=email, name=name, password=api.get_password_hash(password))
+    with Session() as session:
+        session.add(reader)
+        session.commit()
+
 
 # def borrowed_for_more_than_a_month(username: str):
 #     # There is no data_borrowed column in the database, only a borrow_date (start date) and return_date (end date)
@@ -37,4 +46,6 @@ if __name__ == '__main__':
     books = get_all_books()
     # print(books[0].copies)
     # print(books)
-    print(get_copies_by_username('peter'))
+    # print(get_copies_by_username('peter'))
+    add_reader_to_database(username="Assaf", email="asaf.bendor2@gmail.com", name="Assaf Ben Dor", password="assaf6656ben")
+
