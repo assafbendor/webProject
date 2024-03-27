@@ -51,18 +51,19 @@ class BookForYouApp(UserControl):
         )
         return self.layout
 
-    def initialize(self):
-        self.page.views.clear()
-        self.page.views.append(
-            View(
-                "/",
-                [self.appbar, self.layout],
-                padding=padding.all(0),
-                bgcolor="#083b7a",
-            )
-        )
-        self.page.update()
-        #self.page.go("/")
+    # def initialize(self):
+    #     self.page.views.clear()
+    #     self.page.views.append(
+    #         View(
+    #             "/",
+    #             [self.appbar, self.layout],
+    #             padding=padding.all(0),
+    #             bgcolor="#083b7a",
+    #         )
+    #     )
+    #     self.page.update()
+
+    #     self.page.go("/")
 
     def route_change(self, e):
         troute = TemplateRoute(self.page.route)
@@ -132,7 +133,7 @@ def main(page: Page):
     app = BookForYouApp(page)
     page.add(app)
     page.update()
-    app.initialize()
+    #app.initialize()
 
 
 ft.app(target=main, assets_dir="../assets")
