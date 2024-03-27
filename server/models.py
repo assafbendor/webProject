@@ -47,8 +47,8 @@ class Copy(Base):
 class Reader(Base):
     __tablename__ = 'readers'
 
-    username = Column(String, primary_key=True)
-    email = Column(String, unique=True)
+    username = Column(String, unique=True)
+    email = Column(String, primary_key=True)
     name = Column(String)
     borrows = relationship('Borrow', back_populates='reader')
     password = Column(String)

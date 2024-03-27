@@ -25,12 +25,38 @@ def get_copies_by_username(username: str):
         borrows = session.query(Borrow).filter_by(reader_username=username, return_date=None).all()
         return [borrow.copy for borrow in borrows]
 
-
-def add_reader_to_database(username: str, email: str, name: str, password: str):
-    reader = models.Reader(username=username, email=email, name=name, password=api.get_password_hash(password))
+def find_users(email: str):
     with Session() as session:
-        session.add(reader)
-        session.commit()
+        user = session.query(models.Reader).filter_by(email=email).first()
+    return user
+
+
+def add_reader_to_database(username: str, email: str, name: str, password: str) -> bool:
+    reader = models.Reader(username=username, email=email, name=name, password=api.get_password_hash(password))
+    if find_users(email=email) is not None:
+        with Session() as session:
+            session.add(reader)
+            session.commit()
+            return True
+    return False
+
+def change_password(email: str, new_password) -> bool:
+    if find_users(email=email) is not None:
+        with Session() as session:
+            user = session.query(models.Reader).filter_by(email=email).first()
+            user.email = api.get_password_hash(password=new_password)
+            session.commit()
+            return True
+    return False
+
+def delete_reader(email: str) -> bool:
+    user = find_users(email=email)
+    if user is not None:
+        with Session() as session:
+            session.delete(user)
+            session.commit()
+            return True
+    return False
 
 
 # def borrowed_for_more_than_a_month(username: str):
@@ -47,5 +73,8 @@ if __name__ == '__main__':
     # print(books[0].copies)
     # print(books)
     # print(get_copies_by_username('peter'))
-    add_reader_to_database(username="Assaf", email="asaf.bendor2@gmail.com", name="Assaf Ben Dor", password="assaf6656ben")
+    # print(add_reader_to_database(username="Assaf", email="asaf.bendor2@gmail.com", name="Assaf Ben Dor", password="assaf6656ben"))
+    # print(find_users(email="asaf.bendor2@gmail.com"))
+    # print(delete_reader(email="asaf.bendor2@gmail.com"))
+
 
