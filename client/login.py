@@ -9,6 +9,7 @@ class Login:
         self.appLayout = appLayout
 
     def login_clicked(self, e):
+        print("In login", self.appLayout.active_view())
         print("Login!")    
 
     def sign_up_clicked(self, e):

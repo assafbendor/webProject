@@ -62,41 +62,7 @@ class BookForYouApp(UserControl):
             )
         )
         self.page.update()
-#        self.page.go("/")
-
-    def login(self, e):
-        def close_dlg(e):
-            if user_name.value == "" or password.value == "":
-                user_name.error_text = "Please provide username"
-                password.error_text = "Please provide password"
-                self.page.update()
-                return
-            else:
-                print("User here")
-
-            dialog.open = False
-            self.appbar_items[0] = PopupMenuItem(
-                text=f"{self.page.client_storage.get('current_user')}'s Profile"
-            )
-            self.page.update()
-
-        user_name = TextField(label="User name")
-        password = TextField(label="Password", password=True)
-        dialog = AlertDialog(
-            title=Text("Please enter your login credentials"),
-            content=Column(
-                [
-                    user_name,
-                    password,
-                    ElevatedButton(text="Login", on_click=close_dlg),
-                ],
-                tight=True,
-            ),
-            on_dismiss=lambda e: print("Modal dialog dismissed!"),
-        )
-        self.page.dialog = dialog
-        dialog.open = True
-        self.page.update()
+        #self.page.go("/")
 
     def route_change(self, e):
         troute = TemplateRoute(self.page.route)
