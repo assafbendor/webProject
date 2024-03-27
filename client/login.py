@@ -2,20 +2,19 @@ import flet as ft
 
 from components import Logo
 
-
 class Login:
 
-    def __init__(self, app_layout, page):
+    def __init__(self, appLayout):
         super().__init__()
-        self.app_layout = app_layout
-        self.page = page
+        self.appLayout = appLayout
+
+    def login_clicked(self, e):
+        print("Login!")    
+
+    def sign_up_clicked(self, e):
+        print("Sign Up!")    
 
     def build(self):
-        # Setting the background color of the page
-        self.page.bgcolor = "#083b7a"
-        self.page.padding = 50
-
-        logo = Logo()
 
         username_text = ft.TextField(label="Username",
                                      focused_color=ft.colors.BLACK87,
@@ -44,7 +43,7 @@ class Login:
         details = ft.Column([username_text, password_block], spacing=20)
 
         login_button = ft.ElevatedButton(text="LOG IN",
-                                         on_click="login_clicked",
+                                         on_click=self.login_clicked,
                                          bgcolor=ft.colors.WHITE,
                                          color=ft.colors.BLACK87,
                                          height=47,
@@ -60,12 +59,15 @@ class Login:
         no_account = ft.Text("Don't have an account?",
                              color=ft.colors.WHITE,
                              size=18)
+        
 
-        sign_up = ft.Text("Sign Up",
-                          color="#34aeed",
-                          style=ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE,
-                                             decoration_color="#34aeed"))
-
+        sign_up = ft.TextButton(
+              content= ft.Text("Sign Up", 
+                                color="#34aeed",
+                                style=ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE,
+                                decoration_color="#34aeed")),
+               on_click=self.sign_up_clicked)
+    
         no_account_block = ft.Column(spacing=5,
                                      controls=[no_account, sign_up],
                                      alignment=ft.alignment.center, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
@@ -77,24 +79,10 @@ class Login:
         login_container = ft.Container(
             content=login_block,
             alignment=ft.alignment.center,
-            padding=ft.padding.only(left=150)
+            padding=ft.padding.only(top=self.appLayout.page.height/3,left=150)
         )
 
-        self.page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-        self.page.vertical_alignment = ft.MainAxisAlignment.CENTER
-
-        self.page.update()
-
-        row = ft.Row(controls=[logo.build(), login_container],
-                     width=self.page.window_width)
-
-        self.page.add(row)
-        self.page.update()
-
-    # def main:
-    #   login = Login()
-
-# Running the app
-# ft.app(target=main)
-
-# ft.app(target=main)
+        logo = Logo(self.appLayout)
+        self.row = ft.Row(controls=[logo.build(), login_container],alignment=ft.alignment.center, vertical_alignment=ft.CrossAxisAlignment.CENTER, expand=True)
+    
+        return self.row

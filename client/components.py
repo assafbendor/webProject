@@ -1,12 +1,17 @@
 import flet as ft
 
-
 class Logo(ft.UserControl):
+
+    def __init__(self, appLayout):
+        super().__init__()
+        self.appLayout = appLayout
+
     def build(self):
+
         self.logo = ft.Image(
-            src=r"..\img\logo.png",
-            width=400,  # Set the width of the image
-            height=400  # Set the height of the image
+            src=r"client\img\logo.png",
+            width=self.appLayout.page.width/3,  # Set the width of the image
+            height=self.appLayout.page.width/3  # Set the height of the image
         )
 
         self.text = ft.Text("Book for You",
@@ -26,15 +31,26 @@ class Logo(ft.UserControl):
         # Create a Container to act as a vertical line
         self.vertical_line = ft.Container(
             width=1,  # Width of the line
-            height=800,
+            height=self.appLayout.page.height,
             bgcolor="#ea665e",  # Color of the line,
-            padding=ft.padding.only(top=90, left=140),
             alignment=ft.alignment.center
         )
 
         self.vertical_line_container = ft.Container(
             content=self.vertical_line,
-            padding=ft.padding.only(top=60, left=150)
+            padding=ft.padding.only(top=60, left=100)
         )
 
-        return ft.Row(controls=[self.logo_container, self.vertical_line_container])
+        self.view=ft.Container(
+            content=ft.Row(
+                controls=[self.logo_container, self.vertical_line_container]),
+            data=self,
+            margin = ft.margin.all(0),
+            padding = ft.padding.only(top=10, right=0),
+            height = self.appLayout.page.height)
+        return self.view
+    
+    def resize(self, width, height):
+        self.view.height = height
+        self.view.width = width
+        self.view.update()    
