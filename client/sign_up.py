@@ -11,6 +11,10 @@ class SignUp(ft.UserControl):
     def sign_up_clicked(self, e):
         print("Sign Up!")
  
+    def login_clicked(self, e):
+        self.appLayout.page.route = "/login"
+        self.appLayout.page.update()
+
 
     def build(self):
 
@@ -63,11 +67,13 @@ class SignUp(ft.UserControl):
                             color=ft.colors.WHITE,
                             size=18)
 
-        login = ft.Text("Log in",
-                        color="#34aeed",
-                        style=ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE,
-                                        decoration_color="#34aeed"))
-
+        login = ft.TextButton(
+              content= ft.Text("Log in", 
+                                color="#34aeed",
+                                style=ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE,
+                                decoration_color="#34aeed")),
+               on_click=self.login_clicked)
+       
         has_account_block = ft.Column(spacing=5,
                                     controls=[has_account, login],
                                     alignment=ft.alignment.center, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
@@ -79,19 +85,18 @@ class SignUp(ft.UserControl):
         sign_up_container = ft.Container(
             content=sign_up_block,
             alignment=ft.alignment.center,
-            padding=ft.padding.only(left=150)
+            padding=ft.padding.only(left=150),
+            height=self.appLayout.page.width/3
         )
 
         logo = components.Logo(self.appLayout)
 
-        row = ft.Row(
+        self.row = ft.Row(
             controls=[logo.build(),
                     sign_up_container],
-            alignment=ft.alignment.center,  # Center align the items vertically
+            alignment=ft.alignment.center, 
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            width=self.appLayout.page.window_width
-        )
+            expand=True)
 
-        self.main_container = ft.Container(row, alignment=ft.alignment.center, padding=ft.padding.only(top=self.appLayout.page.height/2,left=150))
-        return self.main_container
+        return self.row
 

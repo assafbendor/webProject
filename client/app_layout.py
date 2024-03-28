@@ -1,7 +1,10 @@
 
+from sidebar import Sidebar
+
 import login
 import sign_up
-import components
+import book_search
+
 from flet import (
     ButtonStyle,
     Column,
@@ -21,9 +24,8 @@ from flet import (
     colors,
     icons,
     padding,
+    FloatingActionButton,
 )
-#from sidebar import Sidebar
-
 
 class AppLayout(Row):
     def __init__(self, app, page: Page, *args, **kwargs):
@@ -31,24 +33,36 @@ class AppLayout(Row):
         self.app = app
         self.page = page    
         self.page.on_resize = self.page_resize
-        # self.toggle_nav_rail_button = IconButton(
-        #     icon=icons.ARROW_CIRCLE_LEFT,
-        #     icon_color=colors.BLUE_GREY_400,
-        #     selected=False,
-        #     selected_icon=icons.ARROW_CIRCLE_RIGHT,
-        #     on_click=self.toggle_nav_rail,
-        # )
-        # self.sidebar = Sidebar(self, page)
+        self.toggle_nav_rail_button = IconButton(
+            icon=icons.ARROW_CIRCLE_LEFT,
+            icon_color=colors.BLUE_GREY_400,
+            selected=False,
+            visible=False,
+            selected_icon=icons.ARROW_CIRCLE_RIGHT,
+            on_click=self.toggle_nav_rail,
+        )
 
-        self.login = login.Login(self)
+        self.logout_button = FloatingActionButton(
+            icon=icons.LOGOUT, 
+            on_click=self.on_logout, 
+            bgcolor=colors.WHITE54, 
+            tooltip="logout",
+            visible=False)
+        
+        self.sidebar         = Sidebar(self, page)
+        self.sidebar.visible = False
+
+        self.login      = login.Login(self)
         self.login_view = self.login.build()
 
-        self.sign_up = sign_up.SignUp(self)
+        self.sign_up      = sign_up.SignUp(self)
         self.sign_up_view = self.sign_up.build()
 
+        self.book_search      = book_search.BookSearch(self)
+        self.book_search_view = self.book_search.build()
+
         self._active_view: Control = self.login_view
-        print(type(self.active_view))
-        self.controls = [self.active_view]
+        self.controls = [self.sidebar, self.toggle_nav_rail_button, self.active_view]
 
     @property
     def active_view(self):
@@ -73,12 +87,13 @@ class AppLayout(Row):
         self.page.update()
         self.page_resize()
 
-    def set_members_view(self):
-        self.active_view = self.members_view
+    def set_book_search_view(self):
+        self.active_view = self.book_search_view
         # self.sidebar.top_nav_rail.selected_index = 1
         # self.sidebar.bottom_nav_rail.selected_index = None
         # self.sidebar.update()
         self.page.update()
+        self.page_resize()
 
     def set_all_boards_view(self):
         self.active_view = self.all_boards_view
@@ -88,26 +103,30 @@ class AppLayout(Row):
         # self.sidebar.update()
         self.page.update()
 
-    def set_members_view(self):
-        self.active_view = self.members_view
-        # self.sidebar.top_nav_rail.selected_index = 1
-        # self.sidebar.bottom_nav_rail.selected_index = None
-        # self.sidebar.update()
-        self.page.update()
-
     def page_resize(self, e=None):
-        # if type(self.active_view) is Board:
-        #     self.active_view.resize(
-        #         self.sidebar.visible, self.page.width, self.page.height
+        # self.active_view.resize(
+        #         self.page.width, self.page.height
         #     )
-        #self.page.update()
+        # self.page.update()
         pass
 
-    # def board_click(self, e):
-    #     self.sidebar.bottom_nav_change(self.store.get_boards().index(e.control.data))
 
-    # def toggle_nav_rail(self, e):
-    #     self.sidebar.visible = not self.sidebar.visible
-    #     self.toggle_nav_rail_button.selected = not self.toggle_nav_rail_button.selected
-    #     self.page_resize()
-    #     self.page.update()
+    def toggle_nav_rail(self,e):
+        self.sidebar.visible = not self.sidebar.visible
+        self.toggle_nav_rail_button.selected = not self.toggle_nav_rail_button.selected
+        self.page_resize()
+        self.page.update()
+
+    def on_login(self):
+        self.sidebar.visible = True
+        self.toggle_nav_rail_button.visible = True
+        self.logout_button.visible = True
+        self.page_resize()
+        self.page.update()
+
+    def on_logout(self, e):
+        self.sidebar.visible = False
+        self.toggle_nav_rail_button.visible = False
+        self.logout_button.visible = False
+        self.page_resize()
+        self.page.update()   

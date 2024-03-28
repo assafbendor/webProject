@@ -47,23 +47,25 @@ class BookForYouApp(UserControl):
             self.page,
             tight=True,
             expand=True,
-            vertical_alignment="start",
+            #vertical_alignment="start",
+            alignment="center",
         )
         return self.layout
 
-    # def initialize(self):
-    #     self.page.views.clear()
-    #     self.page.views.append(
-    #         View(
-    #             "/",
-    #             [self.appbar, self.layout],
-    #             padding=padding.all(0),
-    #             bgcolor="#083b7a",
-    #         )
-    #     )
-    #     self.page.update()
+    def initialize(self):
+        # self.page.views.clear()
+        self.page.views.append(
+            View(
+                "/",
+                [self.appbar, self.layout],
+                padding=padding.all(0),
+                bgcolor="#083b7a",
+            )
+        )
 
-    #     self.page.go("/")
+        self.page.update()
+
+        self.page.go("/")
 
     def route_change(self, e):
         troute = TemplateRoute(self.page.route)
@@ -71,56 +73,11 @@ class BookForYouApp(UserControl):
             self.page.go("/login")
         elif troute.match("/sign_up"):
             self.layout.set_signup_view()
+        elif troute.match("/login"):
+            self.layout.set_login_view()            
+        elif troute.match("/book-search"):
+            self.layout.set_book_search_view()                        
         self.page.update()
-
-    def add_board(self, e):
-        def close_dlg(e):
-            if (hasattr(e.control, "text") and not e.control.text == "Cancel") or (
-                type(e.control) is TextField and e.control.value != ""
-            ):
-                self.create_new_board(dialog_text.value)
-            dialog.open = False
-            self.page.update()
-
-        def textfield_change(e):
-            if dialog_text.value == "":
-                create_button.disabled = True
-            else:
-                create_button.disabled = False
-            self.page.update()
-
-        dialog_text = TextField(
-            label="New Board Name", on_submit=close_dlg, on_change=textfield_change
-        )
-        create_button = ElevatedButton(
-            text="Create", bgcolor=colors.BLUE_200, on_click=close_dlg, disabled=True
-        )
-        dialog = AlertDialog(
-            title=Text("Name your new board"),
-            content=Column(
-                [
-                    dialog_text,
-                    Row(
-                        [
-                            ElevatedButton(text="Cancel", on_click=close_dlg),
-                            create_button,
-                        ],
-                        alignment="spaceBetween",
-                    ),
-                ],
-                tight=True,
-            ),
-            on_dismiss=lambda e: print("Modal dialog dismissed!"),
-        )
-        self.page.dialog = dialog
-        dialog.open = True
-        self.page.update()
-        dialog_text.focus()
-
-    def create_new_board(self, board_name):
-        print("new board")
-    def delete_board(self, e):
-        print("delete board")
 
 def main(page: Page):
 
@@ -133,7 +90,7 @@ def main(page: Page):
     app = BookForYouApp(page)
     page.add(app)
     page.update()
-    #app.initialize()
+    app.initialize()
 
 
 ft.app(target=main, assets_dir="../assets")

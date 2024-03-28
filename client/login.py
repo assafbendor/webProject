@@ -9,10 +9,9 @@ class Login:
         self.appLayout = appLayout
 
     def login_clicked(self, e):
-        print("Login!")    
+        self.appLayout.on_login()
 
     def sign_up_clicked(self, e):
-        print("login sign up")
         self.appLayout.page.route = "/sign_up"
         self.appLayout.page.update()
 
@@ -81,10 +80,17 @@ class Login:
         login_container = ft.Container(
             content=login_block,
             alignment=ft.alignment.center,
-            padding=ft.padding.only(top=self.appLayout.page.height/3,left=150)
+            padding=ft.padding.only(left=150),
+            data=self,
+            height=self.appLayout.page.width/3
         )
 
         logo = Logo(self.appLayout)
-        self.row = ft.Row(controls=[logo.build(), login_container],alignment=ft.alignment.center, vertical_alignment=ft.CrossAxisAlignment.CENTER, expand=True)
+        self.row = ft.Row(
+            controls=[logo.build(), login_container],
+            alignment=ft.alignment.center, 
+            vertical_alignment=ft.CrossAxisAlignment.CENTER, 
+            expand=True,
+            )
     
         return self.row
