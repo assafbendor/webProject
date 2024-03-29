@@ -7,7 +7,8 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
 
-
+import database
+import models
 SECRET_KEY = "0ae9bd5bf97167908547da34d48b18701aa0307e84c88f5a2181139e4d5ffb02"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -52,17 +53,16 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-def get_user(db, username: str):
-    if username in db:
-        user_dict = db[username]
-        return UserInDB(**user_dict)
+def get_user(username: str):
+    user = database.find_user_by_username(username)
+    return user
 
 
-def authenticate_user(fake_db, username: str, password: str):
-    user = get_user(fake_db, username)
+def authenticate_user(username: str, password: str):
+    user = get_user(username)
     if not user:
         return False
-    if not verify_password(password, user.hashed_password):
+    if not verify_password(password, get_password_hash(user.password)):
         return False
     return user
 
@@ -91,7 +91,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     except JWTError | KeyError:
         raise credentials_exception
 
-    user = get_user(fake_users_db, username=username)
+    user = get_user(username=username)
     if user is None:
         raise credentials_exception
     return user
@@ -99,7 +99,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
 
 @app.post("/token")
 async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
-    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
+    user = authenticate_user(form_data.username, form_data.password)
 
     if not user:
         raise HTTPException(
@@ -113,17 +113,28 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     return Token(access_token=access_token, token_type="bearer")
 
 
-@app.get("/users/me/", response_model=User)
-async def read_users_me(current_user: Annotated[User, Depends(get_current_user)]):
+@app.get("/users/me/")
+async def read_users_me(current_user: Annotated[models.Reader, Depends(get_current_user)]):
     return current_user
 
 
 @app.get("/users/me/items/")
-async def read_own_items(current_user: Annotated[User, Depends(get_current_user)]):
+async def read_own_items(current_user: Annotated[models.Reader, Depends(get_current_user)]):
     return [{"item_id": "Foo", "owner": current_user.username}]
 
+@app.post("/sign_up")
+async def add_reader_to_database(username: str, email: str, name: str, password: str):
+    return database.add_reader_to_database(models.Reader(username=username, email=email, name=name, password=password))
+
+@app.get("users/if_exist/")
+async def check_if_user_exists_by_email(email: str):
+    return database.find_users(email=email) is not None
+
+@app.get("/findbook")
+async def find_book_by_isbn(isbn: str):
+    return database.search_book_by_isbn(isbn)
 
 if __name__ == '__main__':
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)

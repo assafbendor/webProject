@@ -122,5 +122,7 @@ class BookSearch:
         self.trending_column = ft.Column(controls=[self.trending_title_container, self.trending_row])
         self.trending_container = ft.Container(content = self.trending_column, padding=ft.padding.only(top=30, left=250), alignment=ft.alignment.center )    
         self.final_column = ft.Column(controls = [self.inputs_and_search_container, self.trending_column], alignment=ft.alignment.center, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+        self.trending_container = ft.Container(content = self.trending_column, padding=ft.padding.only(top=30, left=150), alignment=ft.alignment.center )    
+        self.final_column = ft.Column(controls = [self.inputs_and_search_container, self.trending_container], alignment=ft.alignment.center)
         
         return self.final_column
