@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 
 from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, DateTime
 from sqlalchemy.orm import relationship, declarative_base, sessionmaker
@@ -82,21 +83,9 @@ if __name__ == '__main__':
 
     Session = sessionmaker(bind=engine)
 
-    books = [
-        {"isbn": "9780141439556", "title": "Pride and Prejudice", "author": "Jane Austen"},
-        {"isbn": "9780451524935", "title": "1984", "author": "George Orwell"},
-        {"isbn": "9780679722769", "title": "Crime and Punishment", "author": "Fyodor Dostoevsky"},
-        {"isbn": "9780743482752", "title": "Hamlet", "author": "William Shakespeare"},
-        {"isbn": "9780061120091", "title": "One Hundred Years of Solitude", "author": "Gabriel García Márquez"},
-        {"isbn": "9780143035008", "title": "Anna Karenina", "author": "Lev Tolstoy"},
-        {"isbn": "9780140449112", "title": "The Odyssey", "author": "Homer"},
-        {"isbn": "9780679720208", "title": "The Stranger", "author": "Albert Camus"},
-        {"isbn": "9780679721755", "title": "The Brothers Karamazov", "author": "Fyodor Dostoevsky"},
-        {"isbn": "9780679723162", "title": "Lolita", "author": "Vladimir Nabokov"},
-        {"isbn": "9780141439563", "title": "Great Expectations", "author": "Charles Dickens"},
-        {"isbn": "9780684801223", "title": "The great Gatsby", "author": "F. Scott Fitzgerald"},
-    ]
-
+    with open('books.json', 'r') as file:
+      books = json.load(file)
+  
     authors = set()
     for book in books:
         authors.add(book["author"])

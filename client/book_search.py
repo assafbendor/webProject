@@ -82,5 +82,9 @@ class BookSearch:
         
         self.inputs_and_search_container  = ft.Container(content=self.inputs_and_search,
                                              padding=ft.padding.only(top=50, left=150), alignment=ft.alignment.center)
+        
+        
+        self.trending_title = ft.Text("Trending Books", theme_style=ft.TextThemeStyle.DISPLAY_MEDIUM)
+        self.trending_title_container = ft.Container(content=self.trending_title, padding=ft.padding.only(top=100, bottom=50)) 
 
         return self.inputs_and_search_container

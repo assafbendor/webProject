@@ -1,0 +1,802 @@
+[
+    {
+        "isbn": "000000000001",
+        "title": "Don Quixote",
+        "author": "Miguel de Cervantes",
+        "language": "Spanish",
+        "rating": 0,
+        "cover_image_filename": "Don Quixote_Miguel de Cervantes.jpg"
+    },
+    {
+        "isbn": "000000000002",
+        "title": "War and Peace",
+        "author": "Leo Tolstoy",
+        "language": "Russian",
+        "rating": 0,
+        "cover_image_filename": "War and Peace_Leo Tolstoy.jpg"
+    },
+    {
+        "isbn": "000000000003",
+        "title": "Ulysses",
+        "author": "James Joyce",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Ulysses_James Joyce.jpg"
+    },
+    {
+        "isbn": "000000000004",
+        "title": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Great Gatsby_F. Scott Fitzgerald.jpg"
+    },
+    {
+        "isbn": "000000000005",
+        "title": "Moby Dick",
+        "author": "Herman Melville",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Moby Dick_Herman Melville.jpg"
+    },
+    {
+        "isbn": "000000000006",
+        "title": "Hamlet",
+        "author": "William Shakespeare",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Hamlet_William Shakespeare.jpg"
+    },
+    {
+        "isbn": "000000000007",
+        "title": "One Hundred Years of Solitude",
+        "author": "Gabriel Garc\u00c3\u00ada M\u00c3\u00a1rquez",
+        "language": "Spanish",
+        "rating": 0,
+        "cover_image_filename": "One Hundred Years of Solitude_Gabriel Garc\u00c3\u00ada M\u00c3\u00a1rquez.jpg"
+    },
+    {
+        "isbn": "000000000008",
+        "title": "1984",
+        "author": "George Orwell",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "1984_George Orwell.jpg"
+    },
+    {
+        "isbn": "000000000009",
+        "title": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "To Kill a Mockingbird_Harper Lee.jpg"
+    },
+    {
+        "isbn": "000000000010",
+        "title": "The Catcher in the Rye",
+        "author": "J.D. Salinger",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Catcher in the Rye_J.D. Salinger.jpg"
+    },
+    {
+        "isbn": "000000000011",
+        "title": "Pride and Prejudice",
+        "author": "Jane Austen",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Pride and Prejudice_Jane Austen.jpg"
+    },
+    {
+        "isbn": "000000000012",
+        "title": "Crime and Punishment",
+        "author": "Fyodor Dostoevsky",
+        "language": "Russian",
+        "rating": 0,
+        "cover_image_filename": "Crime and Punishment_Fyodor Dostoevsky.jpg"
+    },
+    {
+        "isbn": "000000000013",
+        "title": "The Odyssey",
+        "author": "Homer",
+        "language": "Greek",
+        "rating": 0,
+        "cover_image_filename": "The Odyssey_Homer.jpg"
+    },
+    {
+        "isbn": "000000000014",
+        "title": "The Brothers Karamazov",
+        "author": "Fyodor Dostoevsky",
+        "language": "Russian",
+        "rating": 0,
+        "cover_image_filename": "The Brothers Karamazov_Fyodor Dostoevsky.jpg"
+    },
+    {
+        "isbn": "000000000015",
+        "title": "Alice's Adventures in Wonderland",
+        "author": "Lewis Carroll",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Alice's Adventures in Wonderland_Lewis Carroll.jpg"
+    },
+    {
+        "isbn": "000000000016",
+        "title": "The Divine Comedy",
+        "author": "Dante Alighieri",
+        "language": "Italian",
+        "rating": 0,
+        "cover_image_filename": "The Divine Comedy_Dante Alighieri.jpg"
+    },
+    {
+        "isbn": "000000000017",
+        "title": "The Iliad",
+        "author": "Homer",
+        "language": "Greek",
+        "rating": 0,
+        "cover_image_filename": "The Iliad_Homer.jpg"
+    },
+    {
+        "isbn": "000000000018",
+        "title": "Anna Karenina",
+        "author": "Leo Tolstoy",
+        "language": "Russian",
+        "rating": 0,
+        "cover_image_filename": "Anna Karenina_Leo Tolstoy.jpg"
+    },
+    {
+        "isbn": "000000000019",
+        "title": "The Picture of Dorian Gray",
+        "author": "Oscar Wilde",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Picture of Dorian Gray_Oscar Wilde.jpg"
+    },
+    {
+        "isbn": "000000000020",
+        "title": "Wuthering Heights",
+        "author": "Emily Bront\u00c3\u00ab",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Wuthering Heights_Emily Bront\u00c3\u00ab.jpg"
+    },
+    {
+        "isbn": "000000000021",
+        "title": "The Hobbit",
+        "author": "J.R.R. Tolkien",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Hobbit_J.R.R. Tolkien.jpg"
+    },
+    {
+        "isbn": "000000000022",
+        "title": "The Adventures of Huckleberry Finn",
+        "author": "Mark Twain",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Adventures of Huckleberry Finn_Mark Twain.jpg"
+    },
+    {
+        "isbn": "000000000023",
+        "title": "The Lord of the Rings",
+        "author": "J.R.R. Tolkien",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Lord of the Rings_J.R.R. Tolkien.jpg"
+    },
+    {
+        "isbn": "000000000024",
+        "title": "Frankenstein",
+        "author": "Mary Shelley",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Frankenstein_Mary Shelley.jpg"
+    },
+    {
+        "isbn": "000000000025",
+        "title": "Jane Eyre",
+        "author": "Charlotte Bront\u00c3\u00ab",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Jane Eyre_Charlotte Bront\u00c3\u00ab.jpg"
+    },
+    {
+        "isbn": "000000000026",
+        "title": "Les Mis\u00c3\u00a9rables",
+        "author": "Victor Hugo",
+        "language": "French",
+        "rating": 0,
+        "cover_image_filename": "Les Mis\u00c3\u00a9rables_Victor Hugo.jpg"
+    },
+    {
+        "isbn": "000000000027",
+        "title": "The Little Prince",
+        "author": "Antoine de Saint-Exup\u00c3\u00a9ry",
+        "language": "French",
+        "rating": 0,
+        "cover_image_filename": "The Little Prince_Antoine de Saint-Exup\u00c3\u00a9ry.jpg"
+    },
+    {
+        "isbn": "000000000028",
+        "title": "Great Expectations",
+        "author": "Charles Dickens",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Great Expectations_Charles Dickens.jpg"
+    },
+    {
+        "isbn": "000000000029",
+        "title": "The Grapes of Wrath",
+        "author": "John Steinbeck",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Grapes of Wrath_John Steinbeck.jpg"
+    },
+    {
+        "isbn": "000000000030",
+        "title": "The Count of Monte Cristo",
+        "author": "Alexandre Dumas",
+        "language": "French",
+        "rating": 0,
+        "cover_image_filename": "The Count of Monte Cristo_Alexandre Dumas.jpg"
+    },
+    {
+        "isbn": "000000000031",
+        "title": "The Canterbury Tales",
+        "author": "Geoffrey Chaucer",
+        "language": "Middle English",
+        "rating": 0,
+        "cover_image_filename": "The Canterbury Tales_Geoffrey Chaucer.jpg"
+    },
+    {
+        "isbn": "000000000032",
+        "title": "Madame Bovary",
+        "author": "Gustave Flaubert",
+        "language": "French",
+        "rating": 0,
+        "cover_image_filename": "Madame Bovary_Gustave Flaubert.jpg"
+    },
+    {
+        "isbn": "000000000033",
+        "title": "A Tale of Two Cities",
+        "author": "Charles Dickens",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "A Tale of Two Cities_Charles Dickens.jpg"
+    },
+    {
+        "isbn": "000000000034",
+        "title": "The Scarlet Letter",
+        "author": "Nathaniel Hawthorne",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Scarlet Letter_Nathaniel Hawthorne.jpg"
+    },
+    {
+        "isbn": "000000000035",
+        "title": "The Adventures of Sherlock Holmes",
+        "author": "Arthur Conan Doyle",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Adventures of Sherlock Holmes_Arthur Conan Doyle.jpg"
+    },
+    {
+        "isbn": "000000000036",
+        "title": "Dracula",
+        "author": "Bram Stoker",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Dracula_Bram Stoker.jpg"
+    },
+    {
+        "isbn": "000000000037",
+        "title": "Middlemarch",
+        "author": "George Eliot",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Middlemarch_George Eliot.jpg"
+    },
+    {
+        "isbn": "000000000038",
+        "title": "Heart of Darkness",
+        "author": "Joseph Conrad",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Heart of Darkness_Joseph Conrad.jpg"
+    },
+    {
+        "isbn": "000000000039",
+        "title": "The Republic",
+        "author": "Plato",
+        "language": "Ancient Greek",
+        "rating": 0,
+        "cover_image_filename": "The Republic_Plato.jpg"
+    },
+    {
+        "isbn": "000000000040",
+        "title": "The Sound and the Fury",
+        "author": "William Faulkner",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Sound and the Fury_William Faulkner.jpg"
+    },
+    {
+        "isbn": "000000000041",
+        "title": "The Stranger",
+        "author": "Albert Camus",
+        "language": "French",
+        "rating": 0,
+        "cover_image_filename": "The Stranger_Albert Camus.jpg"
+    },
+    {
+        "isbn": "000000000042",
+        "title": "The Sun Also Rises",
+        "author": "Ernest Hemingway",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Sun Also Rises_Ernest Hemingway.jpg"
+    },
+    {
+        "isbn": "000000000043",
+        "title": "The Trial",
+        "author": "Franz Kafka",
+        "language": "German",
+        "rating": 0,
+        "cover_image_filename": "The Trial_Franz Kafka.jpg"
+    },
+    {
+        "isbn": "000000000044",
+        "title": "The Metamorphosis",
+        "author": "Franz Kafka",
+        "language": "German",
+        "rating": 0,
+        "cover_image_filename": "The Metamorphosis_Franz Kafka.jpg"
+    },
+    {
+        "isbn": "000000000045",
+        "title": "The Master and Margarita",
+        "author": "Mikhail Bulgakov",
+        "language": "Russian",
+        "rating": 0,
+        "cover_image_filename": "The Master and Margarita_Mikhail Bulgakov.jpg"
+    },
+    {
+        "isbn": "000000000046",
+        "title": "The Old Man and the Sea",
+        "author": "Ernest Hemingway",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Old Man and the Sea_Ernest Hemingway.jpg"
+    },
+    {
+        "isbn": "000000000047",
+        "title": "Gulliver's Travels",
+        "author": "Jonathan Swift",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Gulliver's Travels_Jonathan Swift.jpg"
+    },
+    {
+        "isbn": "000000000048",
+        "title": "The Three Musketeers",
+        "author": "Alexandre Dumas",
+        "language": "French",
+        "rating": 0,
+        "cover_image_filename": "The Three Musketeers_Alexandre Dumas.jpg"
+    },
+    {
+        "isbn": "000000000049",
+        "title": "The Idiot",
+        "author": "Fyodor Dostoevsky",
+        "language": "Russian",
+        "rating": 0,
+        "cover_image_filename": "The Idiot_Fyodor Dostoevsky.jpg"
+    },
+    {
+        "isbn": "000000000050",
+        "title": "A Christmas Carol",
+        "author": "Charles Dickens",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "A Christmas Carol_Charles Dickens.jpg"
+    },
+    {
+        "isbn": "000000000051",
+        "title": "The Bell Jar",
+        "author": "Sylvia Plath",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Bell Jar_Sylvia Plath.jpg"
+    },
+    {
+        "isbn": "000000000052",
+        "title": "A Clockwork Orange",
+        "author": "Anthony Burgess",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "A Clockwork Orange_Anthony Burgess.jpg"
+    },
+    {
+        "isbn": "000000000053",
+        "title": "Catch-22",
+        "author": "Joseph Heller",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Catch-22_Joseph Heller.jpg"
+    },
+    {
+        "isbn": "000000000054",
+        "title": "Brave New World",
+        "author": "Aldous Huxley",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Brave New World_Aldous Huxley.jpg"
+    },
+    {
+        "isbn": "000000000055",
+        "title": "A Farewell to Arms",
+        "author": "Ernest Hemingway",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "A Farewell to Arms_Ernest Hemingway.jpg"
+    },
+    {
+        "isbn": "000000000056",
+        "title": "The Fountainhead",
+        "author": "Ayn Rand",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Fountainhead_Ayn Rand.jpg"
+    },
+    {
+        "isbn": "000000000057",
+        "title": "The Diary of a Young Girl",
+        "author": "Anne Frank",
+        "language": "Dutch",
+        "rating": 0,
+        "cover_image_filename": "The Diary of a Young Girl_Anne Frank.jpg"
+    },
+    {
+        "isbn": "000000000058",
+        "title": "Lord of the Flies",
+        "author": "William Golding",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Lord of the Flies_William Golding.jpg"
+    },
+    {
+        "isbn": "000000000059",
+        "title": "The Color Purple",
+        "author": "Alice Walker",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Color Purple_Alice Walker.jpg"
+    },
+    {
+        "isbn": "000000000060",
+        "title": "The Stranger",
+        "author": "Harlan Coben",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Stranger_Harlan Coben.jpg"
+    },
+    {
+        "isbn": "000000000061",
+        "title": "Beloved",
+        "author": "Toni Morrison",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Beloved_Toni Morrison.jpg"
+    },
+    {
+        "isbn": "000000000062",
+        "title": "The Name of the Rose",
+        "author": "Umberto Eco",
+        "language": "Italian",
+        "rating": 0,
+        "cover_image_filename": "The Name of the Rose_Umberto Eco.jpg"
+    },
+    {
+        "isbn": "000000000063",
+        "title": "The Secret History",
+        "author": "Donna Tartt",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Secret History_Donna Tartt.jpg"
+    },
+    {
+        "isbn": "000000000064",
+        "title": "The Giver",
+        "author": "Lois Lowry",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Giver_Lois Lowry.jpg"
+    },
+    {
+        "isbn": "000000000065",
+        "title": "The Girl with the Dragon Tattoo",
+        "author": "Stieg Larsson",
+        "language": "Swedish",
+        "rating": 0,
+        "cover_image_filename": "The Girl with the Dragon Tattoo_Stieg Larsson.jpg"
+    },
+    {
+        "isbn": "000000000066",
+        "title": "The Joy Luck Club",
+        "author": "Amy Tan",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Joy Luck Club_Amy Tan.jpg"
+    },
+    {
+        "isbn": "000000000067",
+        "title": "The Book Thief",
+        "author": "Markus Zusak",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Book Thief_Markus Zusak.jpg"
+    },
+    {
+        "isbn": "000000000068",
+        "title": "Life of Pi",
+        "author": "Yann Martel",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Life of Pi_Yann Martel.jpg"
+    },
+    {
+        "isbn": "000000000069",
+        "title": "The Handmaid's Tale",
+        "author": "Margaret Atwood",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Handmaid's Tale_Margaret Atwood.jpg"
+    },
+    {
+        "isbn": "000000000070",
+        "title": "The Hunger Games",
+        "author": "Suzanne Collins",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Hunger Games_Suzanne Collins.jpg"
+    },
+    {
+        "isbn": "000000000071",
+        "title": "Harry Potter and the Philosopher's Stone",
+        "author": "J.K. Rowling",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Harry Potter and the Philosopher's Stone_J.K. Rowling.jpg"
+    },
+    {
+        "isbn": "000000000072",
+        "title": "The Road",
+        "author": "Cormac McCarthy",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Road_Cormac McCarthy.jpg"
+    },
+    {
+        "isbn": "000000000073",
+        "title": "The Help",
+        "author": "Kathryn Stockett",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Help_Kathryn Stockett.jpg"
+    },
+    {
+        "isbn": "000000000074",
+        "title": "The Fault in Our Stars",
+        "author": "John Green",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Fault in Our Stars_John Green.jpg"
+    },
+    {
+        "isbn": "000000000075",
+        "title": "Gone with the Wind",
+        "author": "Margaret Mitchell",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Gone with the Wind_Margaret Mitchell.jpg"
+    },
+    {
+        "isbn": "000000000076",
+        "title": "The Da Vinci Code",
+        "author": "Dan Brown",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Da Vinci Code_Dan Brown.jpg"
+    },
+    {
+        "isbn": "000000000077",
+        "title": "The Notebook",
+        "author": "Nicholas Sparks",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Notebook_Nicholas Sparks.jpg"
+    },
+    {
+        "isbn": "000000000078",
+        "title": "Twilight",
+        "author": "Stephenie Meyer",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Twilight_Stephenie Meyer.jpg"
+    },
+    {
+        "isbn": "000000000079",
+        "title": "The Alchemist",
+        "author": "Paulo Coelho",
+        "language": "Portuguese",
+        "rating": 0,
+        "cover_image_filename": "The Alchemist_Paulo Coelho.jpg"
+    },
+    {
+        "isbn": "000000000080",
+        "title": "The Kite Runner",
+        "author": "Khaled Hosseini",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Kite Runner_Khaled Hosseini.jpg"
+    },
+    {
+        "isbn": "000000000081",
+        "title": "The Lord of the Rings",
+        "author": "J.R.R. Tolkien",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Lord of the Rings_J.R.R. Tolkien.jpg"
+    },
+    {
+        "isbn": "000000000082",
+        "title": "The Chronicles of Narnia",
+        "author": "C.S. Lewis",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Chronicles of Narnia_C.S. Lewis.jpg"
+    },
+    {
+        "isbn": "000000000083",
+        "title": "The Catcher in the Rye",
+        "author": "J.D. Salinger",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Catcher in the Rye_J.D. Salinger.jpg"
+    },
+    {
+        "isbn": "000000000084",
+        "title": "The Hunger Games",
+        "author": "Suzanne Collins",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Hunger Games_Suzanne Collins.jpg"
+    },
+    {
+        "isbn": "000000000085",
+        "title": "A Game of Thrones",
+        "author": "George R.R. Martin",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "A Game of Thrones_George R.R. Martin.jpg"
+    },
+    {
+        "isbn": "000000000086",
+        "title": "Harry Potter and the Sorcerer's Stone",
+        "author": "J.K. Rowling",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Harry Potter and the Sorcerer's Stone_J.K. Rowling.jpg"
+    },
+    {
+        "isbn": "000000000087",
+        "title": "The Girl with the Dragon Tattoo",
+        "author": "Stieg Larsson",
+        "language": "Swedish",
+        "rating": 0,
+        "cover_image_filename": "The Girl with the Dragon Tattoo_Stieg Larsson.jpg"
+    },
+    {
+        "isbn": "000000000088",
+        "title": "The Da Vinci Code",
+        "author": "Dan Brown",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Da Vinci Code_Dan Brown.jpg"
+    },
+    {
+        "isbn": "000000000089",
+        "title": "The Help",
+        "author": "Kathryn Stockett",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Help_Kathryn Stockett.jpg"
+    },
+    {
+        "isbn": "000000000090",
+        "title": "The Fault in Our Stars",
+        "author": "John Green",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Fault in Our Stars_John Green.jpg"
+    },
+    {
+        "isbn": "000000000091",
+        "title": "Gone Girl",
+        "author": "Gillian Flynn",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Gone Girl_Gillian Flynn.jpg"
+    },
+    {
+        "isbn": "000000000092",
+        "title": "The Notebook",
+        "author": "Nicholas Sparks",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Notebook_Nicholas Sparks.jpg"
+    },
+    {
+        "isbn": "000000000093",
+        "title": "The Girl on the Train",
+        "author": "Paula Hawkins",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Girl on the Train_Paula Hawkins.jpg"
+    },
+    {
+        "isbn": "000000000094",
+        "title": "The Alchemist",
+        "author": "Paulo Coelho",
+        "language": "Portuguese",
+        "rating": 0,
+        "cover_image_filename": "The Alchemist_Paulo Coelho.jpg"
+    },
+    {
+        "isbn": "000000000095",
+        "title": "The Twilight Saga",
+        "author": "Stephenie Meyer",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Twilight Saga_Stephenie Meyer.jpg"
+    },
+    {
+        "isbn": "000000000096",
+        "title": "The Girl with the Dragon Tattoo",
+        "author": "Stieg Larsson",
+        "language": "Swedish",
+        "rating": 0,
+        "cover_image_filename": "The Girl with the Dragon Tattoo_Stieg Larsson.jpg"
+    },
+    {
+        "isbn": "000000000097",
+        "title": "Fifty Shades of Grey",
+        "author": "E.L. James",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "Fifty Shades of Grey_E.L. James.jpg"
+    },
+    {
+        "isbn": "000000000098",
+        "title": "The Fault in Our Stars",
+        "author": "John Green",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Fault in Our Stars_John Green.jpg"
+    },
+    {
+        "isbn": "000000000099",
+        "title": "The Hunger Games",
+        "author": "Suzanne Collins",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "The Hunger Games_Suzanne Collins.jpg"
+    },
+    {
+        "isbn": "000000000100",
+        "title": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "language": "English",
+        "rating": 0,
+        "cover_image_filename": "To Kill a Mockingbird_Harper Lee.jpg"
+    }
+]
