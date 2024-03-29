@@ -1,6 +1,10 @@
 import flet as ft
-
 from components import Logo
+import requests
+
+server = 'http://0.0.0.0:8001'
+
+
 
 class Login:
 
@@ -9,6 +13,23 @@ class Login:
         self.appLayout = appLayout
 
     def login_clicked(self, e):
+        path = "/token"
+
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
+
+        data = {
+            'grant_type': '',
+            'username': 'shira222',
+            'password': 'shira1234',
+            'scope': '',
+            'client_id': '',
+            'client_secret': '',
+        }
+        r = requests.post(server + path, headers=headers, data=data)
+        print(r)
         self.appLayout.on_login()
 
     def sign_up_clicked(self, e):
