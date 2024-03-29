@@ -16,7 +16,7 @@ class BookSearch:
     def build(self):
         
         self.page_title           = ft.Text("Search For Any Book", theme_style=ft.TextThemeStyle.DISPLAY_LARGE)
-        self.page_title_container = ft.Container(content=self.page_title, padding=ft.padding.only(bottom=50)) 
+        self.page_title_container = ft.Container(content=self.page_title, padding=ft.padding.only(bottom=20)) 
         
         self.author   = ft.TextField(label="Author", 
                                      border_color=ft.colors.BLACK54, 
@@ -85,6 +85,42 @@ class BookSearch:
         
         
         self.trending_title = ft.Text("Trending Books", theme_style=ft.TextThemeStyle.DISPLAY_MEDIUM)
-        self.trending_title_container = ft.Container(content=self.trending_title, padding=ft.padding.only(top=100, bottom=50)) 
-
-        return self.inputs_and_search_container
+        self.trending_title_container = ft.Container(content=self.trending_title, padding=ft.padding.only(top=20, bottom=50)) 
+        
+        # TODO: select top 5 books
+        
+        self.book1 = ft.Image(
+            src=r"client\img\The Sound and the Fury_William Faulkner.jpg",
+            width=self.appLayout.page.width/9,  # Set the width of the image
+            height=self.appLayout.page.width/6  # Set the height of the image
+        )
+        
+        self.book2 = ft.Image(
+            src=r"client\img\A Christmas Carol_Charles Dickens.jpg",
+            width=self.appLayout.page.width/9,  # Set the width of the image
+            height=self.appLayout.page.width/6  # Set the height of the image
+        )
+            
+        self.book3 = ft.Image(
+            src=r"client\img\The Road_Cormac McCarthy.jpg",
+            width=self.appLayout.page.width/9,  # Set the width of the image
+            height=self.appLayout.page.width/6  # Set the height of the image
+        )
+        self.book4 = ft.Image(
+            src=r"client\img\The Scarlet Letter_Nathaniel Hawthorne.jpg",
+            width=self.appLayout.page.width/9,  # Set the width of the image
+            height=self.appLayout.page.width/6  # Set the height of the image
+        )
+                    
+        self.book5 = ft.Image(
+            src=r"client\img\A Clockwork Orange_Anthony Burgess.jpg",
+            width=self.appLayout.page.width/9,  # Set the width of the image
+            height=self.appLayout.page.width/6  # Set the height of the image
+        )
+        
+        self.trending_row = ft.Row(controls=[self.book1, self.book2, self.book3, self.book4, self.book5], spacing=25)
+        self.trending_column = ft.Column(controls=[self.trending_title_container, self.trending_row])
+        self.trending_container = ft.Container(content = self.trending_column, padding=ft.padding.only(top=30, left=150), alignment=ft.alignment.center )    
+        self.final_column = ft.Column(controls = [self.inputs_and_search_container, self.trending_column], alignment=ft.alignment.center)
+        
+        return self.final_column
