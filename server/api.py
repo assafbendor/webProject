@@ -61,9 +61,9 @@ def get_user(username: str):
 def authenticate_user(username: str, password: str):
     user = get_user(username)
     if not user:
-        return False
+        return None
     if not verify_password(password, get_password_hash(user.password)):
-        return False
+        return None
     return user
 
 

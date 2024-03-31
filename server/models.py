@@ -53,6 +53,7 @@ class Reader(Base):
     name = Column(String)
     borrows = relationship('Borrow', back_populates='reader')
     password = Column(String)
+    admin: bool | None = False
 
     def __repr__(self):
         return f"<Reader(username={self.username}, email={self.email}, name={self.name})>"
