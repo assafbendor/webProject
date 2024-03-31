@@ -62,25 +62,34 @@ class SignUp(ft.UserControl):
             'Content-Type': 'application/x-www-form-urlencoded',
         }
 
-        data = {
-            'username': username,
-            'email': email,
-            'name': name,
-            'password': password
+        params = {
+            "username": username,
+            "email": email,
+            "name": name,
+            "password": password
         }
-        
-        print(username, password, email, name)
-        r = requests.post(SERVER_URL + path, headers=headers, data=data)
-        
-        if r.status_code == 200:
+  
+        try:          
+            r = requests.post(SERVER_URL + path, headers=headers, params=params)
             print("Successul signup")
-        else:
-          print("Failed to make the POST request. Status code:", r.status_code)
-          self.sign_up_error.content = "Sign up Failed"
-          self.sign_up_error.visible = True
-          self.appLayout.page.update()
+            self.appLayout.on_login()
+        except requests.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+            self.login_error.visible = True
+            self.appLayout.page.update()
+            self.sign_up_error.content = "Sign up Failed"
+            self.sign_up_error.visible = True
+            self.appLayout.page.update()
+        except Exception as err: 
+            print("Failed to make the POST request. Status code:", r.status_code)
+            self.login_error.visible=True
+            self.appLayout.page.update()
+            self.sign_up_error.content = "Sign up Failed"
+            self.sign_up_error.visible = True
+            self.appLayout.page.update()
+    
+    
           
-
     def login_clicked(self, e):
         self.appLayout.page.route = "/login"
         self.appLayout.page.update()

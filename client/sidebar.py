@@ -33,7 +33,7 @@ class Sidebar(UserControl):
                     selected_icon=icons.SEARCH
                 ),
                 NavigationRailDestination(
-                    label_content=Text("Personal Books Recommendation"),
+                    label_content=Text("Personal Recommendation"),
                     label="Find me a book",
                     icon=icons.RECOMMEND,
                     selected_icon=icons.RECOMMEND

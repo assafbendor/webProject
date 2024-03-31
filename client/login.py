@@ -18,45 +18,45 @@ class Login:
        return self.token
 
     def login_clicked(self, e):
-        # path = "/token"
+        path = "/token"
 
-        # username = self.username_text.value
-        # password = self.password_text.value
+        username = self.username_text.value
+        password = self.password_text.value
         
-        # headers = {
-        #     'accept': 'application/json',
-        #     'Content-Type': 'application/x-www-form-urlencoded',
-        # }
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
 
-        # data = {
-        #     'username': username,
-        #     'password': password,
-        # }
+        data = {
+            'username': username,
+            'password': password,
+        }
         
-        # print(username, password)
+        print(username, password)
         
-        # try:
-        #     r = requests.post(client_config.SERVER_URL + path, headers=headers, data=data)
-        #     # Parse the response JSON data
-        #     r.raise_for_status()
-        #     response_data = r.json()
-        #     # Extract the "token" key from the response body
-        #     self.token = response_data.get("access_token")
-        #     if self.token:
-        #         print("Token:", self.token)
+        try:
+            r = requests.post(client_config.SERVER_URL + path, headers=headers, data=data)
+            # Parse the response JSON data
+            r.raise_for_status()
+            response_data = r.json()
+            # Extract the "token" key from the response body
+            self.token = response_data.get("access_token")
+            if self.token:
+                print("Token:", self.token)
                 self.appLayout.on_login()
-        #     else:
-        #         print("Token not found in the response body.")
-        #         self.login_error.visible = True
-        #         self.appLayout.page.update()
-        # except requests.HTTPError as http_err:
-        #     print(f"HTTP error occurred: {http_err}")
-        #     self.login_error.visible = True
-        #     self.appLayout.page.update()
-        # except Exception as err: 
-        #     print("Failed to make the POST request. Status code:", r.status_code)
-        #     self.login_error.visible=True
-        #     self.appLayout.page.update()
+            else:
+                print("Token not found in the response body.")
+                self.login_error.visible = True
+                self.appLayout.page.update()
+        except requests.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+            self.login_error.visible = True
+            self.appLayout.page.update()
+        except Exception as err: 
+            print("Failed to make the POST request. Status code:", r.status_code)
+            self.login_error.visible=True
+            self.appLayout.page.update()
            
 
     def sign_up_clicked(self, e):
