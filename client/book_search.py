@@ -1,5 +1,7 @@
+import os
 import flet as ft
 from components import Logo
+
 
 class BookSearch:
 
@@ -90,30 +92,30 @@ class BookSearch:
         # TODO: select top 5 books
         
         self.book1 = ft.Image(
-            src=r"client\img\The Sound and the Fury_William Faulkner.jpg",
+            src = os.path.join("client", "img", "The Sound and the Fury_William Faulkner.jpg"),
             width=self.appLayout.page.width/9,  # Set the width of the image
             height=self.appLayout.page.width/6  # Set the height of the image
         )
         
         self.book2 = ft.Image(
-            src=r"client\img\A Christmas Carol_Charles Dickens.jpg",
+            src = os.path.join("client", "img", "A Christmas Carol_Charles Dickens.jpg"),
             width=self.appLayout.page.width/9,  # Set the width of the image
             height=self.appLayout.page.width/6  # Set the height of the image
         )
             
         self.book3 = ft.Image(
-            src=r"client\img\The Road_Cormac McCarthy.jpg",
+            src = os.path.join("client", "img", "The Road_Cormac McCarthy.jpg"),
             width=self.appLayout.page.width/9,  # Set the width of the image
             height=self.appLayout.page.width/6  # Set the height of the image
         )
         self.book4 = ft.Image(
-            src=r"client\img\The Scarlet Letter_Nathaniel Hawthorne.jpg",
+            src = os.path.join("client", "img", "The Scarlet Letter_Nathaniel Hawthorne.jpg"),
             width=self.appLayout.page.width/9,  # Set the width of the image
             height=self.appLayout.page.width/6  # Set the height of the image
         )
                     
         self.book5 = ft.Image(
-            src=r"client\img\A Clockwork Orange_Anthony Burgess.jpg",
+            src = os.path.join("client", "img", "A Clockwork Orange_Anthony Burgess.jpg"),                
             width=self.appLayout.page.width/9,  # Set the width of the image
             height=self.appLayout.page.width/6  # Set the height of the image
         )
@@ -121,8 +123,6 @@ class BookSearch:
         self.trending_row = ft.Row(controls=[self.book1, self.book2, self.book3, self.book4, self.book5], spacing=25)
         self.trending_column = ft.Column(controls=[self.trending_title_container, self.trending_row])
         self.trending_container = ft.Container(content = self.trending_column, padding=ft.padding.only(top=30, left=250), alignment=ft.alignment.center )    
-        self.final_column = ft.Column(controls = [self.inputs_and_search_container, self.trending_column], alignment=ft.alignment.center, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
-        self.trending_container = ft.Container(content = self.trending_column, padding=ft.padding.only(top=30, left=150), alignment=ft.alignment.center )    
         self.final_column = ft.Column(controls = [self.inputs_and_search_container, self.trending_container], alignment=ft.alignment.center)
         
         return self.final_column

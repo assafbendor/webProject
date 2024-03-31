@@ -23,6 +23,7 @@ from flet import (
     border_radius,
     colors,
     icons,
+    alignment,
     padding,
     FloatingActionButton,
 )
@@ -95,14 +96,6 @@ class AppLayout(Row):
         self.page.update()
         self.page_resize()
 
-    def set_all_boards_view(self):
-        self.active_view = self.all_boards_view
-        self.hydrate_all_boards_view()
-        # self.sidebar.top_nav_rail.selected_index = 0
-        # self.sidebar.bottom_nav_rail.selected_index = None
-        # self.sidebar.update()
-        self.page.update()
-
     def page_resize(self, e=None):
         # self.active_view.resize(
         #         self.page.width, self.page.height
@@ -121,6 +114,7 @@ class AppLayout(Row):
         self.sidebar.visible = True
         self.toggle_nav_rail_button.visible = True
         self.logout_button.visible = True
+        self.set_book_search_view()
         self.page_resize()
         self.page.update()
 

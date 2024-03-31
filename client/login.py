@@ -1,36 +1,58 @@
 import flet as ft
 from components import Logo
 import requests
-
-server = 'http://0.0.0.0:8001'
-
-
+import client_config
 
 class Login:
+
+    def resize(self, nav_rail_extended, width, height):
+        self.view.width = width
+        self.view.height = height
+        self.view.update()    
 
     def __init__(self, appLayout):
         super().__init__()
         self.appLayout = appLayout
+        
+    def get_token(self):
+       return self.token
 
     def login_clicked(self, e):
         path = "/token"
 
+        username = self.username_text.value
+        password = self.password_text.value
+        
         headers = {
             'accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
         }
 
         data = {
-            'grant_type': '',
-            'username': 'shira222',
-            'password': 'shira1234',
-            'scope': '',
-            'client_id': '',
-            'client_secret': '',
+            'username': username,
+            'password': password,
         }
-        r = requests.post(server + path, headers=headers, data=data)
-        print(r)
-        self.appLayout.on_login()
+        
+        print(username, password)
+        r = requests.post(client_config.SERVER_URL + path, headers=headers, data=data)
+        
+        if r.status_code == 200:
+           # Parse the response JSON data
+           response_data = r.json()
+           # Extract the "token" key from the response body
+           self.token = response_data.get("token")
+           if self.token:
+              print("Token:", self.token)
+              self.appLayout.on_login()
+           else:
+              print("Token not found in the response body.")
+              self.login_error.visible = True
+              self.appLayout.page.update()
+        else:
+          print("Failed to make the POST request. Status code:", r.status_code)
+          self.login_error.visible=True
+          self.appLayout.page.update()
+           
 
     def sign_up_clicked(self, e):
         self.appLayout.page.route = "/sign_up"
@@ -38,18 +60,24 @@ class Login:
 
     def build(self):
 
-        username_text = ft.TextField(label="Username",
+        self.username_text = ft.TextField(label="Username",
                                      focused_color=ft.colors.BLACK87,
+                                     color=ft.colors.BLACK87,
                                      bgcolor=ft.colors.WHITE,
+                                     border_color=ft.colors.BLACK54, 
+                                     focused_border_color=ft.colors.BLACK, 
                                      height=40,
                                      border_radius=15)
 
-        password_text = ft.TextField(label="Password",
+        self.password_text = ft.TextField(label="Password",
                                      password=True,
+                                     color=ft.colors.BLACK87,
                                      can_reveal_password=True,
                                      bgcolor=ft.colors.WHITE,
                                      focused_color=ft.colors.BLACK87,
                                      border_radius=15,
+                                     border_color=ft.colors.BLACK54, 
+                                     focused_border_color=ft.colors.BLACK,                                      
                                      height=40)
 
         forgot_password = ft.Text("Forgot password?",
@@ -58,11 +86,11 @@ class Login:
                                   style=ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE,
                                                      decoration_color="#34aeed"))
 
-        password_block = ft.Column([password_text, forgot_password],
+        password_block = ft.Column([self.password_text, forgot_password],
                                    spacing=5,
                                    horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
-        details = ft.Column([username_text, password_block], spacing=20)
+        details = ft.Column([self.username_text, password_block], spacing=20)
 
         login_button = ft.ElevatedButton(text="LOG IN",
                                          on_click=self.login_clicked,
@@ -94,8 +122,18 @@ class Login:
                                      controls=[no_account, sign_up],
                                      alignment=ft.alignment.center, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
+      
+        self.login_error =  ft.TextButton(
+            visible=False,
+            content=ft.Container(
+                content= ft.Text("The username or password is incorrect", color=ft.colors.WHITE, size=15),
+                bgcolor=ft.colors.RED,                    
+                padding=ft.padding.all(10),
+            )
+        )
+        
         login_block = ft.Column(spacing=50,
-                                controls=[details, login_button, no_account_block],
+                                controls=[details, login_button, no_account_block, self.login_error],
                                 alignment=ft.alignment.center, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
         login_container = ft.Container(
@@ -107,11 +145,11 @@ class Login:
         )
 
         logo = Logo(self.appLayout)
-        self.row = ft.Row(
+        self.view = ft.Container(content = ft.Row(
             controls=[logo.build(), login_container],
             alignment=ft.alignment.center, 
             vertical_alignment=ft.CrossAxisAlignment.CENTER, 
             expand=True,
-            )
-    
-        return self.row
+            ))
+        
+        return self.view
