@@ -40,7 +40,7 @@ class Login:
            # Parse the response JSON data
            response_data = r.json()
            # Extract the "token" key from the response body
-           self.token = response_data.get("token")
+           self.token = response_data.get("access_token")
            if self.token:
               print("Token:", self.token)
               self.appLayout.on_login()
