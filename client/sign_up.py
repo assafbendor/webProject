@@ -87,7 +87,7 @@ class SignUp(ft.UserControl):
 
 
     def build(self):
-
+        
         self.fullname_text = ft.TextField(label="Full Name",
                                     focused_color=ft.colors.BLACK87,
                                     color=ft.colors.BLACK87,
@@ -166,14 +166,16 @@ class SignUp(ft.UserControl):
                                 color="#34aeed",
                                 style=ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE,
                                 decoration_color="#34aeed")),
-               on_click=self.login_clicked)
-       
+              on_click=self.login_clicked
+        )
+
+     
         has_account_block = ft.Column(spacing=5,
                                     controls=[has_account, login],
                                     alignment=ft.alignment.center, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
         
         
-        self.login_error =  ft.TextButton(
+        self.sign_up_error = ft.TextButton(
             visible=False,
             content=ft.Container(
                 content= ft.Text("Invalid", color=ft.colors.WHITE, size=15),
@@ -183,14 +185,15 @@ class SignUp(ft.UserControl):
         )
 
         sign_up_block = ft.Column(spacing=50,
-                                controls=[details, sign_up_button, has_account_block],
+                                controls=[details, sign_up_button, has_account_block, self.sign_up_error ],
                                 alignment=ft.alignment.center, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
         sign_up_container = ft.Container(
             content=sign_up_block,
             alignment=ft.alignment.center,
-            padding=ft.padding.only(left=150),
-            height=self.appLayout.page.width/3
+            padding=ft.padding.only(left=self.appLayout.page.width/6),
+            height=self.appLayout.page.height-250,
+            data=self,
         )
 
         logo = components.Logo(self.appLayout)

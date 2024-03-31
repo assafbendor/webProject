@@ -139,9 +139,9 @@ class Login:
         login_container = ft.Container(
             content=login_block,
             alignment=ft.alignment.center,
-            padding=ft.padding.only(left=150),
+            padding=ft.padding.only(left=self.appLayout.page.width/6),
             data=self,
-            height=self.appLayout.page.width/3
+            height=self.appLayout.page.height-250
         )
 
         logo = Logo(self.appLayout)
