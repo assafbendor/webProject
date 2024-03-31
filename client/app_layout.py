@@ -1,9 +1,11 @@
 
+import string
 from sidebar import Sidebar
 
 import login
 import sign_up
 import book_search
+import book_list
 
 from flet import (
     ButtonStyle,
@@ -50,17 +52,19 @@ class AppLayout(Row):
             tooltip="logout",
             visible=False)
         
-        self.sidebar         = Sidebar(self, page)
+        self.sidebar= Sidebar(self, page)
         self.sidebar.visible = False
 
-        self.login      = login.Login(self)
+        self.login = login.Login(self)
         self.login_view = self.login.build()
 
-        self.sign_up      = sign_up.SignUp(self)
+        self.sign_up = sign_up.SignUp(self)
         self.sign_up_view = self.sign_up.build()
 
-        self.book_search      = book_search.BookSearch(self)
+        self.book_search = book_search.BookSearch(self)
         self.book_search_view = self.book_search.build()
+
+        self.book_list = book_list.BookList(self)
 
         self._active_view: Control = self.login_view
         self.controls = [self.sidebar, self.toggle_nav_rail_button, self.active_view]
@@ -90,11 +94,20 @@ class AppLayout(Row):
 
     def set_book_search_view(self):
         self.active_view = self.book_search_view
-        # self.sidebar.top_nav_rail.selected_index = 1
-        # self.sidebar.bottom_nav_rail.selected_index = None
-        # self.sidebar.update()
+        self.sidebar.top_nav_rail.selected_index = 1
+        self.sidebar.update()
         self.page.update()
         self.page_resize()
+
+    def set_book_list_view(self, type: string):
+        if type == "my-books":
+            books = self.book_list.get_books()
+        self.book_list_view = self.book_list.build(books) 
+        self.active_view = self.book_list_view
+        self.sidebar.top_nav_rail.selected_index = 0
+        self.sidebar.update()
+        self.page.update()
+        self.page_resize()        
 
     def page_resize(self, e=None):
         # self.active_view.resize(

@@ -40,8 +40,6 @@ class BookSearch:
                                      focused_border_color=ft.colors.BLACK, 
                                      width=self.appLayout.page.width/2,
                                      focused_color=ft.colors.BLACK87 )
-        
-
 
         self.search = ft.ElevatedButton(text="SEARCH!",
                                           icon=ft.icons.SEARCH_OUTLINED,
@@ -83,7 +81,7 @@ class BookSearch:
                                                       horizontal_alignment=ft.CrossAxisAlignment.CENTER)
         
         self.inputs_and_search_container  = ft.Container(content=self.inputs_and_search,
-                                             padding=ft.padding.only(top=50, left=150), alignment=ft.alignment.center)
+                                             padding=ft.padding.only(top=50, left=250), alignment=ft.alignment.center)
         
         
         self.trending_title = ft.Text("Trending Books", theme_style=ft.TextThemeStyle.DISPLAY_MEDIUM)
@@ -95,6 +93,7 @@ class BookSearch:
             src = os.path.join("client", "img", "The Sound and the Fury_William Faulkner.jpg"),
             width=self.appLayout.page.width/9,  # Set the width of the image
             height=self.appLayout.page.width/6  # Set the height of the image
+            
         )
         
         self.book2 = ft.Image(
@@ -120,7 +119,7 @@ class BookSearch:
             height=self.appLayout.page.width/6  # Set the height of the image
         )
         
-        self.trending_row = ft.Row(controls=[self.book1, self.book2, self.book3, self.book4, self.book5], spacing=25)
+        self.trending_row = ft.Row(controls=[self.book1, self.book2, self.book3, self.book4, self.book5], spacing=30)
         self.trending_column = ft.Column(controls=[self.trending_title_container, self.trending_row])
         self.trending_container = ft.Container(content = self.trending_column, padding=ft.padding.only(top=30, left=250), alignment=ft.alignment.center )    
         self.final_column = ft.Column(controls = [self.inputs_and_search_container, self.trending_container], alignment=ft.alignment.center)

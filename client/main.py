@@ -77,6 +77,8 @@ class BookForYouApp(UserControl):
             self.layout.set_login_view()            
         elif troute.match("/book-search"):
             self.layout.set_book_search_view()                        
+        elif troute.match("/my-books"):
+            self.layout.set_book_list_view("my-books")                                
         self.page.update()
 
 def main(page: Page):
