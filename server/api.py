@@ -13,29 +13,9 @@ SECRET_KEY = "0ae9bd5bf97167908547da34d48b18701aa0307e84c88f5a2181139e4d5ffb02"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-    }
-}
-
-
 class Token(BaseModel):
     access_token: str
     token_type: str
-
-
-class User(BaseModel):
-    username: str
-    email: str | None = None
-    full_name: str | None = None
-
-
-class UserInDB(User):
-    hashed_password: str
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -117,10 +97,6 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(data={"username": user.username}, expires_delta=access_token_expires)
     return Token(access_token=access_token, token_type="bearer")
-
-# @app.get("/users/me/")
-# async def read_users_me(current_user: Annotated[User, Depends(get_current_user)]):
-#     return current_user
 
 
 @app.post("/sign_up")
