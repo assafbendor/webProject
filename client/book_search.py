@@ -1,6 +1,8 @@
 import os
 import flet as ft
 from components import Logo
+import requests
+import client_config
 
 
 class BookSearch:
@@ -9,8 +11,36 @@ class BookSearch:
         super().__init__()
         self.appLayout = appLayout
 
-    def search_clicked():
-       pass
+    def search_clicked(self, e):
+        path = "/findbook"
+
+        isbn = self.ISBN.value
+        
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
+
+        params = {
+            'isbn': isbn,
+        }
+        
+        print(isbn)        
+        try:
+            r = requests.get(client_config.SERVER_URL + path, headers=headers, params=params)
+            # Parse the response JSON data
+            r.raise_for_status()
+            response_data = r.json()
+            # Extract the book info from the response body
+            # TODO
+        except requests.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+            self.login_error.visible = True
+            self.appLayout.page.update()
+        except Exception as err: 
+            print("Failed to make the POST request. Status code:", r.status_code)
+            self.login_error.visible=True
+            self.appLayout.page.update()
    
     def slider_changed(self, e):
        self.selected_rating = {e.control.value}
