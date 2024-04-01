@@ -113,15 +113,6 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     return Token(access_token=access_token, token_type="bearer")
 
 
-@app.get("/users/me/")
-async def read_users_me(current_user: Annotated[models.Reader, Depends(get_current_user)]):
-    return current_user
-
-
-@app.get("/users/me/items/")
-async def read_own_items(current_user: Annotated[models.Reader, Depends(get_current_user)]):
-    return [{"item_id": "Foo", "owner": current_user.username}]
-
 @app.post("/sign_up")
 async def add_reader_to_database(username: str, email: str, name: str, password: str):
     return database.add_reader_to_database(models.Reader(username=username, email=email, name=name, password=password))
@@ -133,6 +124,23 @@ async def check_if_user_exists_by_email(email: str):
 @app.get("/findbook")
 async def find_book_by_isbn(isbn: str):
     return database.search_book_by_isbn(isbn)
+
+@app.get("/search_books")
+async def search_books(isbn: str | None = None, author_name: str | None = None, author_id: int | None = None, title: str | None = None):
+    book_list = database.search_book(isbn=isbn, author_name=author_name, author_id=author_id, title=title)
+    if book_list is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Unknown Parameter"
+        )
+    return book_list
+
+#@app.post("/addbook")
+# async def add_book_to_database(isbn: int, title: str, author_name: str)
+
+@app.get("/book_list")
+async def return_book_list(username: str):
+    return database.get_copies_by_username(username=username)
 
 if __name__ == '__main__':
     import uvicorn
