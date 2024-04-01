@@ -114,12 +114,8 @@ def fetch_book_details(title, author):
         if "items" in data:
             item = data["items"][0]  # Take the first item from search results
             volume_info = item.get("volumeInfo", {})
-            description = volume_info.get("description", "No description available.")
-            ratings_count = volume_info.get("ratingsCount", 0)
-            average_rating = volume_info.get("averageRating", 0.0)
-            isbn_data = volume_info.get("industryIdentifiers", [])
-            isbn = next((identifier["identifier"] for identifier in isbn_data if identifier["type"] == "ISBN_13"), None)
-            return isbn, description, ratings_count, average_rating
+            pages = volume_info.get("pageCount", "pages unavailable.")
+            return pages
     return None, "No description available.", 0, 0.0
 
 # Main function
@@ -133,11 +129,8 @@ def main():
         print(title)
         print(author)
         if title and author:
-            isbn, description, ratings_count, average_rating = fetch_book_details(title, author)
-            book["isbn"] = isbn
-            book["description"] = description
-            book["ratings_count"] = ratings_count
-            book["average_rating"] = average_rating
+            pages = fetch_book_details(title, author)
+            book["pages"] = pages
         else:
             print("Missing title or author for a book")
 
