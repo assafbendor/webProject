@@ -19,6 +19,10 @@ def get_all_books() -> list[Type[Book]]:
         books = session.query(Book).all()
         return books
 
+def get_all_users():
+    with Session() as session:
+        users = session.query(models.Reader).all()
+    return users
 
 def get_copies_by_username(username: str):
     with Session() as session:
@@ -32,7 +36,7 @@ def find_users(email: str):
 
 
 def add_reader_to_database(reader: models.Reader) -> bool:
-    if find_users(email=reader.email) is None:
+    if find_users(email=reader.email) is None and find_user_by_username(username=reader.username) is None:
         with Session() as session:
             session.add(reader)
             session.commit()
@@ -78,10 +82,6 @@ def add_author_to_database(author: models.Author):
         return True
     return False
 
-def search_book_by_title(title: str) -> list[Book]:
-    with Session() as session:
-        book = session.query(Book).filter_by(title=title).all()
-    return book
 
 def search_book(isbn: str | None = None, author_name: str | None = None, author_id: int | None = None, title: str | None = None) -> list[Book] | None:
     with Session() as session:
@@ -89,16 +89,13 @@ def search_book(isbn: str | None = None, author_name: str | None = None, author_
             book_list = [session.query(Book).filter_by(isbn=isbn).first()]
         elif author_name is not None or author_id is not None:
             author = get_author(author_id=author_id, author_name=author_name)
-            book_list = session.query(Book).filter_by(author=author)
+            book_list = [session.query(Book).filter_by(author=author).all()]
         elif title is not None:
-            book_list = session.query(Book).filter_by(title=title)
+            book_list = [session.query(Book).filter_by(title=title).first()]
         else:
             book_list = None
 
         return book_list
-
-
-
 
 
 def delete_reader(email: str) -> bool:
@@ -115,14 +112,23 @@ def return_all_books() -> list[Book]:
         book_list = session.query(Book).all()
     return book_list
 
+def delete_book(isbn: str | None = None, author_name: str | None = None, author_id: int | None = None, title: str | None = None):
+    book_list = search_book(isbn=isbn, author_name=author_name, author_id=author_id, title=title)
+    if book_list[0] is not None:
+        with Session() as session:
+            for book in book_list:
+                session.delete(book)
+            session.commit()
+        return True
+    return False
 
-# def borrowed_for_more_than_a_month(username: str):
-#     # There is no data_borrowed column in the database, only a borrow_date (start date) and return_date (end date)
-#
-#     with Session() as session:
-#         borrows = session.query(Borrow).filter_by(reader_username=username, return_date=None).all()
-#         return [borrow for borrow in borrows if (borrow.return_date - borrow.borrow_date).days > 30]
-
+def add_book_to_database(book: Book):
+    if search_book(isbn=book.isbn)[0] is None:
+        with Session() as session:
+            session.add(book)
+            session.commit()
+        return True
+    return False
 
 
 if __name__ == '__main__':
@@ -145,4 +151,8 @@ if __name__ == '__main__':
     # print(search_book_by_title("1984"))
     # #print(search_book_by_author("Jane Austen"))
     # #print(search_book_by_author(author_name="George Orwell"))
+    # print(delete_book(isbn=12345678))
+    # print(return_all_books())
+
+
 

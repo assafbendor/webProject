@@ -13,29 +13,9 @@ SECRET_KEY = "0ae9bd5bf97167908547da34d48b18701aa0307e84c88f5a2181139e4d5ffb02"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-    }
-}
-
-
 class Token(BaseModel):
     access_token: str
     token_type: str
-
-
-class User(BaseModel):
-    username: str
-    email: str | None = None
-    full_name: str | None = None
-
-
-class UserInDB(User):
-    hashed_password: str
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -66,6 +46,12 @@ def authenticate_user(username: str, password: str):
         return None
     return user
 
+def check_user(current_user: models.Reader, username: str):
+    if current_user.username != username:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User is not permitted"
+        )
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
@@ -115,15 +101,17 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
 
 @app.post("/sign_up")
 async def add_reader_to_database(username: str, email: str, name: str, password: str):
-    return database.add_reader_to_database(models.Reader(username=username, email=email, name=name, password=password))
+    result = database.add_reader_to_database(models.Reader(username=username, email=email, name=name, password=password))
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_226_IM_USED,
+            detail="One or more of the identification is in use"
+        )
+    return result
 
 @app.get("users/if_exist/")
 async def check_if_user_exists_by_email(email: str):
     return database.find_users(email=email) is not None
-
-@app.get("/findbook")
-async def find_book_by_isbn(isbn: str):
-    return database.search_book_by_isbn(isbn)
 
 @app.get("/search_books")
 async def search_books(isbn: str | None = None, author_name: str | None = None, author_id: int | None = None, title: str | None = None):
@@ -139,7 +127,9 @@ async def search_books(isbn: str | None = None, author_name: str | None = None, 
 # async def add_book_to_database(isbn: int, title: str, author_name: str)
 
 @app.get("/book_list")
-async def return_book_list(username: str):
+async def return_book_list(username: str, current_user: Annotated[models.Reader, Depends(get_current_user)]):
+    check_user(current_user, username)
+
     return database.get_copies_by_username(username=username)
 
 if __name__ == '__main__':
