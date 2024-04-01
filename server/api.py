@@ -66,6 +66,12 @@ def authenticate_user(username: str, password: str):
         return None
     return user
 
+def check_user(current_user: models.Reader, username: str):
+    if current_user.username != username:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User is not permitted"
+        )
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
@@ -112,9 +118,9 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     access_token = create_access_token(data={"username": user.username}, expires_delta=access_token_expires)
     return Token(access_token=access_token, token_type="bearer")
 
-@app.get("/users/me/")
-async def read_users_me(current_user: Annotated[User, Depends(get_current_user)]):
-    return current_user
+# @app.get("/users/me/")
+# async def read_users_me(current_user: Annotated[User, Depends(get_current_user)]):
+#     return current_user
 
 
 @app.post("/sign_up")
@@ -145,7 +151,9 @@ async def search_books(isbn: str | None = None, author_name: str | None = None, 
 # async def add_book_to_database(isbn: int, title: str, author_name: str)
 
 @app.get("/book_list")
-async def return_book_list(username: str):
+async def return_book_list(username: str, current_user: Annotated[models.Reader, Depends(get_current_user)]):
+    check_user(current_user, username)
+
     return database.get_copies_by_username(username=username)
 
 if __name__ == '__main__':
