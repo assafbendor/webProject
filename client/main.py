@@ -29,6 +29,7 @@ class BookForYouApp(UserControl):
         super().__init__()
 
         self.page = page
+        self.page.window_full_screen = True
         self.page.on_route_change = self.route_change
         self.appbar = AppBar(
             leading=Icon(ft.icons.MENU_BOOK),
