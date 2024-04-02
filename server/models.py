@@ -1,7 +1,7 @@
 from datetime import datetime
 import json
 
-from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, DateTime, Float
 from sqlalchemy.orm import relationship, declarative_base, sessionmaker
 
 from server.config import DATABASE_URL
@@ -25,12 +25,17 @@ class Book(Base):
 
     isbn = Column(String, primary_key=True)
     title = Column(String)
+    language = Column(String)
+    average_rating = Column(Float)
+    cover_image_filename = Column(String)
+    description = Column(String)
+    pages = Column(Integer)
     author_id = Column(String, ForeignKey('authors.id'))
     author = relationship('Author', back_populates='books', lazy='joined')
     copies = relationship('Copy', back_populates='book')
 
     def __repr__(self):
-        return f"<Book(isbn={self.isbn}, title={self.title}, author={self.author})>"
+        return f"<Book(isbn={self.isbn}, title={self.title}, author={self.author}, language={self.language})>"
 
 
 class Copy(Base):
@@ -56,7 +61,7 @@ class Reader(Base):
     admin: bool | None = False
 
     def __repr__(self):
-        return f"<Reader(username={self.username}, email={self.email}, name={self.name})>"
+        return f"<Reader(username={self.username}, email={self.email}, name={self.name}, admin={self.admin})>"
 
 
 class Borrow(Base):
@@ -77,8 +82,10 @@ class Borrow(Base):
 if __name__ == '__main__':
     engine = create_engine(DATABASE_URL)
 
+
     # Create the tables
     Base.metadata.create_all(engine)
+
 
     # fill the tables with random, but real data
 

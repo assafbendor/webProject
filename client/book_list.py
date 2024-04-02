@@ -2,6 +2,8 @@ from datetime import datetime
 import json
 import os
 import flet as ft
+import requests
+import client_config
 
 class BookList:
 
@@ -10,12 +12,25 @@ class BookList:
         self.appLayout = appLayout
         
     def get_books(self):
-        # path = "/books"
-        # r = requests.get(server + path)
-        # return r.json()
-        with open("server/books.json", 'r') as file:
-            books = json.load(file)
-        return books        
+        path = "/books"
+
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': f"Bearer {client_config.access_token}"
+        }
+
+        try:
+            r = requests.get(client_config.SERVER_URL + path)
+            r.raise_for_status()
+            books = r.json()
+            return books
+        except requests.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+        except Exception as err:
+            print("Failed to make the POST request. Status code:", r.status_code)
+
+
 
 
     def prepare_rows(self,books):

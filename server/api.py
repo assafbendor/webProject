@@ -34,7 +34,7 @@ def get_password_hash(password):
 
 
 def get_user(username: str):
-    user = database.find_user_by_username(username)
+    user = database.find_users(username=username)
     return user
 
 
@@ -46,12 +46,33 @@ def authenticate_user(username: str, password: str):
         return None
     return user
 
-def check_user(current_user: models.Reader, username: str):
-    if current_user.username != username:
+def check_user(current_user: models.Reader, username: str | None = None, email: str | None = None, name: str | None = None):
+    reply = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="User is not permitted"
+    )
+    if current_user.username is not None:
+        if current_user.username != username:
+            raise reply
+    elif current_user.email is not None:
+        if current_user.email != email:
+            raise reply
+    elif current_user.name is not None:
+        if current_user.name != name:
+            raise reply
+
+    else:
+        raise reply
+
+
+def check_if_user_allowed(username: str | None = None, email: str | None = None, name: str | None = None):
+    user = database.find_users(username=username, email=email, name=name)
+    if not user.admin:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User is not permitted"
+            detail="User is not allowed"
         )
+
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
@@ -114,8 +135,16 @@ async def check_if_user_exists_by_email(email: str):
     return database.find_users(email=email) is not None
 
 @app.get("/search_books")
-async def search_books(isbn: str | None = None, author_name: str | None = None, author_id: int | None = None, title: str | None = None):
-    book_list = database.search_book(isbn=isbn, author_name=author_name, author_id=author_id, title=title)
+async def search_books(isbn: str | None = None,
+                       author_name: str | None = None,
+                       author_id: int | None = None,
+                       title: str | None = None,
+                       language: str | None = None):
+    book_list = database.search_book(isbn=isbn,
+                                     author_name=author_name,
+                                     author_id=author_id,
+                                     title=title,
+                                     language=language)
     if book_list is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -126,11 +155,42 @@ async def search_books(isbn: str | None = None, author_name: str | None = None, 
 #@app.post("/addbook")
 # async def add_book_to_database(isbn: int, title: str, author_name: str)
 
+@app.post("/add_librarian")
+async def add_librarian(current_user: Annotated[models.Reader, Depends(get_current_user)],
+                        username: str | None = None,
+                        email: str | None = None,
+                        name: str | None = None):
+    check_user(current_user, username=username, email=email, name=name)
+    check_if_user_allowed(username=username, email=email, name=name)
+    result = database.add_librarian(username=username, email=email, name=name)
+    if result == 1:
+        response = HTTPException(
+            status_code=status.HTTP_200_OK,
+            detail="librarian was added"
+        )
+    elif result == 0:
+        response = HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="User is a librarian already"
+        )
+    else:
+        response = HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    raise response
+
+
 @app.get("/book_list")
-async def return_book_list(username: str, current_user: Annotated[models.Reader, Depends(get_current_user)]):
+async def return_book_list(username: str, current_user: Annotated[models.Reader, Depends(get_current_user)])\
+        -> list[type[models.Book]]:
     check_user(current_user, username)
 
     return database.get_copies_by_username(username=username)
+
+@app.get("/books")
+async def get_all_books(current_user: Annotated[models.Reader, Depends(get_current_user)]):
+    return database.get_all_books()
 
 if __name__ == '__main__':
     import uvicorn

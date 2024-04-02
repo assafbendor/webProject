@@ -1,6 +1,7 @@
 # import requests
 # import json
 # import os
+import random
 
 # base_url = "https://www.googleapis.com/books/v1/volumes"
 
@@ -52,6 +53,7 @@
 import os
 import json
 
+
 # Function to add cover image filename for each book
 def add_cover_image_filenames(books):
     img_dir = "client/img"  # Assuming the images are in this directory
@@ -64,16 +66,19 @@ def add_cover_image_filenames(books):
         if os.path.exists(os.path.join(img_dir, image_filename)):
             book["cover_image_filename"] = image_filename
 
+
 # Read books list from JSON file
 def read_books_from_json(json_file):
     with open(json_file, 'r') as file:
         books = json.load(file)
     return books
 
+
 # Store modified list back to the JSON file
 def store_books_to_json(books, json_file):
     with open(json_file, 'w') as file:
         json.dump(books, file, indent=4)
+
 
 # Function to fetch book details from Google Books API
 def fetch_book_details(title, author):
@@ -83,7 +88,7 @@ def fetch_book_details(title, author):
         "printType": "books"
     }
     response = requests.get(url, params=params)
-    print (response.status_code)
+    print(response.status_code)
     if response.status_code == 200:
         data = response.json()
         if "items" in data:
@@ -93,9 +98,11 @@ def fetch_book_details(title, author):
             return pages
     return None, "No description available.", 0, 0.0
 
+
 # Main function
 def main():
-    json_file = "server/books.json"  # Path to your JSON file containing books data
+    running_isbn = 9780743297333
+    json_file = "books.json"  # Path to your JSON file containing books data
     books = read_books_from_json(json_file)
     print("passed books")
     for book in books:
@@ -104,13 +111,13 @@ def main():
         print(title)
         print(author)
         if title and author:
-            pages = fetch_book_details(title, author)
-            book["pages"] = pages
+            book["isbn"] = random.randint(9780000000000, 9789999999999)
         else:
             print("Missing title or author for a book")
 
     store_books_to_json(books, json_file)
     print("Cover image filenames added and stored to the JSON file.")
+
 
 if __name__ == "__main__":
     main()

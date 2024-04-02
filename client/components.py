@@ -1,4 +1,5 @@
 import flet as ft
+import os
 
 class Logo(ft.UserControl):
 
@@ -9,7 +10,7 @@ class Logo(ft.UserControl):
     def build(self):
 
         self.logo = ft.Image(
-            src=r"client\img\logo.png",
+            src=f"/img/logo.png",
             width=self.appLayout.page.width/3,  # Set the width of the image
             height=self.appLayout.page.width/3  # Set the height of the image
         )

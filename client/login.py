@@ -43,7 +43,7 @@ class Login:
             # Extract the "token" key from the response body
             self.token = response_data.get("access_token")
             if self.token:
-                ACCESS_TOKEN = self.token
+                client_config.access_token = self.token
                 self.appLayout.on_login()
             else:
                 print("Token not found in the response body.")

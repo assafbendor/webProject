@@ -12,13 +12,14 @@ class BookSearch:
         self.appLayout = appLayout
 
     def search_clicked(self, e):
-        path = "/findbook"
+        path = "/search_books"
 
         isbn = self.ISBN.value
         
         headers = {
             'accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': f"Bearer {client_config.access_token}"
         }
 
         params = {
@@ -33,15 +34,12 @@ class BookSearch:
             response_data = r.json()
             # Extract the book info from the response body
             # TODO
+            self.appLayout.set_book_list_view()
         except requests.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
-            self.login_error.visible = True
-            self.appLayout.page.update()
-        except Exception as err: 
+        except Exception as err:
             print("Failed to make the POST request. Status code:", r.status_code)
-            self.login_error.visible=True
-            self.appLayout.page.update()
-   
+
     def slider_changed(self, e):
        self.selected_rating = {e.control.value}
 

@@ -16,8 +16,8 @@ Session = sessionmaker(bind=engine)
 
 def get_all_books() -> list[Type[Book]]:
     with Session() as session:
-        books = session.query(Book).all()
-        return books
+        book_list = session.query(Book).all()
+        return book_list
 
 def get_all_users():
     with Session() as session:
@@ -29,14 +29,21 @@ def get_copies_by_username(username: str):
         borrows = session.query(Borrow).filter_by(reader_username=username, return_date=None).all()
         return [borrow.copy for borrow in borrows]
 
-def find_users(email: str):
+def find_users(username: str | None = None, email: str | None = None, name: str | None = None) -> models.Reader | None:
     with Session() as session:
-        user = session.query(models.Reader).filter_by(email=email).first()
+        if email is not None:
+            user = session.query(models.Reader).filter_by(email=email).first()
+        elif username is not None:
+            user = session.query(models.Reader).filter_by(username=username).first()
+        elif name is not None:
+            user = session.query(models.Reader).filter_by(name=name)
+        else:
+            user = None
     return user
 
 
 def add_reader_to_database(reader: models.Reader) -> bool:
-    if find_users(email=reader.email) is None and find_user_by_username(username=reader.username) is None:
+    if find_users(email=reader.email, username=reader.username, name=reader.name) is None:
         with Session() as session:
             session.add(reader)
             session.commit()
@@ -47,7 +54,7 @@ def change_password(email: str, new_password) -> bool:
     if find_users(email=email) is not None:
         with Session() as session:
             user = session.query(models.Reader).filter_by(email=email).first()
-            user.email = api.get_password_hash(password=new_password)
+            user.password = api.get_password_hash(password=new_password)
             session.commit()
             return True
     return False
@@ -58,10 +65,6 @@ def email_to_username(email: str):
         return False
     return user.username
 
-def find_user_by_username(username: str):
-    with Session() as session:
-        user = session.query(models.Reader).filter_by(username=username).first()
-    return user
 
 def get_author(author_id: int | None = None, author_name: str | None = None) -> models.Author | None:
     with Session() as session:
@@ -83,7 +86,12 @@ def add_author_to_database(author: models.Author):
     return False
 
 
-def search_book(isbn: str | None = None, author_name: str | None = None, author_id: int | None = None, title: str | None = None) -> list[Book] | None:
+def search_book(isbn: str | None = None,
+                author_name: str | None = None,
+                author_id: int | None = None,
+                title: str | None = None,
+                language: str | None = None)\
+        -> list[Book] | None:
     with Session() as session:
         if isbn is not None:
             book_list = [session.query(Book).filter_by(isbn=isbn).first()]
@@ -92,6 +100,8 @@ def search_book(isbn: str | None = None, author_name: str | None = None, author_
             book_list = [session.query(Book).filter_by(author=author).all()]
         elif title is not None:
             book_list = [session.query(Book).filter_by(title=title).first()]
+        elif language is not None:
+            book_list = [session.query(Book).filter_by(language=language)]
         else:
             book_list = None
 
@@ -112,8 +122,12 @@ def return_all_books() -> list[Book]:
         book_list = session.query(Book).all()
     return book_list
 
-def delete_book(isbn: str | None = None, author_name: str | None = None, author_id: int | None = None, title: str | None = None):
-    book_list = search_book(isbn=isbn, author_name=author_name, author_id=author_id, title=title)
+def delete_book(isbn: str | None = None,
+                author_name: str | None = None,
+                author_id: int | None = None,
+                title: str | None = None,
+                language: str | None = None):
+    book_list = search_book(isbn=isbn, author_name=author_name, author_id=author_id, title=title, language=language)
     if book_list[0] is not None:
         with Session() as session:
             for book in book_list:
@@ -130,9 +144,25 @@ def add_book_to_database(book: Book):
         return True
     return False
 
+def add_librarian(username: str | None = None, email: str | None = None, name: str | None = None):
+    user = find_users(username=username, email=email, name=name)
+    if user is not None:
+        if not user.admin:
+            with Session() as session:
+                user.admin = True
+                session.commit()
+            return 1
+        else:
+            return 0
+    return -1
+
+
+
+
+
 
 if __name__ == '__main__':
-    books = get_all_books()
+    # books = get_all_books()
     # print(books[0].copies)
     # print(books)
     # print(get_copies_by_username('peter'))
@@ -153,6 +183,8 @@ if __name__ == '__main__':
     # #print(search_book_by_author(author_name="George Orwell"))
     # print(delete_book(isbn=12345678))
     # print(return_all_books())
+    # print(get_all_books())
+    print(get_all_users())
 
 
 
