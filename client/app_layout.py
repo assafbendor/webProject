@@ -106,8 +106,7 @@ class AppLayout(Row):
 #    def set_book_list_view(self, list_type: string):
         # if list_type == "my-books":
         #     books = self.book_list.get_books()
-    def set_book_list_view(self):
-        books = self.book_list.get_books()
+    def set_book_list_view(self, books):
         self.book_list_view = self.book_list.build(books)
         self.active_view = self.book_list_view
         self.sidebar.top_nav_rail.selected_index = 0

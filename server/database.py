@@ -107,6 +107,12 @@ def search_book(isbn: str | None = None,
         else:
             book_list = None
 
+        if len(book_list) == 1:
+            # Get the first (and only) element
+            element = book_list[0]
+            # Check if the element is any of the empty types
+            if element in (None, '', [], (), {}):
+                return None
         return book_list
 
 

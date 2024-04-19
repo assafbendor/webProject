@@ -31,12 +31,13 @@ class BookSearch:
             r = requests.get(client_config.SERVER_URL + path, headers=headers, params=params)
             # Parse the response JSON data
             r.raise_for_status()
-            response_data = r.json()
-            # Extract the book info from the response body
-            # TODO
-            self.appLayout.set_book_list_view()
+            books = r.json()
+            self.appLayout.set_book_list_view(books)
         except requests.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
+            if r.status_code == requests.codes.not_found:
+
+
         except Exception as err:
             print("Failed to make the GET request " , client_config.SERVER_URL + path, ". Error : ", err)
 
