@@ -21,24 +21,21 @@ class BookList:
         }
 
         try:
-            r = requests.get(client_config.SERVER_URL + path)
+            r = requests.get(client_config.SERVER_URL + path, headers=headers)
             r.raise_for_status()
             books = r.json()
             return books
         except requests.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
         except Exception as err:
-            print("Failed to make the POST request. Status code:", r.status_code)
-
-
-
+            print("Failed to make the get request: ", client_config.SERVER_URL + path,  " Error: ", err)
 
     def prepare_rows(self,books):
         dataRows = []
         for book in books:
             row = ft.DataRow(
                 cells=[
-                    ft.DataCell(ft.Image(src=os.path.join("client", "img", book['cover_image_filename']), height=45, width=30)),
+                    ft.DataCell(ft.Image(src=os.path.join("img", book['cover_image_filename']), height=45, width=30)),
                     ft.DataCell(ft.Text(book['title'])),
                     ft.DataCell(ft.Text(book['author'])),
                     ft.DataCell(ft.Text(datetime.now().date())),

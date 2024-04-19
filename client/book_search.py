@@ -38,7 +38,7 @@ class BookSearch:
         except requests.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
         except Exception as err:
-            print("Failed to make the POST request. Status code:", r.status_code)
+            print("Failed to make the GET request " , client_config.SERVER_URL + path, ". Error : ", err)
 
     def slider_changed(self, e):
        self.selected_rating = {e.control.value}

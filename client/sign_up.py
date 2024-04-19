@@ -84,7 +84,8 @@ class SignUp(ft.UserControl):
             self.sign_up_error.visible = True
             self.appLayout.page.update()
         except Exception as err:
-            print("Failed to make the POST request. Status code:", r.status_code)
+            #print("Failed to make the POST request. Status code:", r.status_code)
+            print("Failed to make the POST request.", err)
             self.sign_up_error.visible = True
             self.appLayout.page.update()
             self.sign_up_error.content = "Sign up Failed"

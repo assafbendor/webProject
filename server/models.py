@@ -105,7 +105,14 @@ if __name__ == '__main__':
 
     for book in books:
         with Session() as session:
-            session.add(Book(isbn=book["isbn"], title=book["title"], author=session.query(Author).filter_by(name=book["author"]).first()))
+            session.add(Book(isbn=book["isbn"],
+                             title=book["title"],
+                             author=session.query(Author).filter_by(name=book["author"]).first(),
+                             language=book["language"],
+                             cover_image_filename=book["cover_image_filename"],
+                             description=book["description"],
+                             average_rating=book["average_rating"],
+                             pages=book["pages"]))
             session.commit()
 
     readers = [

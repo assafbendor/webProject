@@ -13,7 +13,6 @@ engine = create_engine(DATABASE_URL)
 
 Session = sessionmaker(bind=engine)
 
-
 def get_all_books() -> list[Type[Book]]:
     with Session() as session:
         book_list = session.query(Book).all()
@@ -90,7 +89,8 @@ def search_book(isbn: str | None = None,
                 author_name: str | None = None,
                 author_id: int | None = None,
                 title: str | None = None,
-                language: str | None = None)\
+                language: str | None = None,
+                rating: float | None = None)\
         -> list[Book] | None:
     with Session() as session:
         if isbn is not None:
@@ -102,6 +102,8 @@ def search_book(isbn: str | None = None,
             book_list = [session.query(Book).filter_by(title=title).first()]
         elif language is not None:
             book_list = [session.query(Book).filter_by(language=language)]
+        elif rating is not None:
+            book_list = [session.query(Book).filter_by(average_rating=rating).all()] #need to be changed
         else:
             book_list = None
 
@@ -116,11 +118,6 @@ def delete_reader(email: str) -> bool:
             session.commit()
             return True
     return False
-
-def return_all_books() -> list[Book]:
-    with Session() as session:
-        book_list = session.query(Book).all()
-    return book_list
 
 def delete_book(isbn: str | None = None,
                 author_name: str | None = None,
@@ -184,7 +181,6 @@ if __name__ == '__main__':
     # print(delete_book(isbn=12345678))
     # print(return_all_books())
     # print(get_all_books())
-    print(get_all_users())
+    # print(get_all_users())
 
-
-
+     pass

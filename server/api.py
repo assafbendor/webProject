@@ -94,6 +94,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
 
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        print(payload)
         username = payload["username"]
     except JWTError | KeyError:
         raise credentials_exception
@@ -139,7 +140,8 @@ async def search_books(isbn: str | None = None,
                        author_name: str | None = None,
                        author_id: int | None = None,
                        title: str | None = None,
-                       language: str | None = None):
+                       language: str | None = None,
+                       rating: float | None = None):
     book_list = database.search_book(isbn=isbn,
                                      author_name=author_name,
                                      author_id=author_id,
@@ -190,6 +192,7 @@ async def return_book_list(username: str, current_user: Annotated[models.Reader,
 
 @app.get("/books")
 async def get_all_books(current_user: Annotated[models.Reader, Depends(get_current_user)]):
+    print("in books")
     return database.get_all_books()
 
 if __name__ == '__main__':

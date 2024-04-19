@@ -10,7 +10,7 @@ class Logo(ft.UserControl):
     def build(self):
 
         self.logo = ft.Image(
-            src=f"/img/logo.png",
+            src="img/logo.png",
             width=self.appLayout.page.width/3,  # Set the width of the image
             height=self.appLayout.page.width/3  # Set the height of the image
         )
