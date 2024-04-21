@@ -7,9 +7,34 @@ import client_config
 
 class BookSearch:
 
+
+
     def __init__(self, appLayout):
         super().__init__()
         self.appLayout = appLayout
+
+    # not_found_dlg = ft.AlertDialog(
+    #     modal=True,
+    #     title=ft.Text("Please confirm"),
+    #     content=ft.Text("Do you really want to delete all those files?"),
+    #     actions=[
+    #         ft.TextButton("OK", on_click=close_dlg),
+    #     ],
+    #     actions_alignment=ft.MainAxisAlignment.END,
+    #     on_dismiss=lambda e: print("Modal dialog dismissed!"),
+    # )
+    #
+    #
+    # def open_dlg(self,e):
+    #     not_found_dlg.open = True
+    #     self.appLayout.page.update()
+    #
+    # def close_dlg(self, e):
+    #     not_found_dlg.open = False
+    #     page.update()
+    #
+
+
 
     def search_clicked(self, e):
         path = "/search_books"
@@ -35,7 +60,8 @@ class BookSearch:
             self.appLayout.set_book_list_view(books)
         except requests.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
-            if r.status_code == requests.codes.not_found:
+            #if r.status_code == requests.codes.not_found:
+
 
 
         except Exception as err:
@@ -117,33 +143,40 @@ class BookSearch:
         self.trending_title_container = ft.Container(content=self.trending_title, padding=ft.padding.only(top=20, bottom=50)) 
         
         # TODO: select top 5 books
-        
+
+        path = os.path.join(os.getcwd(), "img", "The Sound and the Fury_William Faulkner.jpg")
+
         self.book1 = ft.Image(
-            src = os.path.join("client", "img", "The Sound and the Fury_William Faulkner.jpg"),
+            src=f"{path}",
             width=self.appLayout.page.width/9,  # Set the width of the image
             height=self.appLayout.page.width/6  # Set the height of the image
             
         )
-        
+
+        path = os.path.join(os.getcwd(), "img", "A Christmas Carol_Charles Dickens.jpg")
         self.book2 = ft.Image(
-            src = os.path.join("client", "img", "A Christmas Carol_Charles Dickens.jpg"),
+            src=f"{path}",
             width=self.appLayout.page.width/9,  # Set the width of the image
             height=self.appLayout.page.width/6  # Set the height of the image
         )
-            
+
+        path = os.path.join(os.getcwd(), "img", "The Road_Cormac McCarthy.jpg")
         self.book3 = ft.Image(
-            src = os.path.join("client", "img", "The Road_Cormac McCarthy.jpg"),
+            src=f"{path}",
             width=self.appLayout.page.width/9,  # Set the width of the image
             height=self.appLayout.page.width/6  # Set the height of the image
         )
+
+        path = os.path.join(os.getcwd(), "img", "The Scarlet Letter_Nathaniel Hawthorne.jpg")
         self.book4 = ft.Image(
-            src = os.path.join("client", "img", "The Scarlet Letter_Nathaniel Hawthorne.jpg"),
+            src=f"{path}",
             width=self.appLayout.page.width/9,  # Set the width of the image
             height=self.appLayout.page.width/6  # Set the height of the image
         )
-                    
+
+        path = os.path.join(os.getcwd(), "img", "A Clockwork Orange_Anthony Burgess.jpg")
         self.book5 = ft.Image(
-            src = os.path.join("client", "img", "A Clockwork Orange_Anthony Burgess.jpg"),                
+            src=f"{path}",
             width=self.appLayout.page.width/9,  # Set the width of the image
             height=self.appLayout.page.width/6  # Set the height of the image
         )
@@ -152,5 +185,7 @@ class BookSearch:
         self.trending_column = ft.Column(controls=[self.trending_title_container, self.trending_row])
         self.trending_container = ft.Container(content = self.trending_column, padding=ft.padding.only(top=30, left=250), alignment=ft.alignment.center )    
         self.final_column = ft.Column(controls = [self.inputs_and_search_container, self.trending_container], alignment=ft.alignment.center)
+
+
         
         return self.final_column
