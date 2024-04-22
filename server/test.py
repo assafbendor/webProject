@@ -101,7 +101,6 @@ def fetch_book_details(title, author):
 
 # Main function
 def main():
-    running_isbn = 9780743297333
     json_file = "books.json"  # Path to your JSON file containing books data
     books = read_books_from_json(json_file)
     print("passed books")

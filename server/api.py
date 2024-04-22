@@ -136,7 +136,8 @@ async def check_if_user_exists_by_email(email: str):
     return database.find_users(email=email) is not None
 
 @app.get("/search_books")
-async def search_books(isbn: str | None = None,
+async def search_books(current_user: Annotated[models.Reader, Depends(get_current_user)],
+                       isbn: str | None = None,
                        author_name: str | None = None,
                        author_id: int | None = None,
                        title: str | None = None,
@@ -194,6 +195,40 @@ async def return_book_list(username: str, current_user: Annotated[models.Reader,
 async def get_all_books(current_user: Annotated[models.Reader, Depends(get_current_user)]):
     print("in books")
     return database.get_all_books()
+
+@app.post("/borrow_book")
+def borrow_book(current_user: Annotated[models.Reader, Depends(get_current_user)],
+                reader_name: str | None = None,
+                reader_username: str | None = None,
+                reader_email: str | None = None,
+                book_isbn: str | None = None,
+                book_title: str | None = None
+                ):
+    reader = database.find_users(username=reader_name, email=reader_email, name=reader_username)
+    book = database.search_book(isbn=book_isbn, title=book_title)
+    response = HTTPException(
+        status_code=status.HTTP_200_OK,
+        detail="OK"
+    )
+    if reader is not None:
+        if book is not None:
+            if not database.borrow_book(reader, book[0]):
+                response = HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail="something went wrong, please try later"
+                )
+        else:
+            response = HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Book does not exist"
+            )
+    else:
+        response = HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User does not exist"
+        )
+    raise response
+
 
 if __name__ == '__main__':
     import uvicorn

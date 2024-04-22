@@ -34,7 +34,7 @@ def main(page: ft.Page):
 
     books = get_books()
 
-    title = "Our Books!"
+    title = "The Books!"
     title_text = ft.Text(title,
                          font_family="Calibiri",
                          theme_style=ft.TextThemeStyle.DISPLAY_LARGE,

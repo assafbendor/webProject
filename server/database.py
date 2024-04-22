@@ -159,10 +159,23 @@ def add_librarian(username: str | None = None, email: str | None = None, name: s
             return 0
     return -1
 
+def borrow_book(reader: models.Reader, copy: Copy):
+    with Session() as session:
+        borrowed_book = Borrow(copy=copy, reader=reader)
+        session.add(borrowed_book)
+        session.commit()
 
+def get_all_copies():
+    with Session() as session:
+        return session.query(Copy).all()
 
-
-
+def set_copies():
+    lst = get_all_books()
+    with Session() as session:
+        for book in lst:
+            copy = Copy(book=book)
+            session.add(copy)
+            session.commit()
 
 if __name__ == '__main__':
     # books = get_all_books()
@@ -188,5 +201,7 @@ if __name__ == '__main__':
     # print(return_all_books())
     # print(get_all_books())
     # print(get_all_users())
-
-     pass
+    #print(get_all_users())
+    #print(get_copies_by_username("tony"))
+    # set_copies()
+    print(get_all_copies())

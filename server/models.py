@@ -86,9 +86,6 @@ if __name__ == '__main__':
     # Create the tables
     Base.metadata.create_all(engine)
 
-
-    # fill the tables with random, but real data
-
     Session = sessionmaker(bind=engine)
 
     with open('books.json', 'r') as file:
