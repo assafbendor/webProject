@@ -5,7 +5,6 @@ import login
 import sign_up
 import book_search
 import book_list
-import single_book
 
 from flet import (
     ButtonStyle,
@@ -34,6 +33,7 @@ from flet import (
 class AppLayout(Row):
     def __init__(self, app, page: Page, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.book_list_view = None
         self.app = app
         self.page = page
         self.page.on_resize = self.page_resize
@@ -67,8 +67,8 @@ class AppLayout(Row):
 
         self.book_list = book_list.BookList(self)
 
-        self.single_book = single_book.SingleBook(self)
-        self.single_book_view = None
+        # self.single_book = single_book.SingleBook(self)
+        # self.single_book_view = None
 
         self._active_view: Control = self.login_view
         self.controls = [self.sidebar, self.toggle_nav_rail_button, self.active_view]
@@ -114,10 +114,10 @@ class AppLayout(Row):
         self.page.update()
         self.page_resize()
 
-    def set_single_book_view(self, isbn):
-        self.active_view = self.single_book.build(isbn)
-        self.page.update()
-        self.page_resize()
+    # def set_single_book_view(self, isbn):
+    #     self.active_view = self.single_book.build(isbn)
+    #     self.page.update()
+    #     self.page_resize()
 
     def page_resize(self, e=None):
         # self.active_view.resize(

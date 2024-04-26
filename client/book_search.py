@@ -1,5 +1,8 @@
 import os
 import flet as ft
+import single_book
+
+from client.single_book import SingleBook
 from components import Logo
 import requests
 import client_config
@@ -10,23 +13,44 @@ class BookSearch:
     def __init__(self, appLayout):
         super().__init__()
         self.trending_books = []
+        self.single_book = single_book.SingleBook(appLayout)
         self.appLayout = appLayout
         self.not_found_dlg = ft.AlertDialog(
             modal=True,
             title=ft.Text("Oh oh! "),
             content=ft.Text("Looks like we didn't find what you are looking for... "),
             actions=[
-                ft.TextButton("OK", on_click=self.close_dlg),
+                ft.TextButton("OK", on_click=self.close_not_found_dlg),
             ],
-            actions_alignment=ft.MainAxisAlignment.END,
+            actions_alignment=ft.MainAxisAlignment.CENTER,
             on_dismiss=lambda e: print("Modal dialog dismissed!"),
         )
 
-    def close_dlg(self, e):
+        self.book_details_dlg = ft.AlertDialog(
+            modal=True,
+            content=ft.Column(controls=[ft.Text("b! ")]),
+            actions=[
+                ft.TextButton("OK", on_click=self.close_book_dlg),
+            ],
+            actions_alignment=ft.MainAxisAlignment.CENTER,
+            on_dismiss=lambda e: print("Modal dialog dismissed!"),
+        )
+
+    def close_book_dlg(self, e):
+        self.book_details_dlg.open = False
+        self.appLayout.page.update()
+
+    def open_book_dlg(self, e):
+        self.book_details_dlg.content.controls = [self.single_book.build(444)]
+        self.appLayout.page.dialog = self.book_details_dlg
+        self.book_details_dlg.open = True
+        self.appLayout.page.update()
+
+    def close_not_found_dlg(self, e):
         self.not_found_dlg.open = False
         self.appLayout.page.update()
 
-    def open_dlg(self, e):
+    def open_not_found_dialog(self, e):
         self.appLayout.page.dialog = self.not_found_dlg
         self.not_found_dlg.open = True
         self.appLayout.page.update()
@@ -59,7 +83,7 @@ class BookSearch:
             print(f"HTTP error occurred: {http_err}")
             if r is not None:
                 if r.status_code == requests.codes.not_found:
-                    self.open_dlg(e)
+                    self.open_not_found_dialog(e)
 
         except Exception as err:
             print("Failed to make the GET request ", client_config.SERVER_URL + path, ". Error : ", err)
@@ -154,7 +178,7 @@ class BookSearch:
                     width=self.appLayout.page.width / 6,  # Set the width of the image
                     height=self.appLayout.page.width / 4.5  # Set the height of the image
                 ),
-                #on_click=self.appLayout.set_single_book_view(9784716265524)
+                on_click=self.open_book_dlg
             ))
 
         self.trending_row = ft.Row(controls=[self.trending_books[0], self.trending_books[1], self.trending_books[2], self.trending_books[3], self.trending_books[4]], spacing=40)

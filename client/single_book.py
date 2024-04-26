@@ -13,7 +13,7 @@ class SingleBook:
         return {
             "isbn": "9781094311166",
             "title": "Wuthering Heights",
-            "author": "Emily Bront\u00c3\u00ab",
+            "author": "Emily Bronte",
             "language": "English",
             "rating": 0,
             "cover_image_filename": "Wuthering Heights_Emily Bront\u00c3\u00ab.jpg",
@@ -21,7 +21,6 @@ class SingleBook:
             "ratings_count": 0,
             "average_rating": 3.2,
             "pages": 143,
-            "summary": "Super interesting book"
         }
 
     def build(self, isbn):
@@ -31,21 +30,27 @@ class SingleBook:
             elevation=2,
             margin=2,
             shape=ft.ContinuousRectangleBorder.radius,
-            content=ft.Image(
-                src=os.path.join(os.getcwd(), "img", book['cover_image_filename']),
-                width=self.appLayout.page.width / 4.5,  # Set the width of the image
-                height=self.appLayout.page.width / 3  # Set the height of the image
-            ))
+            content=ft.Container(
+                content=ft.Image(
+                    src=os.path.join(os.getcwd(), "img", book['cover_image_filename']),
+                    height=self.appLayout.page.height / 4.5,
+                    width=self.appLayout.page.height / 6
+                ),
+                padding=10,
+                margin=10,
 
-        title = ft.Text(book['title'], theme_style=ft.TextThemeStyle.TITLE_LARGE)
-        author = ft.Text(book['author'], theme_style=ft.TextThemeStyle.TITLE_MEDIUM)
+             ),
+        )
+        title = ft.Text(book['title'], font_family="Calibiri", size=36, color=ft.colors.BLUE_400)
+        author = ft.Text(book['author'], font_family="Calibiri", size=24, color=ft.colors.BLUE_600)
         language = ft.Text("Language:" + book['language'], theme_style=ft.TextThemeStyle.LABEL_SMALL)
-        pages = ft.Text(str(book['pages']) + "pages", theme_style=ft.TextThemeStyle.BODY_MEDIUM)
+        pages = ft.Text(str(book['pages']) + " pages", theme_style=ft.TextThemeStyle.BODY_MEDIUM)
 
-        summary = ft.Text(book['summary'], theme_style=ft.TextThemeStyle.BODY_SMALL)
+        summary = ft.Text(book['description'], theme_style=ft.TextThemeStyle.BODY_SMALL, color=ft.colors.BLACK87, size=14)
 
-        column = ft.Column(controls=[image_card, title, author, language, pages, summary],
+        column = ft.Column(controls=[title, image_card, author, language, pages, summary],
                            alignment=ft.alignment.center,
-                           horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+                           horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                           spacing=20)
 
         return column
