@@ -1,10 +1,10 @@
-from datetime import datetime
 import json
 
 from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, DateTime, Float
 from sqlalchemy.orm import relationship, declarative_base, sessionmaker
 
 from server.config import DATABASE_URL
+import datetime
 
 Base = declarative_base()
 
@@ -45,6 +45,7 @@ class Copy(Base):
     book_isbn = Column(String, ForeignKey('books.isbn'))
     book = relationship('Book', back_populates='copies', lazy='joined')
     borrows = relationship('Borrow', back_populates='copy')
+    is_borrowed: bool = False
 
     def __repr__(self):
         return f"<Copy(id={self.id}, book={self.book})>"
@@ -72,7 +73,7 @@ class Borrow(Base):
     copy = relationship('Copy', back_populates='borrows', lazy='joined')
     reader_username = Column(String, ForeignKey('readers.username'))
     reader = relationship('Reader', back_populates='borrows', lazy='joined')
-    borrow_date = Column(DateTime, nullable=False)
+    borrow_date = Column(DateTime, nullable=False, default=datetime.datetime.utcnow)
     return_date = Column(DateTime, nullable=True)
 
     def __repr__(self):

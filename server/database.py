@@ -1,6 +1,6 @@
 from typing import List, Type
 
-from sqlalchemy import create_engine, or_
+from sqlalchemy import create_engine, DateTime
 from sqlalchemy.orm import sessionmaker
 
 from server.config import DATABASE_URL
@@ -8,6 +8,7 @@ from server.models import Book, Copy, Borrow
 
 import api
 import models
+import random
 
 engine = create_engine(DATABASE_URL)
 
@@ -97,13 +98,13 @@ def search_book(isbn: str | None = None,
             book_list = [session.query(Book).filter_by(isbn=isbn).first()]
         elif author_name is not None or author_id is not None:
             author = get_author(author_id=author_id, author_name=author_name)
-            book_list = [session.query(Book).filter_by(author=author).all()]
+            book_list = session.query(Book).filter_by(author=author).all()
         elif title is not None:
             book_list = [session.query(Book).filter_by(title=title).first()]
         elif language is not None:
-            book_list = [session.query(Book).filter_by(language=language)]
+            book_list = session.query(Book).filter_by(language=language).all()
         elif rating is not None:
-            book_list = [session.query(Book).filter_by(average_rating=rating).all()] #need to be changed
+            book_list = session.query(Book).filter_by(average_rating=rating).all() #need to be changed
         else:
             book_list = None
 
@@ -159,28 +160,74 @@ def add_librarian(username: str | None = None, email: str | None = None, name: s
             return 0
     return -1
 
-def borrow_book(reader: models.Reader, copy: Copy):
+def borrow_book(reader: models.Reader, book: Book):
+    copy = get_free_copy(book)
+    if copy is None:
+        return False
+    borrow = Borrow(copy=copy, reader=reader)
     with Session() as session:
-        borrowed_book = Borrow(copy=copy, reader=reader)
-        session.add(borrowed_book)
+        copy.is_borrowed = True
+        session.add(borrow)
         session.commit()
 
 def get_all_copies():
     with Session() as session:
         return session.query(Copy).all()
 
+def del_copies():
+    c = get_all_copies()
+    with Session() as session:
+        for i in c:
+            session.delete(i)
+            session.commit()
+
 def set_copies():
     lst = get_all_books()
     with Session() as session:
         for book in lst:
-            copy = Copy(book=book)
-            session.add(copy)
+            num = random.randint(1, 5)
+            for i in range(num):
+                copy = Copy(book=book)
+                session.add(copy)
+                session.commit()
+
+def get_free_copy(book: Book) -> Copy | None:
+    with Session() as session:
+        copy = session.query(Copy).filter_by(book=book).filter_by(is_borrowed=False).first()
+        print(copy)
+    return copy
+
+def get_copy_by_isbn(isbn: str):
+    book = search_book(isbn=isbn)[0]
+    copy = get_free_copy(book)
+    return copy
+
+def test():
+    book = search_book(isbn="9784351510613")
+    copy = get_free_copy(book[0])
+    reader = find_users(username="peter")
+    borrow = Borrow(copy=copy, reader_username=reader.username)
+    with Session() as session:
+        session.add(borrow)
+        session.commit()
+
+def get_all_borrows():
+    with Session() as session:
+        lst = session.query(Borrow).all()
+    return lst
+
+def del_borrows():
+    lst = get_all_borrows()
+    with Session() as session:
+        for b in lst:
+            session.delete(b)
             session.commit()
 
 if __name__ == '__main__':
+
+
     # books = get_all_books()
     # print(books[0].copies)
-    # print(books)
     # print(get_copies_by_username('peter'))
     # print(add_reader_to_database(models.Reader(username="shira", email="shira.bendor@gmail.com", name="Shira Ben-Dor", password="shira1234")))
     # print(change_password("shira.bendor@gmail.com", "shira1234"))
@@ -203,5 +250,18 @@ if __name__ == '__main__':
     # print(get_all_users())
     #print(get_all_users())
     #print(get_copies_by_username("tony"))
+    # del_copies()
     # set_copies()
-    print(get_all_copies())
+    # print(get_all_copies())
+    # print(get_all_books())
+    # print(get_copy_by_isbn("9788004605639"))
+    # test()
+    # del_borrows()
+    # test()
+    # print(get_all_borrows())
+    print(search_book(isbn="9788004605639"))
+    print(search_book(title="The Grapes of Wrath"))
+    print(search_book(author_id=60))
+    print(search_book(author_name="John Steinbeck"))
+    print(search_book(language="English"))
+
