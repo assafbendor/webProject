@@ -38,7 +38,7 @@ class BookSearch:
         inputs = {
             'isbn': self.ISBN.value,
             'title': self.title.value,
-            'author': self.author.value,
+            'author_name': self.author.value,
             'language': self.language.value
         }
         headers = {

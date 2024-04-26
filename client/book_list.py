@@ -37,7 +37,7 @@ class BookList:
                 cells=[
                     ft.DataCell(ft.Image(src=f"{os.path.join(os.getcwd(), 'img', book['cover_image_filename'])}", height=45, width=30)),
                     ft.DataCell(ft.Text(book['title'])),
-                    ft.DataCell(ft.Text(book['author'])),
+                    ft.DataCell(ft.Text(book['author']['name'])),
                     ft.DataCell(ft.Text(datetime.now().date())),
                     ft.DataCell(ft.Text(datetime.now().date())),
             ],
