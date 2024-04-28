@@ -24,6 +24,7 @@ class BookSearch:
             ],
             actions_alignment=ft.MainAxisAlignment.CENTER,
             on_dismiss=lambda e: print("Modal dialog dismissed!"),
+            elevation=10,
         )
 
         self.book_details_dlg = ft.AlertDialog(
@@ -40,8 +41,8 @@ class BookSearch:
         self.book_details_dlg.open = False
         self.appLayout.page.update()
 
-    def open_book_dlg(self, e):
-        self.book_details_dlg.content.controls = [self.single_book.build(444)]
+    def open_book_dlg(self, isbn):
+        self.book_details_dlg.content.controls = [self.single_book.build(isbn)]
         self.appLayout.page.dialog = self.book_details_dlg
         self.book_details_dlg.open = True
         self.appLayout.page.update()
@@ -165,20 +166,25 @@ class BookSearch:
 
         # TODO: select top 5 books
 
-        paths = [os.path.join(os.getcwd(), "img", "The Sound and the Fury_William Faulkner.jpg"),
-                 os.path.join(os.getcwd(), "img", "A Christmas Carol_Charles Dickens.jpg"),
-                 os.path.join(os.getcwd(), "img", "The Road_Cormac McCarthy.jpg"),
-                 os.path.join(os.getcwd(), "img", "The Scarlet Letter_Nathaniel Hawthorne.jpg"),
-                 os.path.join(os.getcwd(), "img", "A Clockwork Orange_Anthony Burgess.jpg")]
+        sample_books = []
+        sample_books.append({"isbn": 9788681804186, "cover_image_filename": "War and Peace_Leo Tolstoy.jpg"})
+        sample_books.append({"isbn": 9784599600049, "cover_image_filename": "The Great Gatsby_F. Scott Fitzgerald.jpg"})
+        sample_books.append({"isbn": 9784154748027, "cover_image_filename": "Moby Dick_Herman Melville.jpg"})
+        sample_books.append({"isbn": 9788949859198, "cover_image_filename": "Hamlet_William Shakespeare.jpg"})
+        sample_books.append({"isbn": 9789913767779, "cover_image_filename": "1984_George Orwell.jpg"})
 
-        for i in range(len(paths)):
+        paths=[]
+        for i in range(5):
+            paths.append([os.path.join(os.getcwd(), "img", sample_books[i]['cover_image_filename'])])
+
+        for i in range(len(sample_books)):
             self.trending_books.append(ft.Container(
                 content=ft.Image(
                     src=f"{paths[i]}",
                     width=self.appLayout.page.width / 6,  # Set the width of the image
                     height=self.appLayout.page.width / 4.5  # Set the height of the image
                 ),
-                on_click=self.open_book_dlg
+                on_click=self.open_book_dlg(isbn=sample_books[i]['isbn'])
             ))
 
         self.trending_row = ft.Row(controls=[self.trending_books[0], self.trending_books[1], self.trending_books[2], self.trending_books[3], self.trending_books[4]], spacing=40)

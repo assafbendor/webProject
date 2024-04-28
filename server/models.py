@@ -1,6 +1,6 @@
 import json
 
-from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, DateTime, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, DateTime, Float, Boolean
 from sqlalchemy.orm import relationship, declarative_base, sessionmaker
 
 from server.config import DATABASE_URL
@@ -45,10 +45,10 @@ class Copy(Base):
     book_isbn = Column(String, ForeignKey('books.isbn'))
     book = relationship('Book', back_populates='copies', lazy='joined')
     borrows = relationship('Borrow', back_populates='copy')
-    is_borrowed: bool = False
+    is_borrowed = Column(Boolean, default=False)
 
     def __repr__(self):
-        return f"<Copy(id={self.id}, book={self.book})>"
+        return f"<Copy(id={self.id}, book={self.book}, is_borrowed={self.is_borrowed})>"
 
 
 class Reader(Base):
@@ -59,7 +59,7 @@ class Reader(Base):
     name = Column(String)
     borrows = relationship('Borrow', back_populates='reader')
     password = Column(String)
-    admin: bool | None = False
+    admin = Column(Boolean, default=False)
 
     def __repr__(self):
         return f"<Reader(username={self.username}, email={self.email}, name={self.name}, admin={self.admin})>"
@@ -73,7 +73,7 @@ class Borrow(Base):
     copy = relationship('Copy', back_populates='borrows', lazy='joined')
     reader_username = Column(String, ForeignKey('readers.username'))
     reader = relationship('Reader', back_populates='borrows', lazy='joined')
-    borrow_date = Column(DateTime, nullable=False, default=datetime.datetime.utcnow)
+    borrow_date = Column(DateTime, nullable=False)
     return_date = Column(DateTime, nullable=True)
 
     def __repr__(self):
@@ -139,12 +139,12 @@ if __name__ == '__main__':
             session.commit()
 
     borrows = [
-        {"copy_id": 1, "reader_username": "peter", "borrow_date": datetime(2021, 1, 1), "return_date": datetime(2021, 1, 15)},
-        {"copy_id": 2, "reader_username": "tony", "borrow_date": datetime(2021, 1, 2), "return_date": datetime(2021, 1, 16)},
-        {"copy_id": 3, "reader_username": "bruce", "borrow_date": datetime(2021, 1, 3), "return_date": datetime(2021, 1, 17)},
-        {"copy_id": 4, "reader_username": "peter", "borrow_date": datetime(2021, 1, 4), "return_date": datetime(2021, 1, 18)},
-        {"copy_id": 5, "reader_username": "tony", "borrow_date": datetime(2021, 1, 5), "return_date": datetime(2021, 1, 19)},
-        {"copy_id": 6, "reader_username": "bruce", "borrow_date": datetime(2021, 1, 6), "return_date": datetime(2021, 1, 20)},
+        {"copy_id": 1, "reader_username": "peter", "borrow_date": datetime.datetime.now(), "return_date": None},
+        {"copy_id": 2, "reader_username": "tony", "borrow_date": datetime.datetime.now(), "return_date": None},
+        {"copy_id": 3, "reader_username": "bruce", "borrow_date": datetime.datetime.now(), "return_date": None},
+        {"copy_id": 4, "reader_username": "peter", "borrow_date": datetime.datetime.now(), "return_date": None},
+        {"copy_id": 5, "reader_username": "tony", "borrow_date": datetime.datetime.now(), "return_date": None},
+        {"copy_id": 6, "reader_username": "bruce", "borrow_date": datetime.datetime.now(), "return_date": None},
     ]
 
     for borrow in borrows:

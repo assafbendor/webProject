@@ -65,12 +65,11 @@ def check_user(current_user: models.Reader, username: str | None = None, email: 
         raise reply
 
 
-def check_if_user_allowed(username: str | None = None, email: str | None = None, name: str | None = None):
-    user = database.find_users(username=username, email=email, name=name)
+def check_if_user_allowed(user: models.Reader):
     if not user.admin:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User is not allowed"
+            detail="User is not admin"
         )
 
 
@@ -158,32 +157,6 @@ async def search_books(current_user: Annotated[models.Reader, Depends(get_curren
 #@app.post("/addbook")
 # async def add_book_to_database(isbn: int, title: str, author_name: str)
 
-@app.post("/add_librarian")
-async def add_librarian(current_user: Annotated[models.Reader, Depends(get_current_user)],
-                        username: str | None = None,
-                        email: str | None = None,
-                        name: str | None = None):
-    check_user(current_user, username=username, email=email, name=name)
-    check_if_user_allowed(username=username, email=email, name=name)
-    result = database.add_librarian(username=username, email=email, name=name)
-    if result == 1:
-        response = HTTPException(
-            status_code=status.HTTP_200_OK,
-            detail="librarian was added"
-        )
-    elif result == 0:
-        response = HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="User is a librarian already"
-        )
-    else:
-        response = HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
-        )
-    raise response
-
-
 @app.get("/book_list")
 async def return_book_list(username: str, current_user: Annotated[models.Reader, Depends(get_current_user)])\
         -> list[type[models.Book]]:
@@ -198,36 +171,14 @@ async def get_all_books(current_user: Annotated[models.Reader, Depends(get_curre
 
 @app.post("/borrow_book")
 def borrow_book(current_user: Annotated[models.Reader, Depends(get_current_user)],
-                reader_name: str | None = None,
-                reader_username: str | None = None,
-                reader_email: str | None = None,
-                book_isbn: str | None = None,
-                book_title: str | None = None
-                ):
-    reader = database.find_users(username=reader_name, email=reader_email, name=reader_username)
-    book = database.search_book(isbn=book_isbn, title=book_title)
-    response = HTTPException(
-        status_code=status.HTTP_200_OK,
-        detail="OK"
-    )
-    if reader is not None:
-        if book is not None:
-            if not database.borrow_book(reader, book[0]):
-                response = HTTPException(
-                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                    detail="something went wrong, please try later"
-                )
-        else:
-            response = HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Book does not exist"
-            )
-    else:
-        response = HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User does not exist"
-        )
-    raise response
+                book_isbn: str):
+    check_if_user_allowed(current_user)
+    return database.borrow_book(reader=current_user, copy=database.get_free_copy(search_books(isbn=book_isbn)[0]))
+
+@app.post("/return_book")
+def return_book(current_user: Annotated[models.Reader, Depends(get_current_user)], book_isbn: str):
+    check_if_user_allowed(current_user)
+    return database.return_book(current_user, search_books(isbn=book_isbn)[0])
 
 
 if __name__ == '__main__':

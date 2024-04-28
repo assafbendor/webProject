@@ -9,6 +9,7 @@ from server.models import Book, Copy, Borrow
 import api
 import models
 import random
+import datetime
 
 engine = create_engine(DATABASE_URL)
 
@@ -160,15 +161,15 @@ def add_librarian(username: str | None = None, email: str | None = None, name: s
             return 0
     return -1
 
-def borrow_book(reader: models.Reader, book: Book):
-    copy = get_free_copy(book)
-    if copy is None:
-        return False
-    borrow = Borrow(copy=copy, reader=reader)
-    with Session() as session:
-        copy.is_borrowed = True
-        session.add(borrow)
-        session.commit()
+# def borrow_book(reader: models.Reader, copy: Copy):
+#     try:
+#         borrow = Borrow(reader_username=reader.username, copy=copy, borrow_date=datetime.datetime.now())
+#         with Session() as session:
+#             borrow.copy.is_borrowed = True
+#             session.add(borrow)
+#             session.commit()
+
+
 
 def get_all_copies():
     with Session() as session:
@@ -194,7 +195,6 @@ def set_copies():
 def get_free_copy(book: Book) -> Copy | None:
     with Session() as session:
         copy = session.query(Copy).filter_by(book=book).filter_by(is_borrowed=False).first()
-        print(copy)
     return copy
 
 def get_copy_by_isbn(isbn: str):
@@ -203,13 +203,9 @@ def get_copy_by_isbn(isbn: str):
     return copy
 
 def test():
-    book = search_book(isbn="9784351510613")
-    copy = get_free_copy(book[0])
-    reader = find_users(username="peter")
-    borrow = Borrow(copy=copy, reader_username=reader.username)
-    with Session() as session:
-        session.add(borrow)
-        session.commit()
+    lst = get_all_borrows()
+    borrow = lst[0]
+    print(borrow.copy.is_borrowed)
 
 def get_all_borrows():
     with Session() as session:
@@ -223,45 +219,20 @@ def del_borrows():
             session.delete(b)
             session.commit()
 
+def return_book(reader: models.Reader, book: Book):
+    lst = get_copies_by_username(reader.username)
+    for copy in lst:
+        if copy.book.isbn == book.isbn:
+            if copy.is_borrowed:
+                with Session() as session:
+                    borrow = session.query(Borrow).filter_by(copy=copy).first()
+                    borrow.return_date = datetime.datetime.now()
+                    session.commit()
+                    copy.is_borrowed = False
+                    session.commit()
+                    return True
+    return False
+
+
 if __name__ == '__main__':
-
-
-    # books = get_all_books()
-    # print(books[0].copies)
-    # print(get_copies_by_username('peter'))
-    # print(add_reader_to_database(models.Reader(username="shira", email="shira.bendor@gmail.com", name="Shira Ben-Dor", password="shira1234")))
-    # print(change_password("shira.bendor@gmail.com", "shira1234"))
-    # print(find_users(email="shira.bendor@gmail.com"))
-    # print(delete_reader(email="asaf.bendor2@gmail.com"))
-    # print(add_author_to_database(models.Author(name="Benny", id=12345)))
-    # print(get_author("Benny"))
-    # print(search_book_by_author(get_author("Benny")))
-    # new_book = Book(isbn="12345678", title="example")
-    # print(search_book_by_isbn("12345678"))
-    # print(add_book_to_database(new_book))
-    # print(search_book_by_isbn("12345678"))
-    # print(return_all_books())
-    # print(search_book_by_title("1984"))
-    # #print(search_book_by_author("Jane Austen"))
-    # #print(search_book_by_author(author_name="George Orwell"))
-    # print(delete_book(isbn=12345678))
-    # print(return_all_books())
-    # print(get_all_books())
-    # print(get_all_users())
-    #print(get_all_users())
-    #print(get_copies_by_username("tony"))
-    # del_copies()
-    # set_copies()
-    # print(get_all_copies())
-    # print(get_all_books())
-    # print(get_copy_by_isbn("9788004605639"))
-    # test()
-    # del_borrows()
-    # test()
-    # print(get_all_borrows())
-    print(search_book(isbn="9788004605639"))
-    print(search_book(title="The Grapes of Wrath"))
-    print(search_book(author_id=60))
-    print(search_book(author_name="John Steinbeck"))
-    print(search_book(language="English"))
-
+   pass
