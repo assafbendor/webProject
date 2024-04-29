@@ -1,4 +1,6 @@
 import flet as ft
+
+from client.access_token import set_access_token
 from components import Logo
 import requests
 import client_config
@@ -43,7 +45,7 @@ class Login:
             # Extract the "token" key from the response body
             self.token = response_data.get("access_token")
             if self.token:
-                client_config.access_token = self.token
+                set_access_token(self.token)
                 self.appLayout.on_login()
             else:
                 print("Token not found in the response body.")

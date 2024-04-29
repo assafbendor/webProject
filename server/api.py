@@ -95,7 +95,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         print(payload)
         username = payload["username"]
-    except JWTError | KeyError:
+    except (JWTError, KeyError):
         raise credentials_exception
 
     user = get_user(username=username)

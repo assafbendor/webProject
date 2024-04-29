@@ -1,0 +1,2 @@
+class CannotReadAccessToken(Exception):
+    pass

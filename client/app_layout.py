@@ -1,4 +1,7 @@
 import string
+
+import flet
+
 from sidebar import Sidebar
 
 import login
@@ -67,11 +70,9 @@ class AppLayout(Row):
 
         self.book_list = book_list.BookList(self)
 
-        # self.single_book = single_book.SingleBook(self)
-        # self.single_book_view = None
-
         self._active_view: Control = self.login_view
         self.controls = [self.sidebar, self.toggle_nav_rail_button, self.active_view]
+        self.vertical_alignment = flet.CrossAxisAlignment.START
 
     @property
     def active_view(self):
@@ -81,18 +82,17 @@ class AppLayout(Row):
     def active_view(self, view):
         self._active_view = view
         self.controls[-1] = self._active_view
-        # self.sidebar.sync_board_destinations()
         self.update()
 
     def set_login_view(self):
         self.active_view = self.login_view
-        # self.sidebar.update()
+        self.sidebar.update()
         self.page.update()
         self.page_resize()
 
     def set_signup_view(self):
         self.active_view = self.sign_up_view
-        # self.sidebar.update()
+        self.sidebar.update()
         self.page.update()
         self.page_resize()
 
@@ -103,9 +103,6 @@ class AppLayout(Row):
         self.page.update()
         self.page_resize()
 
-#    def set_book_list_view(self, list_type: string):
-        # if list_type == "my-books":
-        #     books = self.book_list.get_books()
     def set_book_list_view(self, books):
         self.book_list_view = self.book_list.build(books)
         self.active_view = self.book_list_view
@@ -113,11 +110,6 @@ class AppLayout(Row):
         self.sidebar.update()
         self.page.update()
         self.page_resize()
-
-    # def set_single_book_view(self, isbn):
-    #     self.active_view = self.single_book.build(isbn)
-    #     self.page.update()
-    #     self.page_resize()
 
     def page_resize(self, e=None):
         # self.active_view.resize(

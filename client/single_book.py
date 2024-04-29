@@ -3,6 +3,7 @@ import flet as ft
 import requests
 
 from client import client_config
+from client.access_token import get_access_token
 
 
 class SingleBook:
@@ -14,27 +15,25 @@ class SingleBook:
     def get_book(self, isbn):
 
         path = "/search_books"
-
-        params = isbn
-
+        params = {
+            "isbn": isbn
+        }
         headers = {
             'accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f"Bearer {client_config.access_token}"
+            'Authorization': f"Bearer {get_access_token()}"
         }
-
         try:
             r = requests.get(client_config.SERVER_URL + path, headers=headers, params=params)
             # Parse the response JSON data
             r.raise_for_status()
-            books = r.json()
-            self.appLayout.set_book_list_view(books)
+            book = r.json()
+            return book
         except requests.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
 
         except Exception as err:
             print("Failed to make the GET request ", client_config.SERVER_URL + path, ". Error : ", err)
-
 
         # # TODO
         # return {
@@ -51,7 +50,7 @@ class SingleBook:
         # }
 
     def build(self, isbn):
-        book = self.get_book(1)
+        book = self.get_book(isbn)[0]
 
         image_card = ft.Card(
             elevation=2,
@@ -65,8 +64,7 @@ class SingleBook:
                 ),
                 padding=10,
                 margin=10,
-
-             ),
+            ),
         )
         title = ft.Text(book['title'], font_family="Calibiri", size=36, color=ft.colors.BLUE_400)
         author = ft.Text(book['author'], font_family="Calibiri", size=24, color=ft.colors.BLUE_600)

@@ -1,6 +1,9 @@
 import os
 import flet as ft
+from flet_core import ContainerTapEvent
+
 import single_book
+from client.access_token import get_access_token
 
 from client.single_book import SingleBook
 from components import Logo
@@ -41,8 +44,9 @@ class BookSearch:
         self.book_details_dlg.open = False
         self.appLayout.page.update()
 
-    def open_book_dlg(self, isbn):
-        self.book_details_dlg.content.controls = [self.single_book.build(isbn)]
+    def open_book_dlg(self, e: ContainerTapEvent):
+        isbn = e.control.content.controls[1].value
+        self.book_details_dlg.content.controls = self.single_book.build(isbn)
         self.appLayout.page.dialog = self.book_details_dlg
         self.book_details_dlg.open = True
         self.appLayout.page.update()
@@ -69,7 +73,7 @@ class BookSearch:
         headers = {
             'accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f"Bearer {client_config.access_token}"
+            'Authorization': f"Bearer {get_access_token()}"
         }
 
         params = {key: value for key, value in inputs.items() if value != ''}
@@ -173,21 +177,26 @@ class BookSearch:
         sample_books.append({"isbn": 9788949859198, "cover_image_filename": "Hamlet_William Shakespeare.jpg"})
         sample_books.append({"isbn": 9789913767779, "cover_image_filename": "1984_George Orwell.jpg"})
 
-        paths=[]
+        paths = []
         for i in range(5):
-            paths.append([os.path.join(os.getcwd(), "img", sample_books[i]['cover_image_filename'])])
+            paths.append(os.path.join(os.getcwd(), "img", sample_books[i]['cover_image_filename']))
 
         for i in range(len(sample_books)):
-            self.trending_books.append(ft.Container(
-                content=ft.Image(
+            image_col = ft.Column(controls=[
+                ft.Image(
                     src=f"{paths[i]}",
-                    width=self.appLayout.page.width / 6,  # Set the width of the image
-                    height=self.appLayout.page.width / 4.5  # Set the height of the image
+                    width=self.appLayout.page.width / 6,
+                    height=self.appLayout.page.width / 4.5
                 ),
-                on_click=self.open_book_dlg(isbn=sample_books[i]['isbn'])
+            ft.Text(sample_books[i]['isbn'])])
+            self.trending_books.append(ft.Container(
+                content=image_col,
+                on_click=self.open_book_dlg
             ))
 
-        self.trending_row = ft.Row(controls=[self.trending_books[0], self.trending_books[1], self.trending_books[2], self.trending_books[3], self.trending_books[4]], spacing=40)
+        self.trending_row = ft.Row(
+            controls=[self.trending_books[0], self.trending_books[1], self.trending_books[2], self.trending_books[3],
+                      self.trending_books[4]], spacing=40)
         self.trending_column = ft.Column(controls=[self.trending_title_container, self.trending_row])
         self.trending_container = ft.Container(content=self.trending_column, padding=ft.padding.only(top=30, left=250),
                                                alignment=ft.alignment.center)
