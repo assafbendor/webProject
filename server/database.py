@@ -149,26 +149,12 @@ def add_book_to_database(book: Book):
         return True
     return False
 
-def add_librarian(username: str | None = None, email: str | None = None, name: str | None = None):
-    user = find_users(username=username, email=email, name=name)
-    if user is not None:
-        if not user.admin:
-            with Session() as session:
-                user.admin = True
-                session.commit()
-            return 1
-        else:
-            return 0
-    return -1
-
-# def borrow_book(reader: models.Reader, copy: Copy):
-#     try:
-#         borrow = Borrow(reader_username=reader.username, copy=copy, borrow_date=datetime.datetime.now())
-#         with Session() as session:
-#             borrow.copy.is_borrowed = True
-#             session.add(borrow)
-#             session.commit()
-
+def borrow_book(reader: models.Reader, copy: Copy):
+    borrow = Borrow(reader_username=reader.username, copy=copy, borrow_date=datetime.datetime.now())
+    with Session() as session:
+        copy.is_borrowed = True
+        session.add(borrow)
+        session.commit()
 
 
 def get_all_copies():
@@ -228,11 +214,23 @@ def return_book(reader: models.Reader, book: Book):
                     borrow = session.query(Borrow).filter_by(copy=copy).first()
                     borrow.return_date = datetime.datetime.now()
                     session.commit()
-                    copy.is_borrowed = False
+                    borrow.copy.is_borrowed = False
                     session.commit()
                     return True
     return False
 
+def add_admin(reader: models.Reader):
+    with Session() as session:
+        reader.admin = True
+        session.commit()
+
+def return_high_score_books(number_of_books: int):
+    with Session() as session:
+        return session.query(Book).order_by(Book.average_rating.desc()).limit(number_of_books).all()
+
 
 if __name__ == '__main__':
-   pass
+    print(return_high_score_books(-2))
+
+
+

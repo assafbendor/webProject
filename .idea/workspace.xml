@@ -5,129 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14b0f841-f437-44a4-9515-29d18687f5ec" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/access_token.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/exceptions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/admin_main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/app_layout.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/book_list.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/book_search.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/books_table.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/client_config.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/components.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/delete-me.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/1984_George Orwell.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/A Christmas Carol_Charles Dickens.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/A Clockwork Orange_Anthony Burgess.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/A Farewell to Arms_Ernest Hemingway.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/A Game of Thrones_George R.R. Martin.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/A Tale of Two Cities_Charles Dickens.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Alice's Adventures in Wonderland_Lewis Carroll.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Anna Karenina_Leo Tolstoy.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Beloved_Toni Morrison.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Brave New World_Aldous Huxley.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Catch-22_Joseph Heller.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Crime and Punishment_Fyodor Dostoevsky.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Don Quixote_Miguel de Cervantes.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Dracula_Bram Stoker.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Fifty Shades of Grey_E.L. James.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Frankenstein_Mary Shelley.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Gone Girl_Gillian Flynn.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Gone with the Wind_Margaret Mitchell.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Great Expectations_Charles Dickens.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Gulliver's Travels_Jonathan Swift.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Hamlet_William Shakespeare.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Harry Potter and the Philosopher's Stone_J.K. Rowling.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Harry Potter and the Sorcerer's Stone_J.K. Rowling.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Heart of Darkness_Joseph Conrad.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Jane Eyre_Charlotte BrontÃ«.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Les MisÃ©rables_Victor Hugo.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Life of Pi_Yann Martel.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Lord of the Flies_William Golding.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Madame Bovary_Gustave Flaubert.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Middlemarch_George Eliot.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Moby Dick_Herman Melville.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/One Hundred Years of Solitude_Gabriel GarcÃ­a MÃ¡rquez.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Pride and Prejudice_Jane Austen.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Adventures of Huckleberry Finn_Mark Twain.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Adventures of Sherlock Holmes_Arthur Conan Doyle.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Alchemist_Paulo Coelho.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Bell Jar_Sylvia Plath.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Book Thief_Markus Zusak.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Brothers Karamazov_Fyodor Dostoevsky.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Canterbury Tales_Geoffrey Chaucer.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Catcher in the Rye_J.D. Salinger.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Chronicles of Narnia_C.S. Lewis.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Color Purple_Alice Walker.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Count of Monte Cristo_Alexandre Dumas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Da Vinci Code_Dan Brown.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Diary of a Young Girl_Anne Frank.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Divine Comedy_Dante Alighieri.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Fault in Our Stars_John Green.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Fountainhead_Ayn Rand.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Girl on the Train_Paula Hawkins.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Girl with the Dragon Tattoo_Stieg Larsson.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Giver_Lois Lowry.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Grapes of Wrath_John Steinbeck.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Great Gatsby_F. Scott Fitzgerald.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Handmaid's Tale_Margaret Atwood.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Help_Kathryn Stockett.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Hobbit_J.R.R. Tolkien.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Hunger Games_Suzanne Collins.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Idiot_Fyodor Dostoevsky.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Iliad_Homer.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Joy Luck Club_Amy Tan.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Kite Runner_Khaled Hosseini.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Little Prince_Antoine de Saint-ExupÃ©ry.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Lord of the Rings_J.R.R. Tolkien.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Master and Margarita_Mikhail Bulgakov.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Metamorphosis_Franz Kafka.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Name of the Rose_Umberto Eco.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Notebook_Nicholas Sparks.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Odyssey_Homer.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Old Man and the Sea_Ernest Hemingway.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Picture of Dorian Gray_Oscar Wilde.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Republic_Plato.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Road_Cormac McCarthy.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Scarlet Letter_Nathaniel Hawthorne.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Secret History_Donna Tartt.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Sound and the Fury_William Faulkner.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Stranger_Albert Camus.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Stranger_Harlan Coben.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Sun Also Rises_Ernest Hemingway.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Three Musketeers_Alexandre Dumas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Trial_Franz Kafka.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/The Twilight Saga_Stephenie Meyer.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/To Kill a Mockingbird_Harper Lee.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Twilight_Stephenie Meyer.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Ulysses_James Joyce.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/War and Peace_Leo Tolstoy.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/Wuthering Heights_Emily BrontÃ«.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/img/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/login.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/sidebar.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/sign_up.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/single_book.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.backup/user_main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/app_layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/app_layout.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/book_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/book_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/book_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/book_search.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/books_table.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/login.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/login.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/single_book.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/single_book.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.backup/api.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.backup/books.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.backup/books_orig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.backup/config.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.backup/database.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.backup/db/ldb.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.backup/mail.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.backup/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.backup/test.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/books_orig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/db/ldb.db" beforeDir="false" afterPath="$PROJECT_DIR$/server/db/ldb.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,7 +76,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.database (1)">
     <configuration name="api" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="webProject" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -323,9 +205,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.database (1)" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.api" />
-        <item itemvalue="Python.database (1)" />
         <item itemvalue="Python.models" />
         <item itemvalue="Python.mail" />
       </list>

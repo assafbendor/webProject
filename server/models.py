@@ -35,7 +35,7 @@ class Book(Base):
     copies = relationship('Copy', back_populates='book')
 
     def __repr__(self):
-        return f"<Book(isbn={self.isbn}, title={self.title}, author={self.author}, language={self.language})>"
+        return f"<Book(isbn={self.isbn}, title={self.title}, author={self.author}, language={self.language}, rating={self.average_rating})>"
 
 
 class Copy(Base):

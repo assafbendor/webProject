@@ -170,15 +170,62 @@ async def get_all_books(current_user: Annotated[models.Reader, Depends(get_curre
     return database.get_all_books()
 
 @app.post("/borrow_book")
-def borrow_book(current_user: Annotated[models.Reader, Depends(get_current_user)],
+async def borrow_book(current_user: Annotated[models.Reader, Depends(get_current_user)],
                 book_isbn: str):
     check_if_user_allowed(current_user)
-    return database.borrow_book(reader=current_user, copy=database.get_free_copy(search_books(isbn=book_isbn)[0]))
+    book = database.search_book(isbn=book_isbn)[0]
+    if book is None:
+        response = HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book is not found"
+        )
+    else:
+        copy = database.get_free_copy(book)
+        if copy is None:
+            response = HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="All copies are borrowed"
+            )
+        else:
+            database.borrow_book(reader=current_user, copy=copy)
+            response = HTTPException(
+                status_code=status.HTTP_200_OK,
+                detail="book was borrowed successfully"
+            )
+    raise response
 
 @app.post("/return_book")
-def return_book(current_user: Annotated[models.Reader, Depends(get_current_user)], book_isbn: str):
+async def return_book(current_user: Annotated[models.Reader, Depends(get_current_user)], book_isbn: str):
     check_if_user_allowed(current_user)
-    return database.return_book(current_user, search_books(isbn=book_isbn)[0])
+    book = database.search_book(isbn=book_isbn)[0]
+    if book is None:
+        response = HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book was not found"
+        )
+    else:
+        if not database.return_book(reader=current_user, book=book):
+            response = HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Book is not borrowed by the user"
+            )
+        else:
+            response = HTTPException(
+                status_code=status.HTTP_200_OK,
+                detail="Book was returned successfully"
+            )
+    raise response
+
+@app.get("/highest_rating_books")
+async def return_most_high_score_books(current_user: Annotated[models.Reader, Depends(get_current_user)],
+                                       number_of_books: int):
+    if number_of_books < 1:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Value mast be positive"
+        )
+    else:
+        return database.return_high_score_books(number_of_books=number_of_books)
 
 
 if __name__ == '__main__':
