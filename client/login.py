@@ -43,9 +43,9 @@ class Login:
             r.raise_for_status()
             response_data = r.json()
             # Extract the "token" key from the response body
-            self.token = response_data.get("access_token")
-            if self.token:
-                set_access_token(self.token)
+            token = response_data.get("access_token")
+            if token:
+                set_access_token(token)
                 self.appLayout.on_login()
             else:
                 print("Token not found in the response body.")
@@ -56,7 +56,7 @@ class Login:
             self.login_error.visible = True
             self.appLayout.page.update()
         except Exception as err: 
-            print("Failed to make the POST request. Status code:", r.status_code)
+            print("Failed to make the POST request. Status code:", r.status_code, " Error: ", err)
             self.login_error.visible=True
             self.appLayout.page.update()
            

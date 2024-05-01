@@ -36,6 +36,7 @@ from flet import (
 class AppLayout(Row):
     def __init__(self, app, page: Page, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.book_search_view = None
         self.book_list_view = None
         self.app = app
         self.page = page
@@ -66,7 +67,6 @@ class AppLayout(Row):
         self.sign_up_view = self.sign_up.build()
 
         self.book_search = book_search.BookSearch(self)
-        self.book_search_view = self.book_search.build()
 
         self.book_list = book_list.BookList(self)
 
@@ -97,6 +97,7 @@ class AppLayout(Row):
         self.page_resize()
 
     def set_book_search_view(self):
+        self.book_search_view = self.book_search.build()
         self.active_view = self.book_search_view
         self.sidebar.top_nav_rail.selected_index = 1
         self.sidebar.update()

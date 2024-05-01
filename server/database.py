@@ -229,6 +229,7 @@ def return_high_score_books(number_of_books: int):
         return session.query(Book).order_by(Book.average_rating.desc()).limit(number_of_books).all()
 
 
+
 if __name__ == '__main__':
     print(return_high_score_books(-2))
 
