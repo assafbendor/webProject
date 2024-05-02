@@ -38,6 +38,7 @@ class AppLayout(Row):
         super().__init__(*args, **kwargs)
         self.book_search_view = None
         self.book_list_view = None
+        self.my_books_view = None
         self.app = app
         self.page = page
         self.page.on_resize = self.page_resize
@@ -107,6 +108,13 @@ class AppLayout(Row):
     def set_book_list_view(self, books):
         self.book_list_view = self.book_list.build(books)
         self.active_view = self.book_list_view
+        self.sidebar.update()
+        self.page.update()
+        self.page_resize()
+
+    def set_my_books_view(self):
+        self.my_books_view = self.my_books.build()
+        self.active_view = self.my_books_view
         self.sidebar.top_nav_rail.selected_index = 0
         self.sidebar.update()
         self.page.update()

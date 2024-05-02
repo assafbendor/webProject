@@ -11,13 +11,8 @@ class BookList:
 
     def __init__(self, appLayout):
         super().__init__()
-        self.table = None
         self.appLayout = appLayout
 
-    def row_selected(self, e):
-        self.table.columns[3].visible = not self.table.columns[3].visible
-        e.control.selected = not e.control.selected
-        self.appLayout.page.update()
 
     def get_books(self):
         path = "/books"
@@ -49,11 +44,11 @@ class BookList:
                                  width=30)),
                     ft.DataCell(ft.Text(book['title'])),
                     ft.DataCell(ft.Text(book['author']['name'])),
-                    ft.DataCell(ft.PopupMenuButton(items=[
-                        ft.PopupMenuItem(text="Borrow"),
-                        ft.PopupMenuItem(text="Reserve"),
-                        ft.PopupMenuItem(text="Show Details"),
-                     ],), )
+                    # ft.DataCell(ft.PopupMenuButton(items=[
+                    #     ft.PopupMenuItem(text="Borrow"),
+                    #     ft.PopupMenuItem(text="Reserve"),
+                    #     ft.PopupMenuItem(text="Show Details"),
+                    # ]), visible=False)
                 ],
                 on_select_changed=self.row_selected)
 
@@ -64,7 +59,7 @@ class BookList:
         self.appLayout.page.scroll = ft.ScrollMode.HIDDEN
         self.appLayout.page.update()
 
-        self.table = ft.DataTable(
+        table = ft.DataTable(
             # width=self.appLayout.page.width,
             show_checkbox_column=True,
             horizontal_lines=ft.border.BorderSide(1, "white"),
@@ -84,13 +79,8 @@ class BookList:
                     ft.Text("Author"),
                     on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
                 ),
-                ft.DataColumn(
-                    ft.Text("Actions"),
-                    visible=False,
-                    on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
-                ),
             ],
             rows=self.prepare_rows(books),
         )
 
-        return self.table
+        return table
