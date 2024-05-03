@@ -49,26 +49,25 @@ class BookSearch:
             elevation=10,
         )
 
-        self.book_details_dlg = ft.AlertDialog(
-            modal=True,
-            content=ft.Column(controls=[ft.Text("b! ")]),
-            actions=[
-                ft.TextButton("OK", on_click=self.close_book_dlg),
-            ],
-            actions_alignment=ft.MainAxisAlignment.CENTER,
-            on_dismiss=lambda e: print("Modal dialog dismissed!"),
-        )
+        # self.book_details_dlg = ft.AlertDialog(
+        #     modal=True,
+        #     content=ft.Column(controls=[ft.Text("b! ")]),
+        #     actions=[
+        #         ft.TextButton("OK", on_click=self.close_book_dlg),
+        #     ],
+        #     actions_alignment=ft.MainAxisAlignment.CENTER,
+        # )
 
-    def close_book_dlg(self, e):
-        self.book_details_dlg.open = False
-        self.appLayout.page.update()
-
-    def open_book_dlg(self, e: ContainerTapEvent):
-        isbn = e.control.content.controls[1].value
-        self.book_details_dlg.content.controls = self.single_book.build(isbn).controls
-        self.appLayout.page.dialog = self.book_details_dlg
-        self.book_details_dlg.open = True
-        self.appLayout.page.update()
+    # def close_book_dlg(self, e):
+    #     self.book_details_dlg.open = False
+    #     self.appLayout.page.update()
+    #
+    # def open_book_dlg(self, e: ContainerTapEvent):
+    #     isbn = e.control.content.controls[1].value
+    #     self.book_details_dlg.content.controls = self.single_book.build(isbn).controls
+    #     self.appLayout.page.dialog = self.book_details_dlg
+    #     self.book_details_dlg.open = True
+    #     self.appLayout.page.update()
 
     def close_not_found_dlg(self, e):
         self.not_found_dlg.open = False
@@ -213,7 +212,7 @@ class BookSearch:
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER)
             trending_books_controls.append(ft.Container(
                 content=image_col,
-                on_click=self.open_book_dlg
+                on_click=self.single_book.open_book_dlg
             ))
 
         trending_row = ft.Row(

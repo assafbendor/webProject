@@ -5,12 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14b0f841-f437-44a4-9515-29d18687f5ec" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/my_books.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/app_layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/app_layout.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/book_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/book_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/book_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/book_search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/single_book.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/single_book.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/token.txt" beforeDir="false" afterPath="$PROJECT_DIR$/client/token.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/user_main.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -248,11 +249,6 @@
           <url>file://$PROJECT_DIR$/server/test.py</url>
           <line>108</line>
           <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/client/book_list.py</url>
-          <line>19</line>
-          <option name="timeStamp" value="39" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

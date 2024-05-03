@@ -56,7 +56,7 @@ class AppLayout(Row):
             on_click=self.on_logout,
             bgcolor=colors.WHITE54,
             tooltip="logout",
-            visible=False)
+            visible=True)
 
         self.sidebar = Sidebar(self, True)
         self.sidebar.visible = False

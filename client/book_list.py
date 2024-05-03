@@ -14,10 +14,18 @@ class BookList:
         self.table = None
         self.appLayout = appLayout
 
-    def row_selected(self, e):
-        self.table.columns[3].visible = not self.table.columns[3].visible
-        e.control.selected = not e.control.selected
-        self.appLayout.page.update()
+    # def row_selected(self, e):
+    #     e.control.selected = not e.control.selected
+    #     self.appLayout.page.update()
+
+    def borrow_book(self, e):
+        pass
+
+    def reserve_book(self, e):
+        pass
+
+    def show_book_details(self, e):
+        pass
 
     def get_books(self):
         path = "/books"
@@ -50,12 +58,11 @@ class BookList:
                     ft.DataCell(ft.Text(book['title'])),
                     ft.DataCell(ft.Text(book['author']['name'])),
                     ft.DataCell(ft.PopupMenuButton(items=[
-                        ft.PopupMenuItem(text="Borrow"),
-                        ft.PopupMenuItem(text="Reserve"),
-                        ft.PopupMenuItem(text="Show Details"),
+                        ft.PopupMenuItem(text="Borrow", on_click=self.borrow_book),
+                        ft.PopupMenuItem(text="Reserve", on_click=self.reserve_book),
+                        ft.PopupMenuItem(text="Show Details", on_click=self.show_book_details),
                      ],), )
-                ],
-                on_select_changed=self.row_selected)
+                ],)
 
             dataRows.append(row)
         return dataRows
@@ -86,7 +93,6 @@ class BookList:
                 ),
                 ft.DataColumn(
                     ft.Text("Actions"),
-                    visible=False,
                     on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
                 ),
             ],

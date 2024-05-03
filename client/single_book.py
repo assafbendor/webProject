@@ -12,12 +12,35 @@ class SingleBook:
         super().__init__()
         self.appLayout = appLayout
 
-    def get_book(self, isbn):
+        self.book_details_dlg = ft.AlertDialog(
+            modal=True,
+            content=ft.Column(controls=[ft.Text("b! ")]),
+            actions=[
+                ft.TextButton("OK", on_click=self.close_book_dlg),
+            ],
+            actions_alignment=ft.MainAxisAlignment.CENTER,
+        )
+
+    def close_book_dlg(self, e):
+        self.book_details_dlg.open = False
+        self.appLayout.page.update()
+
+    def open_book_dlg(self, e):
+        isbn = e.control.content.controls[1].value
+        self.book_details_dlg.content.controls = self.build(isbn).controls
+        self.appLayout.page.dialog = self.book_details_dlg
+        self.book_details_dlg.open = True
+        self.appLayout.page.update()
+
+    def get_book(self, isbn: str | None = None, title: str | None = None):
 
         path = "/search_books"
-        params = {
-            "isbn": isbn
+        inputs = {
+            "isbn": isbn,
+            "title": title
         }
+
+        params = {key: value for key, value in inputs.items() if value != ''}
         headers = {
             'accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
