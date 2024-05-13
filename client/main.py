@@ -11,6 +11,7 @@ from flet import (
 
 from client.book_search import BookSearch
 from client.login import Login
+from client.my_books import MyBooks
 from client.sign_up import SignUp
 
 
@@ -26,7 +27,7 @@ def main(page: Page):
     page.bgcolor = "#083b7a"
 
     def route_change(e):
-        appbar = AppBar(
+        reader_appbar = AppBar(
             leading=Icon(ft.icons.MENU_BOOK),
             leading_width=75,
             title=Text(f"Book For You", size=32),
@@ -48,15 +49,47 @@ def main(page: Page):
                     items=[
                         ft.PopupMenuItem(text="Profile"),
                         ft.PopupMenuItem(text="Logout"),
+                    ],
+                    tooltip=None),
+            ],
+        )
+
+        admin_appbar = AppBar(
+            leading=Icon(ft.icons.MENU_BOOK),
+            leading_width=75,
+            title=Text(f"Book For You - ADMIN ", size=32),
+            center_title=False,
+            toolbar_height=75,
+            bgcolor=colors.CYAN_ACCENT_700,
+            actions=[
+                ft.TextButton("Loan Books", ft.icons.ASSIGNMENT_ADD, on_click=lambda e: page.go("/loan_books")),
+                ft.TextButton("Return Books", ft.icons.ASSIGNMENT_TURNED_IN,
+                              on_click=lambda e: page.go("/return_books")),
+                ft.TextButton("Add Book", ft.icons.LIBRARY_ADD, on_click=lambda e: page.go("/add_book")),
+                ft.TextButton("Delete Book", ft.icons.PLAYLIST_REMOVE, on_click=lambda e: page.go("/delete_book")),
+                ft.PopupMenuButton(content=ft.Container(
+                    ft.Row(controls=[
+                        ft.Icon(ft.icons.ACCOUNT_CIRCLE),
+                        ft.Text(page.client_storage.get("username"))
                     ]),
+                    padding=5
+                ),
+                    items=[
+                        ft.PopupMenuItem(text="Profile"),
+                        ft.PopupMenuItem(text="Logout"),
+                    ], tooltip=None),
+
             ],
         )
 
         page.views.clear()
 
+        # reader routes
+
         page.views.append(
             View(
-                controls=[ft.Container(content=ft.Text("Coming soon...", size=100), alignment=ft.alignment.center, expand=True)],
+                controls=[ft.Container(content=ft.Text("Coming soon...", size=100), alignment=ft.alignment.center,
+                                       expand=True)],
                 bgcolor="#083b7a",
             )
         )
@@ -81,7 +114,49 @@ def main(page: Page):
             page.views.append(
                 View(
                     controls=[BookSearch(page).build()],
-                    appbar=appbar
+                    appbar=reader_appbar
+                )
+            )
+
+        if page.route == "/my_books":
+            page.views.append(
+                View(
+                    controls=[MyBooks(page).build()],
+                    appbar=reader_appbar
+                )
+            )
+
+        # admin routes
+
+        if page.route == "/loan_books":
+            page.views.append(
+                View(
+                    controls=[Login(page).build()],
+                    appbar=admin_appbar
+                )
+            )
+
+        if page.route == "/return_books":
+            page.views.append(
+                View(
+                    controls=[SignUp(page).build()],
+                    appbar=admin_appbar
+                )
+            )
+
+        if page.route == "/add_book":
+            page.views.append(
+                View(
+                    controls=[BookSearch(page).build()],
+                    appbar=admin_appbar
+                )
+            )
+
+        if page.route == "/delete_book":
+            page.views.append(
+                View(
+                    controls=[MyBooks(page).build()],
+                    appbar=admin_appbar
                 )
             )
 

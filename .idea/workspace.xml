@@ -5,30 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14b0f841-f437-44a4-9515-29d18687f5ec" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/access_token.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/app_layout.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/book_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/book_list.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/book_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/book_search.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/components.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/components.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/login.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/login.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/my_books.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/my_books.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/sidebar.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/sidebar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/sign_up.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/sign_up.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/single_book.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/single_book.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/token.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/books.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/books.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/db/ldb.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/mail.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/mail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -285,6 +268,11 @@
           <url>file://$PROJECT_DIR$/client/book_search.py</url>
           <line>66</line>
           <option name="timeStamp" value="52" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/server/api.py</url>
+          <line>79</line>
+          <option name="timeStamp" value="56" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

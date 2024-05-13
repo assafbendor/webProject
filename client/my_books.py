@@ -6,7 +6,7 @@ import requests
 import client_config
 
 
-class BookList:
+class MyBooks:
 
     def __init__(self, page):
         super().__init__()
@@ -21,8 +21,12 @@ class BookList:
             'Authorization': f"Bearer {self.page.client_storage.get('token')}"
         }
 
+        params = {
+            "username": self.page.client_storage.get("username")
+        }
+
         try:
-            r = requests.get(client_config.SERVER_URL + path, headers=headers)
+            r = requests.get(client_config.SERVER_URL + path, params=params, headers=headers)
             r.raise_for_status()
             books = r.json()
             return books
@@ -31,8 +35,11 @@ class BookList:
         except Exception as err:
             print("Failed to make the get request: ", client_config.SERVER_URL + path, " Error: ", err)
 
-    def prepare_rows(self, books):
+    def prepare_rows(self):
+
         dataRows = []
+
+        books = self.get_books()
         for book in books:
             row = ft.DataRow(
                 cells=[
@@ -42,18 +49,15 @@ class BookList:
                                  width=30)),
                     ft.DataCell(ft.Text(book['title'])),
                     ft.DataCell(ft.Text(book['author']['name'])),
-                    # ft.DataCell(ft.PopupMenuButton(items=[
-                    #     ft.PopupMenuItem(text="Borrow"),
-                    #     ft.PopupMenuItem(text="Reserve"),
-                    #     ft.PopupMenuItem(text="Show Details"),
-                    # ]), visible=False)
+                    ft.DataCell(ft.Text("borrow date")),
+                    ft.DataCell(ft.Text("due date")),
                 ],
-                on_select_changed=self.row_selected)
+                )
 
             dataRows.append(row)
         return dataRows
 
-    def build(self, books):
+    def build(self):
         self.page.scroll = ft.ScrollMode.HIDDEN
         self.page.update()
 
@@ -77,8 +81,16 @@ class BookList:
                     ft.Text("Author"),
                     on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
                 ),
+                ft.DataColumn(
+                    ft.Text("Borrow Date"),
+                    on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
+                ),
+                ft.DataColumn(
+                    ft.Text("Due Date"),
+                    on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
+                ),
             ],
-            rows=self.prepare_rows(books),
+            rows=self.prepare_rows(),
         )
 
         return table

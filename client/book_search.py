@@ -224,7 +224,8 @@ class BookSearch:
                 trending_books_controls[2],
                 trending_books_controls[3],
                 trending_books_controls[4]],
-            spacing=50)
+            spacing=50,
+            alignment=ft.MainAxisAlignment.SPACE_EVENLY)
 
         trending_column = ft.Column(controls=[trending_title_container, trending_row])
         trending_container = ft.Container(content=trending_column,

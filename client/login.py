@@ -7,11 +7,6 @@ from components import Logo
 
 class Login:
 
-    # def resize(self, width, height):
-    #     self.view.width = width
-    #     self.view.height = height
-    #     self.view.update()
-
     def __init__(self, page):
         super().__init__()
         self.token = None
@@ -22,7 +17,10 @@ class Login:
                                           border_color=ft.colors.BLACK54,
                                           focused_border_color=ft.colors.BLACK,
                                           height=40,
-                                          border_radius=15)
+                                          border_radius=15,
+                                          content_padding=ft.padding.only(top=2, bottom=2, left=6),
+                                          cursor_height=14,
+                                          cursor_color=ft.colors.BLACK54)
         self.password_text = ft.TextField(label="Password",
                                           password=True,
                                           color=ft.colors.BLACK87,
@@ -32,7 +30,10 @@ class Login:
                                           border_radius=15,
                                           border_color=ft.colors.BLACK54,
                                           focused_border_color=ft.colors.BLACK,
-                                          height=40)
+                                          height=40,
+                                          content_padding=ft.padding.only(top=2, bottom=2, left=6),
+                                          cursor_height=14,
+                                          cursor_color=ft.colors.BLACK54)
         self.view = None
         self.login_error = ft.TextButton(
             visible=False,
@@ -63,8 +64,6 @@ class Login:
             'username': username,
             'password': password,
         }
-
-        print(username, password)  # TODO: remove
 
         try:
             r = requests.post(client_config.SERVER_URL + path, headers=headers, data=data)
@@ -108,16 +107,6 @@ class Login:
 
         login_button = ft.ElevatedButton(text="LOG IN",
                                          on_click=self.login_clicked,
-                                         bgcolor=ft.colors.WHITE,
-                                         color=ft.colors.BLACK87,
-                                         elevation=2,
-                                         style=ft.ButtonStyle(
-                                             shape=ft.RoundedRectangleBorder(radius=2),
-                                             color={
-                                                 ft.MaterialState.HOVERED: ft.colors.LIGHT_BLUE_200,
-                                                 ft.MaterialState.DEFAULT: ft.colors.WHITE,
-                                                 ft.MaterialState.FOCUSED: ft.colors.LIGHT_BLUE_200}
-                                         ),
                                          icon=ft.icons.LOGIN_ROUNDED)
 
         no_account = ft.Text("Don't have an account?",

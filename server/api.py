@@ -19,7 +19,6 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

@@ -29,7 +29,11 @@ class SignUp(ft.UserControl):
                                              border_radius=15,
                                              border_color=ft.colors.BLACK54,
                                              focused_border_color=ft.colors.BLACK,
-                                             height=40)
+                                             height=40,
+                                             content_padding=ft.padding.only(top=2, bottom=2, left=6),
+                                             cursor_height=14,
+                                             cursor_color=ft.colors.BLACK54
+                                             )
         self.password_text = ft.TextField(label="Password",
                                           password=True,
                                           can_reveal_password=True,
@@ -39,7 +43,11 @@ class SignUp(ft.UserControl):
                                           border_color=ft.colors.BLACK54,
                                           focused_border_color=ft.colors.BLACK,
                                           border_radius=15,
-                                          height=40)
+                                          height=40,
+                                          content_padding=ft.padding.only(top=2, bottom=2, left=6),
+                                          cursor_height=14,
+                                          cursor_color=ft.colors.BLACK54
+                                          )
         self.username_text = ft.TextField(label="Username",
                                           focused_color=ft.colors.BLACK87,
                                           bgcolor=ft.colors.WHITE,
@@ -47,7 +55,11 @@ class SignUp(ft.UserControl):
                                           height=40,
                                           border_color=ft.colors.BLACK54,
                                           focused_border_color=ft.colors.BLACK,
-                                          border_radius=15)
+                                          border_radius=15,
+                                          content_padding=ft.padding.only(top=2, bottom=2, left=6),
+                                          cursor_height=14,
+                                          cursor_color=ft.colors.BLACK54
+                                          )
         self.email_text = None
         self.fullname_text = None
         self.page = page
@@ -144,7 +156,11 @@ class SignUp(ft.UserControl):
                                           height=40,
                                           border_color=ft.colors.BLACK54,
                                           focused_border_color=ft.colors.BLACK,
-                                          border_radius=15)
+                                          border_radius=15,
+                                          content_padding=ft.padding.only(top=2, bottom=2, left=6),
+                                          cursor_height=14,
+                                          cursor_color=ft.colors.BLACK54
+                                          )
 
         self.email_text = ft.TextField(label="E-mail",
                                        focused_color=ft.colors.BLACK87,
@@ -154,7 +170,11 @@ class SignUp(ft.UserControl):
                                        border_radius=15,
                                        border_color=ft.colors.BLACK54,
                                        focused_border_color=ft.colors.BLACK,
-                                       keyboard_type=ft.KeyboardType.EMAIL)
+                                       keyboard_type=ft.KeyboardType.EMAIL,
+                                       content_padding=ft.padding.only(top=2, bottom=2, left=6),
+                                       cursor_height=14,
+                                       cursor_color=ft.colors.BLACK54
+                                       )
 
         details = ft.Column(
             [self.fullname_text, self.email_text, self.username_text, self.password_text, self.password_confirm])
@@ -182,11 +202,12 @@ class SignUp(ft.UserControl):
                               icon=ft.icons.LOGIN_ROUNDED)
 
         has_account_block = ft.Column(controls=[has_account, login],
-                                      alignment=ft.alignment.center, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+                                      alignment=ft.alignment.center, horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                                      spacing=50)
 
         sign_up_block = ft.Column(controls=[details, sign_up_button, has_account_block, self.sign_up_error],
                                   alignment=ft.MainAxisAlignment.SPACE_EVENLY,
-                                  horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+                                  horizontal_alignment=ft.CrossAxisAlignment.CENTER,)
 
         sign_up_container = ft.Container(
             content=sign_up_block,
