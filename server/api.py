@@ -9,9 +9,11 @@ from pydantic import BaseModel
 
 import database
 import models
+
 SECRET_KEY = "0ae9bd5bf97167908547da34d48b18701aa0307e84c88f5a2181139e4d5ffb02"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
 
 class Token(BaseModel):
     access_token: str
@@ -42,11 +44,13 @@ def authenticate_user(username: str, password: str):
     user = get_user(username)
     if not user:
         return None
-    if not verify_password(password, get_password_hash(user.password)):
+    if not verify_password(password, user.password):
         return None
     return user
 
-def check_user(current_user: models.Reader, username: str | None = None, email: str | None = None, name: str | None = None):
+
+def check_user(current_user: models.Reader, username: str | None = None, email: str | None = None,
+               name: str | None = None):
     reply = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="User is not permitted"
@@ -93,7 +97,6 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
 
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        print(payload)
         username = payload["username"]
     except (JWTError, KeyError):
         raise credentials_exception
@@ -122,7 +125,8 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
 
 @app.post("/sign_up")
 async def add_reader_to_database(username: str, email: str, name: str, password: str):
-    result = database.add_reader_to_database(models.Reader(username=username, email=email, name=name, password=password))
+    result = database.add_reader_to_database(
+        models.Reader(username=username, email=email, name=name, password=get_password_hash(password)))
     if not result:
         raise HTTPException(
             status_code=status.HTTP_226_IM_USED,
@@ -130,9 +134,6 @@ async def add_reader_to_database(username: str, email: str, name: str, password:
         )
     return result
 
-@app.get("users/if_exist/")
-async def check_if_user_exists_by_email(email: str):
-    return database.find_users(email=email) is not None
 
 @app.get("/search_books")
 async def search_books(current_user: Annotated[models.Reader, Depends(get_current_user)],
@@ -154,24 +155,27 @@ async def search_books(current_user: Annotated[models.Reader, Depends(get_curren
         )
     return book_list
 
-#@app.post("/addbook")
+
+# @app.post("/addbook")
 # async def add_book_to_database(isbn: int, title: str, author_name: str)
 
 @app.get("/book_list")
-async def return_book_list(username: str, current_user: Annotated[models.Reader, Depends(get_current_user)])\
+async def return_book_list(username: str, current_user: Annotated[models.Reader, Depends(get_current_user)]) \
         -> list[type[models.Book]]:
     check_user(current_user, username)
 
     return database.get_copies_by_username(username=username)
+
 
 @app.get("/books")
 async def get_all_books(current_user: Annotated[models.Reader, Depends(get_current_user)]):
     print("in books")
     return database.get_all_books()
 
+
 @app.post("/borrow_book")
 async def borrow_book(current_user: Annotated[models.Reader, Depends(get_current_user)],
-                book_isbn: str):
+                      book_isbn: str):
     check_if_user_allowed(current_user)
     book = database.search_book(isbn=book_isbn)[0]
     if book is None:
@@ -193,6 +197,7 @@ async def borrow_book(current_user: Annotated[models.Reader, Depends(get_current
                 detail="book was borrowed successfully"
             )
     raise response
+
 
 @app.post("/return_book")
 async def return_book(current_user: Annotated[models.Reader, Depends(get_current_user)], book_isbn: str):
@@ -216,6 +221,7 @@ async def return_book(current_user: Annotated[models.Reader, Depends(get_current
             )
     raise response
 
+
 @app.get("/highest_rating_books")
 async def return_most_high_score_books(current_user: Annotated[models.Reader, Depends(get_current_user)],
                                        number_of_books: int):
@@ -226,6 +232,11 @@ async def return_most_high_score_books(current_user: Annotated[models.Reader, De
         )
     else:
         return database.return_high_score_books(number_of_books=number_of_books)
+
+
+@app.get("/search_books_by_anything")
+async def search_books_by_anything(current_user: Annotated[models.Reader, Depends(get_current_user)], query_str: str):
+    return [database.search_book(isbn=isbn)[0] for isbn in database.search_books_by_anything(query_str)]
 
 
 if __name__ == '__main__':

@@ -40,5 +40,4 @@ def send_email(to_addr, sub, text):
     except Exception as e:
         print(f"Failed to send email: {e}")
 
-
 # send_email("asaf.bendor2@gmail.com", "change password", "12345")

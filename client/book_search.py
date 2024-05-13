@@ -1,42 +1,47 @@
 import os
+
 import flet as ft
-from flet_core import ContainerTapEvent
-
-import single_book
-from client.access_token import get_access_token
-
 import requests
+
 import client_config
+import single_book
+from client.book_list import BookList
 
 
 class BookSearch:
 
-    def __init__(self, appLayout):
+    def __init__(self, page: ft.Page):
         super().__init__()
-        self.language = ft.TextField(label="Language",
-                                     border_color=ft.colors.BLACK54,
-                                     focused_border_color=ft.colors.BLACK,
-                                     width=appLayout.page.width / 2,
-                                     focused_color=ft.colors.BLACK87)
-        self.ISBN = ft.TextField(label="ISBN",
-                                 border_color=ft.colors.BLACK54,
-                                 focused_border_color=ft.colors.BLACK,
-                                 width=appLayout.page.width / 2,
-                                 focused_color=ft.colors.BLACK87)
-        self.title = ft.TextField(label="Title",
-                                  border_color=ft.colors.BLACK54,
-                                  focused_border_color=ft.colors.BLACK,
-                                  width=appLayout.page.width / 2,
-                                  focused_color=ft.colors.BLACK87)
-        self.author = ft.TextField(label="Author",
-                                   border_color=ft.colors.BLACK54,
-                                   focused_border_color=ft.colors.BLACK,
-                                   width=appLayout.page.width / 2,
-                                   focused_color=ft.colors.BLACK87)
+        # self.language = ft.TextField(label="Language",
+        #                              border_color=ft.colors.BLACK54,
+        #                              focused_border_color=ft.colors.BLACK,
+        #                              width=appLayout.page.width / 2,
+        #                              focused_color=ft.colors.BLACK87)
+        # self.ISBN = ft.TextField(label="ISBN",
+        #                          border_color=ft.colors.BLACK54,
+        #                          focused_border_color=ft.colors.BLACK,
+        #                          width=appLayout.page.width / 2,
+        #                          focused_color=ft.colors.BLACK87)
+        # self.title = ft.TextField(label="Title",
+        #                           border_color=ft.colors.BLACK54,
+        #                           focused_border_color=ft.colors.BLACK,
+        #                           width=appLayout.page.width / 2,
+        #                           focused_color=ft.colors.BLACK87)
+        # self.author = ft.TextField(label="Author",
+        #                            border_color=ft.colors.BLACK54,
+        #                            focused_border_color=ft.colors.BLACK,
+        #                            width=appLayout.page.width / 2,
+        #                            focused_color=ft.colors.BLACK87)
+
+        self.query_str = ft.TextField(label="Query",
+                                      border_color=ft.colors.BLACK54,
+                                      focused_border_color=ft.colors.BLACK,
+                                      width=page.width / 2,
+                                      focused_color=ft.colors.BLACK87)
         self.trending_row = None
         self.trending_books = []
-        self.single_book = single_book.SingleBook(appLayout)
-        self.appLayout = appLayout
+        self.single_book = single_book.SingleBook(page)
+        self.page = page
         self.not_found_dlg = ft.AlertDialog(
             modal=True,
             title=ft.Text("Oh oh! "),
@@ -45,52 +50,35 @@ class BookSearch:
                 ft.TextButton("OK", on_click=self.close_not_found_dlg),
             ],
             actions_alignment=ft.MainAxisAlignment.CENTER,
-            on_dismiss=lambda e: print("Modal dialog dismissed!"),
             elevation=10,
         )
 
-        # self.book_details_dlg = ft.AlertDialog(
-        #     modal=True,
-        #     content=ft.Column(controls=[ft.Text("b! ")]),
-        #     actions=[
-        #         ft.TextButton("OK", on_click=self.close_book_dlg),
-        #     ],
-        #     actions_alignment=ft.MainAxisAlignment.CENTER,
-        # )
-
-    # def close_book_dlg(self, e):
-    #     self.book_details_dlg.open = False
-    #     self.appLayout.page.update()
-    #
-    # def open_book_dlg(self, e: ContainerTapEvent):
-    #     isbn = e.control.content.controls[1].value
-    #     self.book_details_dlg.content.controls = self.single_book.build(isbn).controls
-    #     self.appLayout.page.dialog = self.book_details_dlg
-    #     self.book_details_dlg.open = True
-    #     self.appLayout.page.update()
-
     def close_not_found_dlg(self, e):
         self.not_found_dlg.open = False
-        self.appLayout.page.update()
+        self.page.update()
 
-    def open_not_found_dialog(self, e):
-        self.appLayout.page.dialog = self.not_found_dlg
+    def open_not_found_dialog(self):
+        self.page.dialog = self.not_found_dlg
         self.not_found_dlg.open = True
-        self.appLayout.page.update()
+        self.page.update()
 
     def search_clicked(self, e):
 
-        path = "/search_books"
+        path = "/search_books_by_anything"
+        # inputs = {
+        #     'isbn': self.ISBN.value,
+        #     'title': self.title.value,
+        #     'author_name': self.author.value,
+        #     'language': self.language.value
+        # }
+
         inputs = {
-            'isbn': self.ISBN.value,
-            'title': self.title.value,
-            'author_name': self.author.value,
-            'language': self.language.value
+            "query_str": self.query_str.value
         }
         headers = {
             'accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f"Bearer {get_access_token()}"
+            'Authorization': f"Bearer {self.page.client_storage.get('token')}"
         }
         params = {key: value for key, value in inputs.items() if value != ''}
 
@@ -98,14 +86,19 @@ class BookSearch:
             r = requests.get(client_config.SERVER_URL + path, headers=headers, params=params)
             r.raise_for_status()
             books = r.json()
-            self.appLayout.set_book_list_view(books)
         except requests.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
             if r is not None:
                 if r.status_code == requests.codes.not_found:
-                    self.open_not_found_dialog(e)
-        except Exception as err:
-            print("Failed to make the GET request ", client_config.SERVER_URL + path, ". Error : ", err)
+                    self.open_not_found_dialog()
+        else:
+            self.page.views.append(ft.View(
+                # f"/search_book?query={self.query_str.value}",
+                controls=[BookList(self.page).build(books)],
+                appbar=self.page.appbar
+            ))
+
+            self.page.update()
 
     def get_trending_books(self):
         path = "/highest_rating_books"
@@ -115,7 +108,7 @@ class BookSearch:
         headers = {
             'accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f"Bearer {get_access_token()}"
+            'Authorization': f"Bearer {self.page.client_storage.get('token')}"
         }
 
         try:
@@ -127,7 +120,7 @@ class BookSearch:
             print(f"HTTP error occurred: {http_err}")
             if r is not None:
                 if r.status_code == requests.codes.not_found:
-                    self.open_not_found_dialog(e)
+                    self.open_not_found_dialog()
         except Exception as err:
             print("Failed to make the GET request ", client_config.SERVER_URL + path, ". Error : ", err)
 
@@ -158,8 +151,8 @@ class BookSearch:
         rating = ft.Slider(min=1, max=5, divisions=0.5, label="{value}", on_change=self.slider_changed)
         rating_row = ft.Row(controls=[rating_text, rating])
 
-        inputs = ft.Column([self.author, self.title, self.ISBN, self.language, rating_row], spacing=5)
-
+        # inputs = ft.Column([self.author, self.title, self.ISBN, self.language, rating_row], spacing=5)
+        inputs = ft.Column([self.query_str], spacing=5)
         inputs_container = ft.Container(content=inputs,
                                         bgcolor=ft.colors.WHITE,
                                         padding=ft.padding.all(20),
@@ -206,13 +199,22 @@ class BookSearch:
                         margin=5,
                     ),
                 ),
-                ft.Text(self.trending_books[i]['isbn'], visible=False),
                 self.single_book.get_stars(self.trending_books[i])],
                 alignment=ft.alignment.center,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+
+            def get_on_click(book):
+                return lambda e: self.single_book.open_book_dlg(e=ft.ControlEvent(
+                    control=None,
+                    name="Trending Book Clicked",
+                    page=self.page,
+                    data=book,
+                    target=''))
+
             trending_books_controls.append(ft.Container(
                 content=image_col,
-                on_click=self.single_book.open_book_dlg
+                on_click=get_on_click(self.trending_books[i])
+                # on_click=self.single_book.open_book_dlg
             ))
 
         trending_row = ft.Row(

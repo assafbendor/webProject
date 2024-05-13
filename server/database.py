@@ -1,49 +1,53 @@
-from typing import List, Type
+import datetime
+from typing import Type
 
-from sqlalchemy import create_engine, DateTime
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
-from server.config import DATABASE_URL
-from server.models import Book, Copy, Borrow
+from whoosh.index import open_dir
+from whoosh.qparser import MultifieldParser, FuzzyTermPlugin
 
 import api
 import models
-import random
-import datetime
+from server.config import DATABASE_URL
+from server.models import Book, Copy, Borrow, Reader
 
 engine = create_engine(DATABASE_URL)
 
 Session = sessionmaker(bind=engine)
+
 
 def get_all_books() -> list[Type[Book]]:
     with Session() as session:
         book_list = session.query(Book).all()
         return book_list
 
+
 def get_all_users():
     with Session() as session:
-        users = session.query(models.Reader).all()
+        users = session.query(Reader).all()
     return users
+
 
 def get_copies_by_username(username: str):
     with Session() as session:
         borrows = session.query(Borrow).filter_by(reader_username=username, return_date=None).all()
         return [borrow.copy for borrow in borrows]
 
-def find_users(username: str | None = None, email: str | None = None, name: str | None = None) -> models.Reader | None:
+
+def find_users(username: str | None = None, email: str | None = None, name: str | None = None) -> Reader | None:
     with Session() as session:
         if email is not None:
-            user = session.query(models.Reader).filter_by(email=email).first()
+            user = session.query(Reader).filter_by(email=email).first()
         elif username is not None:
-            user = session.query(models.Reader).filter_by(username=username).first()
+            user = session.query(Reader).filter_by(username=username).first()
         elif name is not None:
-            user = session.query(models.Reader).filter_by(name=name)
+            user = session.query(Reader).filter_by(name=name)
         else:
             user = None
     return user
 
 
-def add_reader_to_database(reader: models.Reader) -> bool:
+def add_reader_to_database(reader: Reader) -> bool:
     if find_users(email=reader.email, username=reader.username, name=reader.name) is None:
         with Session() as session:
             session.add(reader)
@@ -51,14 +55,16 @@ def add_reader_to_database(reader: models.Reader) -> bool:
             return True
     return False
 
+
 def change_password(email: str, new_password) -> bool:
     if find_users(email=email) is not None:
         with Session() as session:
-            user = session.query(models.Reader).filter_by(email=email).first()
+            user = session.query(Reader).filter_by(email=email).first()
             user.password = api.get_password_hash(password=new_password)
             session.commit()
             return True
     return False
+
 
 def email_to_username(email: str):
     user = find_users(email)
@@ -89,33 +95,10 @@ def add_author_to_database(author: models.Author):
 
 def search_book(isbn: str | None = None,
                 author_name: str | None = None,
-                author_id: int | None = None,
-                title: str | None = None,
-                language: str | None = None,
-                rating: float | None = None)\
-        -> list[Book] | None:
+                title: str | None = None) -> list[Book] | None:
     with Session() as session:
-        if isbn is not None:
-            book_list = [session.query(Book).filter_by(isbn=isbn).first()]
-        elif author_name is not None or author_id is not None:
-            author = get_author(author_id=author_id, author_name=author_name)
-            book_list = session.query(Book).filter_by(author=author).all()
-        elif title is not None:
-            book_list = [session.query(Book).filter_by(title=title).first()]
-        elif language is not None:
-            book_list = session.query(Book).filter_by(language=language).all()
-        elif rating is not None:
-            book_list = session.query(Book).filter_by(average_rating=rating).all() #need to be changed
-        else:
-            book_list = None
-
-        if len(book_list) == 1:
-            # Get the first (and only) element
-            element = book_list[0]
-            # Check if the element is any of the empty types
-            if element in (None, '', [], (), {}):
-                return None
-        return book_list
+        books = session.query(Book).filter_by(isbn=isbn).all()
+        return books
 
 
 def delete_reader(email: str) -> bool:
@@ -127,19 +110,13 @@ def delete_reader(email: str) -> bool:
             return True
     return False
 
-def delete_book(isbn: str | None = None,
-                author_name: str | None = None,
-                author_id: int | None = None,
-                title: str | None = None,
-                language: str | None = None):
-    book_list = search_book(isbn=isbn, author_name=author_name, author_id=author_id, title=title, language=language)
-    if book_list[0] is not None:
-        with Session() as session:
-            for book in book_list:
-                session.delete(book)
-            session.commit()
-        return True
-    return False
+
+def delete_book(isbn: str) -> bool:
+    with Session() as session:
+        result = session.query(Book).filter_by(isbn=isbn).delete() == 1
+        session.commit()
+        return result
+
 
 def add_book_to_database(book: Book):
     if search_book(isbn=book.isbn)[0] is None:
@@ -149,7 +126,8 @@ def add_book_to_database(book: Book):
         return True
     return False
 
-def borrow_book(reader: models.Reader, copy: Copy):
+
+def borrow_book(reader: Reader, copy: Copy):
     borrow = Borrow(reader_username=reader.username, copy=copy, borrow_date=datetime.datetime.now())
     with Session() as session:
         copy.is_borrowed = True
@@ -157,46 +135,29 @@ def borrow_book(reader: models.Reader, copy: Copy):
         session.commit()
 
 
-def get_all_copies():
-    with Session() as session:
-        return session.query(Copy).all()
-
-def del_copies():
-    c = get_all_copies()
-    with Session() as session:
-        for i in c:
-            session.delete(i)
-            session.commit()
-
-def set_copies():
-    lst = get_all_books()
-    with Session() as session:
-        for book in lst:
-            num = random.randint(1, 5)
-            for i in range(num):
-                copy = Copy(book=book)
-                session.add(copy)
-                session.commit()
-
 def get_free_copy(book: Book) -> Copy | None:
     with Session() as session:
         copy = session.query(Copy).filter_by(book=book).filter_by(is_borrowed=False).first()
     return copy
+
 
 def get_copy_by_isbn(isbn: str):
     book = search_book(isbn=isbn)[0]
     copy = get_free_copy(book)
     return copy
 
+
 def test():
     lst = get_all_borrows()
     borrow = lst[0]
     print(borrow.copy.is_borrowed)
 
+
 def get_all_borrows():
     with Session() as session:
         lst = session.query(Borrow).all()
     return lst
+
 
 def del_borrows():
     lst = get_all_borrows()
@@ -205,7 +166,8 @@ def del_borrows():
             session.delete(b)
             session.commit()
 
-def return_book(reader: models.Reader, book: Book):
+
+def return_book(reader: Reader, book: Book):
     lst = get_copies_by_username(reader.username)
     for copy in lst:
         if copy.book.isbn == book.isbn:
@@ -219,19 +181,29 @@ def return_book(reader: models.Reader, book: Book):
                     return True
     return False
 
-def add_admin(reader: models.Reader):
+
+def add_admin(reader: Reader):
     with Session() as session:
         reader.admin = True
         session.commit()
+
 
 def return_high_score_books(number_of_books: int):
     with Session() as session:
         return session.query(Book).order_by(Book.average_rating.desc()).limit(number_of_books).all()
 
 
+def search_books_by_anything(query_str: str):
+    ix = open_dir("indexdir")
+    with ix.searcher() as searcher:
+        parser = MultifieldParser(["title", "author", "description"], ix.schema)
+        parser.add_plugin(FuzzyTermPlugin())
+        fuzzy_query_string = " ".join(f"{word}~2" for word in query_str.split())
+        query = parser.parse(fuzzy_query_string)
+        results = searcher.search(query)
+        return [result["isbn"] for result in results]
+
 
 if __name__ == '__main__':
-    print(return_high_score_books(-2))
-
-
-
+    # Example: Search fo r books
+    print(search_books_by_anything('fun'))

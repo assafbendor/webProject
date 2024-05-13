@@ -1,10 +1,12 @@
 # import requests
 # import json
 # import os
+import json
+import os
 import random
 
-# base_url = "https://www.googleapis.com/books/v1/volumes"
 
+# base_url = "https://www.googleapis.com/books/v1/volumes"
 # # Function to fetch cover image for a book
 # def get_cover_image(book_title):
 #         params = {"q": book_title}
@@ -18,7 +20,6 @@ import random
 #                 if thumbnail:
 #                     return thumbnail
 #         return None
-
 # def download_cover_image(url, filename):
 #     response = requests.get(url)
 #     if response.status_code == 200:
@@ -27,7 +28,6 @@ import random
 #         print(f"Cover image downloaded: {filename}")
 #     else:
 #         print(f"Failed to download cover image: {filename}")
-
 # # Example usage
 # def main():
 #     with open('server/books.json', 'r') as file:
@@ -35,7 +35,6 @@ import random
 #     img_dir = "client/img"
 #     if not os.path.exists(img_dir):
 #         os.makedirs(img_dir)
-
 #     for book in books:
 #         title = book["title"]
 #         author = book["author"]
@@ -46,12 +45,8 @@ import random
 #             download_cover_image(cover_image_url, filename)
 #         else:
 #             print(f"No cover image found for '{title}' by {author}")
-
 # if __name__ == "__main__":
 #     main()
-
-import os
-import json
 
 
 # Function to add cover image filename for each book

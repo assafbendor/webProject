@@ -1,26 +1,24 @@
-from datetime import datetime
-import json
 import os
+
 import flet as ft
 import requests
+
 import client_config
-from client.access_token import get_access_token
 
 
 class BookList:
 
-    def __init__(self, appLayout):
+    def __init__(self, page):
         super().__init__()
-        self.appLayout = appLayout
-
+        self.page = page
 
     def get_books(self):
-        path = "/books"
+        path = "/book_list"
 
         headers = {
             'accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f"Bearer {get_access_token()}"
+            'Authorization': f"Bearer {self.page.client_storage.get('token')}"
         }
 
         try:
@@ -56,8 +54,8 @@ class BookList:
         return dataRows
 
     def build(self, books):
-        self.appLayout.page.scroll = ft.ScrollMode.HIDDEN
-        self.appLayout.page.update()
+        self.page.scroll = ft.ScrollMode.HIDDEN
+        self.page.update()
 
         table = ft.DataTable(
             # width=self.appLayout.page.width,

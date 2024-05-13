@@ -1,16 +1,13 @@
 import os
-import flet as ft
-import requests
 
-from client import client_config
-from client.access_token import get_access_token
+import flet as ft
 
 
 class SingleBook:
 
-    def __init__(self, appLayout):
+    def __init__(self, page):
         super().__init__()
-        self.appLayout = appLayout
+        self.page = page
 
         self.book_details_dlg = ft.AlertDialog(
             modal=True,
@@ -23,44 +20,15 @@ class SingleBook:
 
     def close_book_dlg(self, e):
         self.book_details_dlg.open = False
-        self.appLayout.page.update()
+        self.page.update()
 
     def open_book_dlg(self, e):
-        isbn = e.control.content.controls[1].value
-        self.book_details_dlg.content.controls = self.build(isbn).controls
-        self.appLayout.page.dialog = self.book_details_dlg
+        self.book_details_dlg.content.controls = self.build(e.data).controls
+        self.page.dialog = self.book_details_dlg
         self.book_details_dlg.open = True
-        self.appLayout.page.update()
+        self.page.update()
 
-    def get_book(self, isbn: str | None = None, title: str | None = None):
-
-        path = "/search_books"
-        inputs = {
-            "isbn": isbn,
-            "title": title
-        }
-
-        params = {key: value for key, value in inputs.items() if value != ''}
-        headers = {
-            'accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f"Bearer {get_access_token()}"
-        }
-        try:
-            r = requests.get(client_config.SERVER_URL + path, headers=headers, params=params)
-            # Parse the response JSON data
-            r.raise_for_status()
-            book = r.json()
-            return book
-        except requests.HTTPError as http_err:
-            print(f"HTTP error occurred: {http_err}")
-
-        except Exception as err:
-            print("Failed to make the GET request ", client_config.SERVER_URL + path, ". Error : ", err)
-
-    def build(self, isbn):
-        book = self.get_book(isbn)[0]
-
+    def build(self, book):
         image_card = ft.Card(
             elevation=2,
             margin=2,
@@ -73,8 +41,8 @@ class SingleBook:
                 margin=10,
             ),
         )
-        title = ft.Text(book['title'], font_family="Calibiri", size=36, color=ft.colors.BLUE_400)
-        author = ft.Text(book['author']['name'], font_family="Calibiri", size=24, color=ft.colors.BLUE_600)
+        title = ft.Text(book['title'], size=36, color=ft.colors.BLUE_400)
+        author = ft.Text(book['author']['name'], size=24, color=ft.colors.BLUE_600)
 
         title_column = ft.Column(controls=[title, author],
                                  alignment=ft.alignment.center,
@@ -87,8 +55,7 @@ class SingleBook:
         summary = ft.Text(book['description'],
                           color=ft.colors.WHITE54,
                           size=18,
-                          italic=True,
-                          font_family="Chalkboard")
+                          italic=True)
 
         summary_container = ft.Container(content=summary, margin=15, padding=30)
 

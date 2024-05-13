@@ -1,57 +1,42 @@
-import flet as ft
 import os
+
+import flet as ft
+
 
 class Logo(ft.UserControl):
 
-    def __init__(self, appLayout):
+    def __init__(self, page):
         super().__init__()
-        self.appLayout = appLayout
+        self.view = None
+        self.page = page
 
     def build(self):
         path = os.path.join(os.getcwd(), "img", "logo.png")
-        self.logo = ft.Image(
+        logo = ft.Image(
             src=f"{path}",
-            width=self.appLayout.page.width/3,  # Set the width of the image
-            height=self.appLayout.page.width/3  # Set the height of the image
+            expand=True
         )
 
-        self.text = ft.Text("Book for You",
-                            font_family="Calibiri",
-                            size=50,
-                            text_align=ft.TextAlign.RIGHT)
+        text = ft.Text("Book for You",
+                       size=50,
+                       text_align=ft.TextAlign.CENTER,
+                       expand_loose=True)
 
-        self.column = ft.Column([self.logo, self.text],
-                                alignment=ft.alignment.center,
-                                horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+        column = ft.Column([logo, text],
+                           alignment=ft.MainAxisAlignment.SPACE_EVENLY,
+                           horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
-        self.logo_container = ft.Container(
-            content=self.column,
-            padding=ft.padding.only(left=120),
-            alignment=ft.alignment.center_left)
+        logo_container = ft.Container(
+            content=column,
+            alignment=ft.alignment.center,
+            expand=True)
 
-        # Create a Container to act as a vertical line
-        self.vertical_line = ft.Container(
-            width=1,  # Width of the line
-            height=self.appLayout.page.height,
-            bgcolor="#ea665e",  # Color of the line,
-            alignment=ft.alignment.center
-        )
-
-        self.vertical_line_container = ft.Container(
-            content=self.vertical_line,
-            padding=ft.padding.only(top=60, left=100)
-        )
-
-        self.view=ft.Container(
+        self.view = ft.Container(
             content=ft.Row(
-                controls=[self.logo_container, self.vertical_line_container]),
-            data=self,
-            margin = ft.margin.all(0),
-            padding = ft.padding.only(top=10, right=0),
-            height = self.appLayout.page.height)
+                controls=[logo_container]),
+            expand=True,
+            padding=100
+        )
+        # padding = ft.padding.only(top=10, right=0),)
+        # height = self.appLayout.page.height)
         return self.view
-    
-    def resize(self, width, height):
-        self.view.height = height
-        self.view.width = width
-        self.view.update()    

@@ -1,15 +1,56 @@
+import re
+
 import flet as ft
 import requests
-import re
-from client_config import SERVER_URL
+
 import components
+from client_config import SERVER_URL
 
 
 class SignUp(ft.UserControl):
 
-    def __init__(self, appLayout):
+    def __init__(self, page):
         super().__init__()
-        self.appLayout = appLayout
+
+        self.sign_up_error = ft.TextButton(
+            visible=False,
+            content=ft.Container(
+                content=ft.Text("Invalid", color=ft.colors.WHITE, size=15),
+                bgcolor=ft.colors.RED,
+                padding=ft.padding.all(10),
+            )
+        )
+        self.password_confirm = ft.TextField(label="confirm Password",
+                                             password=True,
+                                             can_reveal_password=True,
+                                             bgcolor=ft.colors.WHITE,
+                                             focused_color=ft.colors.BLACK87,
+                                             color=ft.colors.BLACK87,
+                                             border_radius=15,
+                                             border_color=ft.colors.BLACK54,
+                                             focused_border_color=ft.colors.BLACK,
+                                             height=40)
+        self.password_text = ft.TextField(label="Password",
+                                          password=True,
+                                          can_reveal_password=True,
+                                          bgcolor=ft.colors.WHITE,
+                                          color=ft.colors.BLACK87,
+                                          focused_color=ft.colors.BLACK87,
+                                          border_color=ft.colors.BLACK54,
+                                          focused_border_color=ft.colors.BLACK,
+                                          border_radius=15,
+                                          height=40)
+        self.username_text = ft.TextField(label="Username",
+                                          focused_color=ft.colors.BLACK87,
+                                          bgcolor=ft.colors.WHITE,
+                                          color=ft.colors.BLACK87,
+                                          height=40,
+                                          border_color=ft.colors.BLACK54,
+                                          focused_border_color=ft.colors.BLACK,
+                                          border_radius=15)
+        self.email_text = None
+        self.fullname_text = None
+        self.page = page
 
     def validate_signup_data(self, name, username, email, password, repeat_password):
         errors = []
@@ -17,9 +58,9 @@ class SignUp(ft.UserControl):
         # Validate name
         if not name:
             errors.append("Name is required.")
-            self.fullname_text.border_color=ft.colors.RED
+            self.fullname_text.border_color = ft.colors.RED
             self.fullname_text.focused_border_color = ft.colors.RED
-            self.appLayout.page.update()
+            self.page.update()
         # Validate username
         if not username:
             errors.append("Username is required.")
@@ -57,7 +98,7 @@ class SignUp(ft.UserControl):
             print("Signup data is invalid due to", errors)
             self.sign_up_error.content.content.value = "\n".join(errors)
             self.sign_up_error.visible = True
-            self.appLayout.page.update()
+            self.page.update()
             return
 
         headers = {
@@ -74,30 +115,28 @@ class SignUp(ft.UserControl):
 
         try:
             r = requests.post(SERVER_URL + path, headers=headers, params=params)
-            print("Successul signup")
-            self.appLayout.on_login()
+            print("Successful signup")
+            self.page.go("/login")
         except requests.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
             self.sign_up_error.visible = True
-            self.appLayout.page.update()
+            self.page.update()
             self.sign_up_error.content = "Sign up Failed"
             self.sign_up_error.visible = True
-            self.appLayout.page.update()
+            self.page.update()
         except Exception as err:
-            #print("Failed to make the POST request. Status code:", r.status_code)
+            # print("Failed to make the POST request. Status code:", r.status_code)
             print("Failed to make the POST request.", err)
             self.sign_up_error.visible = True
-            self.appLayout.page.update()
+            self.page.update()
             self.sign_up_error.content = "Sign up Failed"
             self.sign_up_error.visible = True
-            self.appLayout.page.update()
+            self.page.update()
 
     def login_clicked(self, e):
-        self.appLayout.page.route = "/login"
-        self.appLayout.page.update()
+        self.page.go("/login")
 
     def build(self):
-
         self.fullname_text = ft.TextField(label="Full Name",
                                           focused_color=ft.colors.BLACK87,
                                           color=ft.colors.BLACK87,
@@ -117,46 +156,13 @@ class SignUp(ft.UserControl):
                                        focused_border_color=ft.colors.BLACK,
                                        keyboard_type=ft.KeyboardType.EMAIL)
 
-        self.username_text = ft.TextField(label="Username",
-                                          focused_color=ft.colors.BLACK87,
-                                          bgcolor=ft.colors.WHITE,
-                                          color=ft.colors.BLACK87,
-                                          height=40,
-                                          border_color=ft.colors.BLACK54,
-                                          focused_border_color=ft.colors.BLACK,
-                                          border_radius=15)
-
-        self.password_text = ft.TextField(label="Password",
-                                          password=True,
-                                          can_reveal_password=True,
-                                          bgcolor=ft.colors.WHITE,
-                                          color=ft.colors.BLACK87,
-                                          focused_color=ft.colors.BLACK87,
-                                          border_color=ft.colors.BLACK54,
-                                          focused_border_color=ft.colors.BLACK,
-                                          border_radius=15,
-                                          height=40)
-
-        self.password_confirm = ft.TextField(label="confirm Password",
-                                             password=True,
-                                             can_reveal_password=True,
-                                             bgcolor=ft.colors.WHITE,
-                                             focused_color=ft.colors.BLACK87,
-                                             color=ft.colors.BLACK87,
-                                             border_radius=15,
-                                             border_color=ft.colors.BLACK54,
-                                             focused_border_color=ft.colors.BLACK,
-                                             height=40)
-
         details = ft.Column(
-            [self.fullname_text, self.email_text, self.username_text, self.password_text, self.password_confirm],
-            spacing=20)
+            [self.fullname_text, self.email_text, self.username_text, self.password_text, self.password_confirm])
 
         sign_up_button = ft.ElevatedButton(text="SIGN UP",
                                            on_click=self.sign_up_clicked,
                                            bgcolor=ft.colors.WHITE,
                                            color=ft.colors.BLACK87,
-                                           height=47,
                                            elevation=2,
                                            style=ft.ButtonStyle(
                                                shape=ft.RoundedRectangleBorder(radius=2),
@@ -164,52 +170,38 @@ class SignUp(ft.UserControl):
                                                    ft.MaterialState.HOVERED: ft.colors.LIGHT_BLUE_200,
                                                    ft.MaterialState.DEFAULT: ft.colors.WHITE,
                                                    ft.MaterialState.FOCUSED: ft.colors.LIGHT_BLUE_200}
-                                           ))
+                                           ),
+                                           icon=ft.icons.APP_REGISTRATION_ROUNDED)
 
         has_account = ft.Text("Already have an account?",
                               color=ft.colors.WHITE,
                               size=18)
 
-        login = ft.TextButton(
-            content=ft.Text("Log in",
-                            color="#34aeed",
-                            style=ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE,
-                                               decoration_color="#34aeed")),
-            on_click=self.login_clicked
-        )
+        login = ft.TextButton("Log in",
+                              on_click=self.login_clicked,
+                              icon=ft.icons.LOGIN_ROUNDED)
 
-        has_account_block = ft.Column(spacing=5,
-                                      controls=[has_account, login],
+        has_account_block = ft.Column(controls=[has_account, login],
                                       alignment=ft.alignment.center, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
-        self.sign_up_error = ft.TextButton(
-            visible=False,
-            content=ft.Container(
-                content=ft.Text("Invalid", color=ft.colors.WHITE, size=15),
-                bgcolor=ft.colors.RED,
-                padding=ft.padding.all(10),
-            )
-        )
-
-        sign_up_block = ft.Column(spacing=50,
-                                  controls=[details, sign_up_button, has_account_block, self.sign_up_error],
-                                  alignment=ft.alignment.center, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+        sign_up_block = ft.Column(controls=[details, sign_up_button, has_account_block, self.sign_up_error],
+                                  alignment=ft.MainAxisAlignment.SPACE_EVENLY,
+                                  horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
         sign_up_container = ft.Container(
             content=sign_up_block,
             alignment=ft.alignment.center,
-            padding=ft.padding.only(left=self.appLayout.page.width / 6, top=250),
-            # height=self.appLayout.page.height,
-            data=self,
+            padding=100,
+            expand=True
         )
 
-        logo = components.Logo(self.appLayout)
+        logo = components.Logo(self.page)
 
-        self.row = ft.Row(
+        row = ft.Row(
             controls=[logo.build(),
                       sign_up_container],
             alignment=ft.alignment.center,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
             expand=True)
 
-        return self.row
+        return row
