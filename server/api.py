@@ -1,3 +1,4 @@
+import random
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
@@ -10,6 +11,8 @@ from pydantic import BaseModel
 import database
 import models
 
+import mail
+
 SECRET_KEY = "0ae9bd5bf97167908547da34d48b18701aa0307e84c88f5a2181139e4d5ffb02"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -18,6 +21,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 class Token(BaseModel):
     access_token: str
     token_type: str
+    is_admin: bool
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -35,7 +39,7 @@ def get_password_hash(password):
 
 
 def get_user(username: str):
-    user = database.find_users(username=username)
+    user = database.find_user(username=username)
     return user
 
 
@@ -119,7 +123,7 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(data={"username": user.username}, expires_delta=access_token_expires)
-    return Token(access_token=access_token, token_type="bearer")
+    return Token(access_token=access_token, token_type="bearer", is_admin=user.admin)
 
 
 @app.post("/sign_up")
@@ -159,9 +163,10 @@ async def search_books(current_user: Annotated[models.Reader, Depends(get_curren
 # async def add_book_to_database(isbn: int, title: str, author_name: str)
 
 @app.get("/book_list")
-async def return_book_list(username: str, current_user: Annotated[models.Reader, Depends(get_current_user)]) \
-        -> list[type[models.Book]]:
-    check_user(current_user, username)
+async def return_book_list(username: str, current_user: Annotated[models.Reader, Depends(get_current_user)]):
+
+    if username != current_user.username:
+        check_if_user_allowed(current_user)
 
     return database.get_copies_by_username(username=username)
 
@@ -176,14 +181,25 @@ async def get_all_books(current_user: Annotated[models.Reader, Depends(get_curre
 async def borrow_book(current_user: Annotated[models.Reader, Depends(get_current_user)],
                       book_isbn: str):
     check_if_user_allowed(current_user)
-    book = database.search_book(isbn=book_isbn)[0]
-    if book is None:
+    book = database.search_book(isbn=book_isbn)
+    if len(book) == 0:
         response = HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Book is not found"
         )
+
+    elif len(database.get_books_in_late(reader=current_user)) > 0:
+        response = HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Reader has to return old books first"
+        )
+    elif database.get_number_of_copies_by_user(reader=current_user) > 3:
+        response = HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Reader has more then 3 books"
+        )
     else:
-        copy = database.get_free_copy(book)
+        copy = database.get_free_copy(book[0])
         if copy is None:
             response = HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -237,6 +253,37 @@ async def return_most_high_score_books(current_user: Annotated[models.Reader, De
 async def search_books_by_anything(current_user: Annotated[models.Reader, Depends(get_current_user)], query_str: str):
     return [database.search_book(isbn=isbn)[0] for isbn in database.search_books_by_anything(query_str)]
 
+@app.get("/get_readers")
+async def get_readers():
+    readers = database.get_readers(admin=False)
+    return readers
+
+@app.post("/forgot_password")
+async def forgot_password(email: str):
+    user = database.find_user(email=email)
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Email is not registered"
+        )
+    code = random.randint(1000, 9999)
+    result = mail.send_email(to_addr=email, sub="Reset Your Password", text=f"your code is {code}. \n It will be expired in 3 "
+                                                                   f"minutes from now.")
+    if result is True:
+        database.add_code(code=code, email=email)
+        raise HTTPException(
+            status_code=status.HTTP_200_OK,
+            detail="Email sent successfully!"
+        )
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=result
+        )
+
+@app.post("/varify_code")
+async def varify_code(code: int, email: str):
+    pass
 
 if __name__ == '__main__':
     import uvicorn

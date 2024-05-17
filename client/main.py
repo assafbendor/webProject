@@ -10,6 +10,7 @@ from flet import (
 )
 
 from client.book_search import BookSearch
+from client.loan_books import LoanBooks
 from client.login import Login
 from client.my_books import MyBooks
 from client.sign_up import SignUp
@@ -131,7 +132,7 @@ def main(page: Page):
         if page.route == "/loan_books":
             page.views.append(
                 View(
-                    controls=[Login(page).build()],
+                    controls=[LoanBooks(page).build()],
                     appbar=admin_appbar
                 )
             )

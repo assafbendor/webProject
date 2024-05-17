@@ -12,7 +12,7 @@ class MyBooks:
         super().__init__()
         self.page = page
 
-    def get_books(self):
+    def get_books(self, username):
         path = "/book_list"
 
         headers = {
@@ -22,7 +22,7 @@ class MyBooks:
         }
 
         params = {
-            "username": self.page.client_storage.get("username")
+            "username": username
         }
 
         try:
@@ -35,11 +35,11 @@ class MyBooks:
         except Exception as err:
             print("Failed to make the get request: ", client_config.SERVER_URL + path, " Error: ", err)
 
-    def prepare_rows(self):
+    def prepare_rows(self, username):
 
         dataRows = []
 
-        books = self.get_books()
+        books = self.get_books(username)
         for book in books:
             row = ft.DataRow(
                 cells=[
@@ -61,6 +61,9 @@ class MyBooks:
         self.page.scroll = ft.ScrollMode.HIDDEN
         self.page.update()
 
+        return self.get_user_books_table(self.page.client_storage.get("username"))
+
+    def get_user_books_table(self, username):
         table = ft.DataTable(
             # width=self.appLayout.page.width,
             show_checkbox_column=True,
@@ -90,7 +93,6 @@ class MyBooks:
                     on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
                 ),
             ],
-            rows=self.prepare_rows(),
+            rows=self.prepare_rows(username),
         )
-
         return table

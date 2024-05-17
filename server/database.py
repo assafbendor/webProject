@@ -1,4 +1,6 @@
 import datetime
+import random
+import time
 from typing import Type
 
 from sqlalchemy import create_engine
@@ -9,7 +11,7 @@ from whoosh.qparser import MultifieldParser, FuzzyTermPlugin
 import api
 import models
 from server.config import DATABASE_URL
-from server.models import Book, Copy, Borrow, Reader
+from server.models import Book, Copy, Borrow, Reader, Code
 
 engine = create_engine(DATABASE_URL)
 
@@ -33,22 +35,26 @@ def get_copies_by_username(username: str):
         borrows = session.query(Borrow).filter_by(reader_username=username, return_date=None).all()
         return [borrow.copy for borrow in borrows]
 
+def get_readers(admin: bool | None = None):
+    with Session() as session:
+        if admin is not None:
+            return session.query(Reader).filter_by(admin=admin).all()
 
-def find_users(username: str | None = None, email: str | None = None, name: str | None = None) -> Reader | None:
+def find_user(username: str | None = None, email: str | None = None, name: str | None = None) -> Reader | None:
     with Session() as session:
         if email is not None:
             user = session.query(Reader).filter_by(email=email).first()
         elif username is not None:
             user = session.query(Reader).filter_by(username=username).first()
         elif name is not None:
-            user = session.query(Reader).filter_by(name=name)
+            user = session.query(Reader).filter_by(name=name).first()
         else:
             user = None
     return user
 
 
 def add_reader_to_database(reader: Reader) -> bool:
-    if find_users(email=reader.email, username=reader.username, name=reader.name) is None:
+    if find_user(email=reader.email, username=reader.username, name=reader.name) is None:
         with Session() as session:
             session.add(reader)
             session.commit()
@@ -57,7 +63,7 @@ def add_reader_to_database(reader: Reader) -> bool:
 
 
 def change_password(email: str, new_password) -> bool:
-    if find_users(email=email) is not None:
+    if find_user(email=email) is not None:
         with Session() as session:
             user = session.query(Reader).filter_by(email=email).first()
             user.password = api.get_password_hash(password=new_password)
@@ -67,7 +73,7 @@ def change_password(email: str, new_password) -> bool:
 
 
 def email_to_username(email: str):
-    user = find_users(email)
+    user = find_user(email)
     if user is None:
         return False
     return user.username
@@ -102,7 +108,7 @@ def search_book(isbn: str | None = None,
 
 
 def delete_reader(email: str) -> bool:
-    user = find_users(email=email)
+    user = find_user(email=email)
     if user is not None:
         with Session() as session:
             session.delete(user)
@@ -182,12 +188,6 @@ def return_book(reader: Reader, book: Book):
     return False
 
 
-def add_admin(reader: Reader):
-    with Session() as session:
-        reader.admin = True
-        session.commit()
-
-
 def return_high_score_books(number_of_books: int):
     with Session() as session:
         return session.query(Book).order_by(Book.average_rating.desc()).limit(number_of_books).all()
@@ -204,6 +204,59 @@ def search_books_by_anything(query_str: str):
         return [result["isbn"] for result in results]
 
 
+def get_books_in_late(reader: Reader):
+    books = []
+    with Session() as session:
+        books_borrowed_by_reader = session.query(Borrow).filter_by(reader=reader).all()
+        for book in books_borrowed_by_reader:
+            if book.return_date is None:
+                delta_time = datetime.datetime.now() - book.borrow_date
+                if delta_time.days > 30:
+                    books.append(book)
+    return books
+
+def get_number_of_copies_by_user(reader: Reader):
+    with Session() as session:
+        num = len(session.query(Borrow).filter_by(return_date=None).filter_by(reader=reader).all())
+    return num
+
+def get_num_of_free_copies(book: Book):
+    with Session() as session:
+        return len(session.query(Copy).filter_by(book=book).filter_by(is_borrowed=False).all())
+
+def get_all_copies():
+    with Session() as session:
+        return session.query(Copy).all()
+
+def del_copies():
+    with Session() as session:
+        for copy in get_all_copies():
+            session.delete(copy)
+            session.commit()
+
+def set_copies():
+    books = get_all_books()
+    with Session() as session:
+        for book in books:
+            n = random.randint(1, 5)
+            for x in range(n):
+                c = Copy(book=book)
+                session.add(c)
+                session.commit()
+
+def get_all_codes():
+    with Session() as session:
+        return session.query(Code).all()
+
+def add_code(code: int, email: str):
+    with Session() as session:
+        c = Code(number=code, email=email, created_at=datetime.datetime.now())
+        session.add(c)
+        session.commit()
+
 if __name__ == '__main__':
     # Example: Search fo r books
-    print(search_books_by_anything('fun'))
+    # print(search_books_by_anything('fun'))
+    #asyncio.run(api.add_reader_to_database(username="admin", password="admin", email="admin@gmail.com", name="admin"))
+
+    print(search_book(isbn="9783771844523gggggg"))

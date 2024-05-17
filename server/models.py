@@ -120,6 +120,16 @@ class Borrow(Base):
     def __repr__(self):
         return f"<Borrow(id={self.id}, copy={self.copy}, reader={self.reader}, borrow_date={self.borrow_date}, return_date={self.return_date})>"
 
+class Code(Base):
+    __tablename__ = 'codes'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    number = Column(Integer)
+    email = Column(String)
+    created_at = Column(DateTime, nullable=False)
+
+    def __repr__(self):
+        return f"<Code(id={self.id}, Number={self.number}, Email={self.email}, Created_at={self.created_at}"
 
 if __name__ == '__main__':
     engine = create_engine(DATABASE_URL)

@@ -36,8 +36,8 @@ def send_email(to_addr, sub, text):
         # Close the SMTP server connection
         server.quit()
 
-        print("Email sent successfully!")
+        return True
     except Exception as e:
-        print(f"Failed to send email: {e}")
+        return f"Failed to send email: {e}"
 
 # send_email("asaf.bendor2@gmail.com", "change password", "12345")

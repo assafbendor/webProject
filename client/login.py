@@ -75,7 +75,10 @@ class Login:
             if token:
                 self.page.client_storage.set("token", token)
                 self.page.client_storage.set("username", username)
-                self.page.go("/search_book")
+                if response_data.get("is_admin"):
+                    self.page.go("/loan_books")
+                else:
+                    self.page.go("/search_book")
             else:
                 print("Token not found in the response body.")
                 self.login_error.visible = True
