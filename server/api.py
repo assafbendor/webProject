@@ -13,14 +13,19 @@ import models
 
 import mail
 
+import re
 SECRET_KEY = "0ae9bd5bf97167908547da34d48b18701aa0307e84c88f5a2181139e4d5ffb02"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+class PasswordChangeRequest(BaseModel):
+    new_password: str
+    new_password_verify: str
 
 class Token(BaseModel):
     access_token: str
     token_type: str
+    username: str
     is_admin: bool
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -91,6 +96,22 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
+def is_valid_password(password):
+    # Check length
+    if len(password) < 8:
+        return False
+
+    # Check for at least one number
+    if not re.search(r'\d', password):
+        return False
+
+    # Check for at least one symbol
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+        return False
+
+    # If all checks passed
+    return True
+
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -123,17 +144,22 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(data={"username": user.username}, expires_delta=access_token_expires)
-    return Token(access_token=access_token, token_type="bearer", is_admin=user.admin)
+    return Token(access_token=access_token, token_type="bearer", username=user.username, is_admin=user.admin)
 
 
 @app.post("/sign_up")
 async def add_reader_to_database(username: str, email: str, name: str, password: str):
+    if is_valid_password(password) is False:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password must be at least 8 characters and contain at least one number and one symbol"
+        )
     result = database.add_reader_to_database(
         models.Reader(username=username, email=email, name=name, password=get_password_hash(password)))
     if not result:
         raise HTTPException(
-            status_code=status.HTTP_226_IM_USED,
-            detail="One or more of the identification is in use"
+            status_code=status.HTTP_409_CONFLICT,
+            detail="One or more of the identification elements is in use"
         )
     return result
 
@@ -168,7 +194,7 @@ async def return_book_list(username: str, current_user: Annotated[models.Reader,
     if username != current_user.username:
         check_if_user_allowed(current_user)
 
-    return database.get_copies_by_username(username=username)
+    return database.get_borrows_by_username(username=username)
 
 
 @app.get("/books")
@@ -179,21 +205,22 @@ async def get_all_books(current_user: Annotated[models.Reader, Depends(get_curre
 
 @app.post("/borrow_book")
 async def borrow_book(current_user: Annotated[models.Reader, Depends(get_current_user)],
-                      book_isbn: str):
+                      book_isbn: str, username: str):
     check_if_user_allowed(current_user)
     book = database.search_book(isbn=book_isbn)
+    reader = database.find_user(username=username)
     if len(book) == 0:
         response = HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Book is not found"
         )
 
-    elif len(database.get_books_in_late(reader=current_user)) > 0:
+    elif len(database.get_books_in_late(reader=reader)) > 0:
         response = HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Reader has to return old books first"
         )
-    elif database.get_number_of_copies_by_user(reader=current_user) > 3:
+    elif database.get_number_of_copies_by_user(reader=reader) > 3:
         response = HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Reader has more then 3 books"
@@ -206,7 +233,7 @@ async def borrow_book(current_user: Annotated[models.Reader, Depends(get_current
                 detail="All copies are borrowed"
             )
         else:
-            database.borrow_book(reader=current_user, copy=copy)
+            database.borrow_book(reader=reader, copy=copy)
             response = HTTPException(
                 status_code=status.HTTP_200_OK,
                 detail="book was borrowed successfully"
@@ -215,8 +242,10 @@ async def borrow_book(current_user: Annotated[models.Reader, Depends(get_current
 
 
 @app.post("/return_book")
-async def return_book(current_user: Annotated[models.Reader, Depends(get_current_user)], book_isbn: str):
+async def return_book(current_user: Annotated[models.Reader, Depends(get_current_user)], book_isbn: str,
+                      username: str):
     check_if_user_allowed(current_user)
+    reader = database.find_user(username=username)
     book = database.search_book(isbn=book_isbn)[0]
     if book is None:
         response = HTTPException(
@@ -224,7 +253,7 @@ async def return_book(current_user: Annotated[models.Reader, Depends(get_current
             detail="Book was not found"
         )
     else:
-        if not database.return_book(reader=current_user, book=book):
+        if not database.return_book(reader=reader, book=book):
             response = HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Book is not borrowed by the user"
@@ -281,9 +310,60 @@ async def forgot_password(email: str):
             detail=result
         )
 
-@app.post("/varify_code")
-async def varify_code(code: int, email: str):
-    pass
+@app.post("/verify_code")
+async def verify_code(code: int, email: str, request: PasswordChangeRequest):
+    result = database.varify_code(email=email, code=code)
+    if result is False:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Email or code are not correct"
+        )
+    if request.new_password != request.new_password_verify:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Passwords do not match"
+        )
+
+    user = database.find_user(email=email)
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Email or code are not correct",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    if is_valid_password(request.new_password) is False:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password must be at least 8 characters and contain at least one number and one symbol"
+        )
+    password_changed = database.change_password(email=email, new_password=request.new_password)
+    if password_changed is False:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Could not find user"
+        )
+
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(data={"username": user.username}, expires_delta=access_token_expires)
+    return Token(access_token=access_token, token_type="bearer", username=user.username, is_admin=user.admin)
+
+@app.post("/change_password")
+async def change_password(current_user: Annotated[models.Reader, Depends(get_current_user)],
+                          request: PasswordChangeRequest):
+    if is_valid_password(request.new_password) is False:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password must be at least 8 characters and contain at least one number and one symbol"
+        )
+    if request.new_password != request.new_password_verify:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Passwords do not match"
+        )
+
+    database.change_password(email=current_user.email, new_password=request.new_password)
+
 
 if __name__ == '__main__':
     import uvicorn

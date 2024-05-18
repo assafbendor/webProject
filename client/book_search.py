@@ -12,26 +12,6 @@ class BookSearch:
 
     def __init__(self, page: ft.Page):
         super().__init__()
-        # self.language = ft.TextField(label="Language",
-        #                              border_color=ft.colors.BLACK54,
-        #                              focused_border_color=ft.colors.BLACK,
-        #                              width=appLayout.page.width / 2,
-        #                              focused_color=ft.colors.BLACK87)
-        # self.ISBN = ft.TextField(label="ISBN",
-        #                          border_color=ft.colors.BLACK54,
-        #                          focused_border_color=ft.colors.BLACK,
-        #                          width=appLayout.page.width / 2,
-        #                          focused_color=ft.colors.BLACK87)
-        # self.title = ft.TextField(label="Title",
-        #                           border_color=ft.colors.BLACK54,
-        #                           focused_border_color=ft.colors.BLACK,
-        #                           width=appLayout.page.width / 2,
-        #                           focused_color=ft.colors.BLACK87)
-        # self.author = ft.TextField(label="Author",
-        #                            border_color=ft.colors.BLACK54,
-        #                            focused_border_color=ft.colors.BLACK,
-        #                            width=appLayout.page.width / 2,
-        #                            focused_color=ft.colors.BLACK87)
 
         self.query_str = ft.TextField(label="Query",
                                       border_color=ft.colors.BLACK54,

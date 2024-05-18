@@ -63,7 +63,6 @@ class BookList:
                     ft.DataCell(ft.Text(book['title'])),
                     ft.DataCell(ft.Text(book['author']['name'])),
                     ft.DataCell(ft.PopupMenuButton(items=[
-                        ft.PopupMenuItem(text="Borrow", on_click=self.borrow_book),
                         ft.PopupMenuItem(text="Reserve", on_click=self.reserve_book),
                         ft.PopupMenuItem(text="Show Details", on_click=get_on_click(book)),
                     ],

@@ -127,6 +127,7 @@ class SignUp(ft.UserControl):
 
         try:
             r = requests.post(SERVER_URL + path, headers=headers, params=params)
+            r.raise_for_status()
             print("Successful signup")
             self.page.go("/login")
         except requests.HTTPError as http_err:

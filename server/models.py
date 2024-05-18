@@ -116,9 +116,10 @@ class Borrow(Base):
     reader = relationship('Reader', back_populates='borrows', lazy='joined')
     borrow_date = Column(DateTime, nullable=False)
     return_date = Column(DateTime, nullable=True)
+    due_date = Column(DateTime, nullable=False)
 
     def __repr__(self):
-        return f"<Borrow(id={self.id}, copy={self.copy}, reader={self.reader}, borrow_date={self.borrow_date}, return_date={self.return_date})>"
+        return f"<Borrow(id={self.id}, copy={self.copy}, reader={self.reader}, borrow_date={self.borrow_date}, Due_date={self.due_date}, return_date={self.return_date})>"
 
 class Code(Base):
     __tablename__ = 'codes'
@@ -163,44 +164,44 @@ if __name__ == '__main__':
                              pages=book["pages"]))
             session.commit()
 
-    readers = [
-        {"username": "peter", "email": "peter@parker.com", "name": "Peter Parker", "password": "spiderman"},
-        {"username": "tony", "email": "tony@stark", "name": "Tony Stark", "password": "ironman"},
-        {"username": "bruce", "email": "bruce@wayne", "name": "Bruce Wayne", "password": "batman"},
-    ]
+   #  readers = [
+   #      {"username": "peter", "email": "peter@parker.com", "name": "Peter Parker", "password": "spiderman"},
+   #      {"username": "tony", "email": "tony@stark", "name": "Tony Stark", "password": "ironman"},
+   #      {"username": "bruce", "email": "bruce@wayne", "name": "Bruce Wayne", "password": "batman"},
+   #  ]
+#
+   #  for current_reader in readers:
+   #      with Session() as session:
+   #          session.add(
+   #              Reader(username=current_reader["username"], email=current_reader["email"], name=current_reader["name"],
+   #                     password=current_reader["password"]))
+   #          session.commit()
 
-    for current_reader in readers:
-        with Session() as session:
-            session.add(
-                Reader(username=current_reader["username"], email=current_reader["email"], name=current_reader["name"],
-                       password=current_reader["password"]))
-            session.commit()
+  #  copies = [
+  #      {"book_isbn": "9780141439556"},
+  #      {"book_isbn": "9780141439556"},
+  #      {"book_isbn": "9780141439556"},
+  #      {"book_isbn": "9780451524935"},
+  #      {"book_isbn": "9780451524935"},
+  #      {"book_isbn": "9780679722769"},
+  #  ]
 
-    copies = [
-        {"book_isbn": "9780141439556"},
-        {"book_isbn": "9780141439556"},
-        {"book_isbn": "9780141439556"},
-        {"book_isbn": "9780451524935"},
-        {"book_isbn": "9780451524935"},
-        {"book_isbn": "9780679722769"},
-    ]
+  #  for copy in copies:
+  #      with Session() as session:
+  #          session.add(Copy(book_isbn=copy["book_isbn"]))
+  #          session.commit()
 
-    for copy in copies:
-        with Session() as session:
-            session.add(Copy(book_isbn=copy["book_isbn"]))
-            session.commit()
+  #  borrows = [
+  #      {"copy_id": 1, "reader_username": "peter", "borrow_date": datetime.datetime.now(), "return_date": None},
+  #      {"copy_id": 2, "reader_username": "tony", "borrow_date": datetime.datetime.now(), "return_date": None},
+  #      {"copy_id": 3, "reader_username": "bruce", "borrow_date": datetime.datetime.now(), "return_date": None},
+  #      {"copy_id": 4, "reader_username": "peter", "borrow_date": datetime.datetime.now(), "return_date": None},
+  #      {"copy_id": 5, "reader_username": "tony", "borrow_date": datetime.datetime.now(), "return_date": None},
+  #      {"copy_id": 6, "reader_username": "bruce", "borrow_date": datetime.datetime.now(), "return_date": None},
+  #  ]
 
-    borrows = [
-        {"copy_id": 1, "reader_username": "peter", "borrow_date": datetime.datetime.now(), "return_date": None},
-        {"copy_id": 2, "reader_username": "tony", "borrow_date": datetime.datetime.now(), "return_date": None},
-        {"copy_id": 3, "reader_username": "bruce", "borrow_date": datetime.datetime.now(), "return_date": None},
-        {"copy_id": 4, "reader_username": "peter", "borrow_date": datetime.datetime.now(), "return_date": None},
-        {"copy_id": 5, "reader_username": "tony", "borrow_date": datetime.datetime.now(), "return_date": None},
-        {"copy_id": 6, "reader_username": "bruce", "borrow_date": datetime.datetime.now(), "return_date": None},
-    ]
-
-    for borrow in borrows:
-        with Session() as session:
-            session.add(Borrow(copy_id=borrow["copy_id"], reader_username=borrow["reader_username"],
-                               borrow_date=borrow["borrow_date"], return_date=borrow["return_date"]))
-            session.commit()
+  #  for borrow in borrows:
+  #      with Session() as session:
+  #          session.add(Borrow(copy_id=borrow["copy_id"], reader_username=borrow["reader_username"],
+  #                             borrow_date=borrow["borrow_date"], return_date=borrow["return_date"]))
+  #          session.commit()

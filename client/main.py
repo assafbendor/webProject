@@ -1,4 +1,5 @@
 import flet as ft
+import requests
 from flet import (
     AppBar,
     Icon,
@@ -9,6 +10,7 @@ from flet import (
     theme,
 )
 
+from client import client_config
 from client.book_search import BookSearch
 from client.loan_books import LoanBooks
 from client.login import Login
@@ -26,6 +28,108 @@ def main(page: Page):
     page.theme = theme.Theme(font_family="lato-light")
 
     page.bgcolor = "#083b7a"
+
+    def close_dialog(e):
+        change_password_dialog.content.controls[0].clean()
+        change_password_dialog.content.controls[1].clean()
+        change_password_dialog.open = False
+        page.update()
+
+    def change_password_clicked(e):
+        path = "/change_password"
+
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': f"Bearer {page.client_storage.get('token')}"
+        }
+
+        data = {
+            "new_password": change_password_dialog.content.controls[0].value,
+            "new_password_verify": change_password_dialog.content.controls[1].value
+        }
+
+        try:
+            r = requests.post(client_config.SERVER_URL + path, headers=headers, json=data)
+            # Parse the response JSON data
+            response_data = r.json()
+            r.raise_for_status()
+            # Extract the "token" key from the response body
+            change_password_dialog.content.controls[0].clean()
+            change_password_dialog.content.controls[1].clean()
+            change_password_dialog.open = False
+            page.update()
+
+        except requests.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+            if response_data is not None:
+                change_password_dialog.content.controls[2].content.content.value = response_data.get("detail")
+                change_password_dialog.content.controls[2].visible = True
+                page.update()
+        except Exception as err:
+            print("Failed to make the POST request. Status code:", r.status_code, " Error: ", err)
+            change_password_dialog.content.controls[2].content.content.value = response_data.get("detail")
+            change_password_dialog.content.controls[2].visible = True
+            page.update()
+
+        page.update()
+
+    change_password_dialog = ft.AlertDialog(
+        title=ft.Text("Change Password "),
+        modal=True,
+        content=ft.Column(controls=[
+            ft.TextField(label="New Password",
+                         password=True,
+                         can_reveal_password=True,
+                         bgcolor=ft.colors.WHITE,
+                         color=ft.colors.BLACK87,
+                         focused_color=ft.colors.BLACK87,
+                         border_color=ft.colors.BLACK54,
+                         focused_border_color=ft.colors.BLACK,
+                         border_radius=15,
+                         height=40,
+                         content_padding=ft.padding.only(top=2, bottom=2, left=6),
+                         cursor_height=14,
+                         cursor_color=ft.colors.BLACK54
+                         ),
+            ft.TextField(label="Verify New Password",
+                         password=True,
+                         can_reveal_password=True,
+                         bgcolor=ft.colors.WHITE,
+                         color=ft.colors.BLACK87,
+                         focused_color=ft.colors.BLACK87,
+                         border_color=ft.colors.BLACK54,
+                         focused_border_color=ft.colors.BLACK,
+                         border_radius=15,
+                         height=40,
+                         content_padding=ft.padding.only(top=2, bottom=2, left=6),
+                         cursor_height=14,
+                         cursor_color=ft.colors.BLACK54
+                         ),
+            ft.TextButton(
+                visible=False,
+                content=ft.Container(
+                    content=ft.Text("The username or password is incorrect", color=ft.colors.WHITE, size=15),
+                    bgcolor=ft.colors.RED,
+                    padding=ft.padding.all(10),
+                ))
+        ]),
+        actions=[
+            ft.TextButton("OK", on_click=change_password_clicked),
+            ft.TextButton("Cancel", on_click=close_dialog)
+        ],
+        actions_alignment=ft.MainAxisAlignment.CENTER,
+        elevation=10)
+
+    def show_change_password_dialog(e):
+        page.dialog = change_password_dialog
+        change_password_dialog.open = True
+        page.update()
+
+    def do_logout(e):
+        page.client_storage.remove("token")
+        page.client_storage.remove("username")
+        page.go("/login")
 
     def route_change(e):
         reader_appbar = AppBar(
@@ -48,8 +152,8 @@ def main(page: Page):
                     padding=5
                 ),
                     items=[
-                        ft.PopupMenuItem(text="Profile"),
-                        ft.PopupMenuItem(text="Logout"),
+                        ft.PopupMenuItem(text="Change Password", on_click=show_change_password_dialog),
+                        ft.PopupMenuItem(text="Logout", on_click=do_logout),
                     ],
                     tooltip=None),
             ],
@@ -63,11 +167,8 @@ def main(page: Page):
             toolbar_height=75,
             bgcolor=colors.CYAN_ACCENT_700,
             actions=[
-                ft.TextButton("Loan Books", ft.icons.ASSIGNMENT_ADD, on_click=lambda e: page.go("/loan_books")),
-                ft.TextButton("Return Books", ft.icons.ASSIGNMENT_TURNED_IN,
-                              on_click=lambda e: page.go("/return_books")),
-                ft.TextButton("Add Book", ft.icons.LIBRARY_ADD, on_click=lambda e: page.go("/add_book")),
-                ft.TextButton("Delete Book", ft.icons.PLAYLIST_REMOVE, on_click=lambda e: page.go("/delete_book")),
+                ft.TextButton("Manage Loans", ft.icons.ASSIGNMENT_ADD, on_click=lambda e: page.go("/loan_books")),
+                ft.TextButton("Manage Books", ft.icons.LIBRARY_ADD, on_click=lambda e: page.go("/add_book")),
                 ft.PopupMenuButton(content=ft.Container(
                     ft.Row(controls=[
                         ft.Icon(ft.icons.ACCOUNT_CIRCLE),
@@ -76,8 +177,8 @@ def main(page: Page):
                     padding=5
                 ),
                     items=[
-                        ft.PopupMenuItem(text="Profile"),
-                        ft.PopupMenuItem(text="Logout"),
+                        ft.PopupMenuItem(text="Change Password", on_click=show_change_password_dialog),
+                        ft.PopupMenuItem(text="Logout", on_click=do_logout),
                     ], tooltip=None),
 
             ],
@@ -129,7 +230,7 @@ def main(page: Page):
 
         # admin routes
 
-        if page.route == "/loan_books":
+        if page.route == "/manage_loans":
             page.views.append(
                 View(
                     controls=[LoanBooks(page).build()],
@@ -137,26 +238,10 @@ def main(page: Page):
                 )
             )
 
-        if page.route == "/return_books":
-            page.views.append(
-                View(
-                    controls=[SignUp(page).build()],
-                    appbar=admin_appbar
-                )
-            )
-
-        if page.route == "/add_book":
+        if page.route == "/manage_books":
             page.views.append(
                 View(
                     controls=[BookSearch(page).build()],
-                    appbar=admin_appbar
-                )
-            )
-
-        if page.route == "/delete_book":
-            page.views.append(
-                View(
-                    controls=[MyBooks(page).build()],
                     appbar=admin_appbar
                 )
             )

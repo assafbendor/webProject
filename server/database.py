@@ -62,7 +62,7 @@ def add_reader_to_database(reader: Reader) -> bool:
     return False
 
 
-def change_password(email: str, new_password) -> bool:
+def change_password(email: str, new_password: str) -> bool:
     if find_user(email=email) is not None:
         with Session() as session:
             user = session.query(Reader).filter_by(email=email).first()
@@ -134,11 +134,14 @@ def add_book_to_database(book: Book):
 
 
 def borrow_book(reader: Reader, copy: Copy):
-    borrow = Borrow(reader_username=reader.username, copy=copy, borrow_date=datetime.datetime.now())
+    borrow = Borrow(reader_username=reader.username, copy=copy, borrow_date=datetime.datetime.now(),
+                    due_date=datetime.datetime.now() + datetime.timedelta(days=30))
     with Session() as session:
         copy.is_borrowed = True
+        session.commit()
         session.add(borrow)
         session.commit()
+        print(borrow)
 
 
 def get_free_copy(book: Book) -> Copy | None:
@@ -179,11 +182,12 @@ def return_book(reader: Reader, book: Book):
         if copy.book.isbn == book.isbn:
             if copy.is_borrowed:
                 with Session() as session:
-                    borrow = session.query(Borrow).filter_by(copy=copy).first()
+                    borrow = session.query(Borrow).filter_by(copy=copy, return_date=None).first()
                     borrow.return_date = datetime.datetime.now()
                     session.commit()
                     borrow.copy.is_borrowed = False
                     session.commit()
+                    print(borrow)
                     return True
     return False
 
@@ -254,9 +258,27 @@ def add_code(code: int, email: str):
         session.add(c)
         session.commit()
 
+def get_borrows_by_username(username: str):
+    with Session() as session:
+        return session.query(Borrow).filter_by(reader_username=username, return_date=None).all()
+
+def varify_code(email: str, code: int):
+    with Session() as session:
+        result = session.query(Code).filter_by(email=email).order_by(Code.created_at.desc()).limit(1).first()
+        if result is None:
+            return False
+        return result.number == code
+
 if __name__ == '__main__':
     # Example: Search fo r books
     # print(search_books_by_anything('fun'))
     #asyncio.run(api.add_reader_to_database(username="admin", password="admin", email="admin@gmail.com", name="admin"))
+    # del_copies()
+    # set_copies()
+    # del_borrows()
+    # print(add_code(code=12357, email="asaf.bendor2@gmail.com"))
+    # print(get_all_codes())
+    # print(varify_code(email="asaf.bendor2@gmail.com", code=1235))
+    # print(change_password(email="asaf.bendor2@gmail.com", new_password="12345678!"))
+    pass
 
-    print(search_book(isbn="9783771844523gggggg"))

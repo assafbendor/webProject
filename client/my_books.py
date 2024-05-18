@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import flet as ft
 import requests
@@ -12,7 +13,7 @@ class MyBooks:
         super().__init__()
         self.page = page
 
-    def get_books(self, username):
+    def get_borrows(self, username):
         path = "/book_list"
 
         headers = {
@@ -28,8 +29,8 @@ class MyBooks:
         try:
             r = requests.get(client_config.SERVER_URL + path, params=params, headers=headers)
             r.raise_for_status()
-            books = r.json()
-            return books
+            borrows = r.json()
+            return borrows
         except requests.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
         except Exception as err:
@@ -39,19 +40,20 @@ class MyBooks:
 
         dataRows = []
 
-        books = self.get_books(username)
-        for book in books:
+        borrows = self.get_borrows(username)
+        for borrow in borrows:
             row = ft.DataRow(
                 cells=[
                     ft.DataCell(
-                        ft.Image(src=f"{os.path.join(os.getcwd(), 'img', book['cover_image_filename'])}",
+                        ft.Image(src=f"{os.path.join(os.getcwd(), 'img', borrow['copy']['book']['cover_image_filename'])}",
                                  height=45,
                                  width=30)),
-                    ft.DataCell(ft.Text(book['title'])),
-                    ft.DataCell(ft.Text(book['author']['name'])),
-                    ft.DataCell(ft.Text("borrow date")),
-                    ft.DataCell(ft.Text("due date")),
+                    ft.DataCell(ft.Text(borrow['copy']['book']['title'])),
+                    ft.DataCell(ft.Text(borrow['copy']['book']['author']['name'])),
+                    ft.DataCell(ft.Text(datetime.fromisoformat(borrow['borrow_date']).strftime("%d/%m/%Y"))),
+                    ft.DataCell(ft.Text(datetime.fromisoformat(borrow['due_date']).strftime("%d/%m/%Y"))),
                 ],
+
                 )
 
             dataRows.append(row)
@@ -65,12 +67,11 @@ class MyBooks:
 
     def get_user_books_table(self, username):
         table = ft.DataTable(
-            # width=self.appLayout.page.width,
-            show_checkbox_column=True,
+            width=self.page.width,
             horizontal_lines=ft.border.BorderSide(1, "white"),
             horizontal_margin=15,
             data_row_color={ft.MaterialState.HOVERED: ft.colors.WHITE},
-            heading_row_color=ft.colors.BLACK12,
+            heading_row_color=ft.colors.BLACK45,
             column_spacing=20,
             columns=[
                 ft.DataColumn(

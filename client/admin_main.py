@@ -15,9 +15,6 @@ def main(page: ft.Page):
     def loan_books_clicked(arg):
         get_users()
 
-    def return_books_clicked():
-        pass
-
     def extend_book_clicked():
         pass
 
@@ -108,22 +105,6 @@ def main(page: ft.Page):
             blur_style=ft.ShadowBlurStyle.OUTER),
         on_hover=on_action_hover,
         on_click=loan_books_clicked)
-
-    search_books_button = ft.Container(
-        content=ft.Text("Return Books", font_family="Calibiry", size=20),
-        margin=30,
-        padding=30,
-        alignment=ft.alignment.center,
-        bgcolor=ft.colors.BLACK54,
-        border_radius=20,
-        shadow=ft.BoxShadow(
-            spread_radius=1,
-            blur_radius=5,
-            color=ft.colors.BLUE_GREY_300,
-            offset=ft.Offset(0, 0),
-            blur_style=ft.ShadowBlurStyle.OUTER),
-        on_hover=on_action_hover,
-        on_click=return_books_clicked)
 
     extend_button = ft.Container(
         content=ft.Text("Extend a Book", font_family="Calibiry", size=20),
