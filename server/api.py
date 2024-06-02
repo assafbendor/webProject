@@ -112,6 +112,13 @@ def is_valid_password(password):
     # If all checks passed
     return True
 
+def send_reserve_mail(waiting: models.Waiting):
+    email = waiting.reader.email
+    subject = "Your book is now available!"
+    text = (f"Hello {waiting.reader.username}, \n The book you ordered, {waiting.book.title}, is now available at the "
+            f"library!")
+    mail.send_email(to_addr=email, sub=subject, text=text)
+
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -154,8 +161,15 @@ async def add_reader_to_database(username: str, email: str, name: str, password:
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Password must be at least 8 characters and contain at least one number and one symbol"
         )
-    result = database.add_reader_to_database(
-        models.Reader(username=username, email=email, name=name, password=get_password_hash(password)))
+    try:
+        result = database.add_reader_to_database(
+            models.Reader(username=username, email=email, name=name, password=get_password_hash(password)))
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="One or more of the identification elements is in use"
+        )
+    
     if not result:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -170,8 +184,7 @@ async def search_books(current_user: Annotated[models.Reader, Depends(get_curren
                        author_name: str | None = None,
                        author_id: int | None = None,
                        title: str | None = None,
-                       language: str | None = None,
-                       rating: float | None = None):
+                       language: str | None = None):
     book_list = database.search_book(isbn=isbn,
                                      author_name=author_name,
                                      author_id=author_id,
@@ -283,7 +296,8 @@ async def search_books_by_anything(current_user: Annotated[models.Reader, Depend
     return [database.search_book(isbn=isbn)[0] for isbn in database.search_books_by_anything(query_str)]
 
 @app.get("/get_readers")
-async def get_readers():
+async def get_readers(current_user: Annotated[models.Reader, Depends(get_current_user)]):
+    check_if_user_allowed(user=current_user)
     readers = database.get_readers(admin=False)
     return readers
 
@@ -364,6 +378,39 @@ async def change_password(current_user: Annotated[models.Reader, Depends(get_cur
 
     database.change_password(email=current_user.email, new_password=request.new_password)
 
+@app.post("/reserve")
+async def reserve(current_user: Annotated[models.Reader, Depends(get_current_user)], username: str, isbn: str):
+    reader = database.find_user(username=username)
+    book = database.search_book(isbn=isbn)
+    if reader is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User does not exist"
+        )
+    if len(book) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book does not exist"
+        )
+    result = database.add_waiting(reader=reader, book=book[0])
+    if result is False:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Something went wrong"
+        )
+
+@app.get("/reservations")
+async def reservations(current_user: Annotated[models.Reader, Depends(get_current_user)], username: str):
+    user = database.find_user(username=username)
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User is not exist"
+        )
+    if current_user.admin is True:
+        return database.get_waiting_by_reader(reader=user)
+    else:
+        return database.get_waiting_by_reader(reader=current_user)
 
 if __name__ == '__main__':
     import uvicorn

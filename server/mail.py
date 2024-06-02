@@ -24,12 +24,10 @@ def send_email(to_addr, sub, text):
     smtp_port = 587  # For starttls
 
     try:
-        # Setup the SMTP server connection
         server = smtplib.SMTP(smtp_server, smtp_port)
         server.starttls()  # Secure the connection
         server.login(from_email, "siec ourx ceih tpvs")  # Login to the sender's email account
 
-        # Send the email
         text = message.as_string()
         server.sendmail(from_email, to_addr, text)
 

@@ -49,6 +49,8 @@ class Book(Base):
     author_id = Column(String, ForeignKey('authors.id'))
     author = relationship('Author', back_populates='books', lazy='joined')
     copies = relationship('Copy', back_populates='book')
+    waiting = relationship('Waiting', back_populates='book')  # Corrected relationship
+
 
     def __repr__(self):
         return f"<Book(isbn={self.isbn}, title={self.title}, author={self.author}, language={self.language}, rating={self.average_rating})>"
@@ -99,6 +101,7 @@ class Reader(Base):
     email = Column(String, primary_key=True)
     name = Column(String)
     borrows = relationship('Borrow', back_populates='reader')
+    waiting = relationship('Waiting', back_populates='reader')
     password = Column(String)
     admin = Column(Boolean, default=False)
 
@@ -131,6 +134,18 @@ class Code(Base):
 
     def __repr__(self):
         return f"<Code(id={self.id}, Number={self.number}, Email={self.email}, Created_at={self.created_at}"
+
+class Waiting(Base):
+    __tablename__ = 'waiting'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    reader_username = Column(String, ForeignKey('readers.username'))
+    reader = relationship('Reader', back_populates='waiting', lazy='joined')
+    book_isbn = Column(String, ForeignKey('books.isbn'))  # Corrected ForeignKey
+    book = relationship('Book', back_populates='waiting', lazy='joined')  # Corrected relationship
+    is_active = Column(Boolean, default=True)
+
+    def __repr__(self):
+        return f"<Waiting(id={self.id}, reader={self.reader}, book={self.book}, is_active={self.is_active}"
 
 if __name__ == '__main__':
     engine = create_engine(DATABASE_URL)

@@ -1,6 +1,5 @@
 import datetime
 import random
-import time
 from typing import Type
 
 from sqlalchemy import create_engine
@@ -11,7 +10,7 @@ from whoosh.qparser import MultifieldParser, FuzzyTermPlugin
 import api
 import models
 from server.config import DATABASE_URL
-from server.models import Book, Copy, Borrow, Reader, Code
+from server.models import Book, Copy, Borrow, Reader, Code, Waiting
 
 engine = create_engine(DATABASE_URL)
 
@@ -269,6 +268,36 @@ def varify_code(email: str, code: int):
             return False
         return result.number == code
 
+def get_all_waiting():
+    with Session() as session:
+        return session.query(Waiting).all()
+
+def add_waiting(reader: Reader, book: Book):
+    waiting = Waiting(reader=reader, book=book)
+    if find_waiting(reader=reader, book=book) is None:
+        with Session() as session:
+            session.add(waiting)
+            session.commit()
+        return True
+    return False
+
+def remove_waiting(waiting: Waiting):
+    if waiting.is_active is False:
+        return False
+    with Session() as session:
+        waiting.is_active = True
+        session.commit()
+    return True
+
+def find_waiting(reader: Reader, book: Book):
+    with Session() as session:
+        return session.query(Waiting).filter_by(reader=reader, book=book).first()
+
+def get_waiting_by_reader(reader: Reader):
+    with Session() as session:
+        return session.query(Waiting).filter_by(reader=reader).all()
+
+
 if __name__ == '__main__':
     # Example: Search fo r books
     # print(search_books_by_anything('fun'))
@@ -280,5 +309,11 @@ if __name__ == '__main__':
     # print(get_all_codes())
     # print(varify_code(email="asaf.bendor2@gmail.com", code=1235))
     # print(change_password(email="asaf.bendor2@gmail.com", new_password="12345678!"))
-    pass
-
+    print(get_all_waiting())
+    user = find_user(username="assaf44")
+    # print(user)
+    book = search_book(isbn="9785383638119")[0]
+    # print(book)
+    # add_waiting(reader=user, book=book)
+    # print(get_all_waiting())
+    # api.send_reserve_mail(get_all_waiting()[0])

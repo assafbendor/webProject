@@ -15,11 +15,27 @@ class BookList:
         self.page = page
         self.single_book = single_book.SingleBook(page)
 
-    def borrow_book(self, e):
-        pass
-
     def reserve_book(self, e):
-        pass
+        path = "/reserve"
+
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': f"Bearer {self.page.client_storage.get('token')}"
+        }
+
+        params = {
+            'username': self.page.client_storage.get('username'),
+            'isbn': e.data
+        }
+
+        try:
+            r = requests.post(client_config.SERVER_URL + path, headers=headers, params=params)
+            r.raise_for_status()
+        except requests.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+        except Exception as err:
+            print("Failed to make the get request: ", client_config.SERVER_URL + path, " Error: ", err)
 
     def show_book_details(self, e):
         self.single_book.open_book_dlg(e)
@@ -52,6 +68,14 @@ class BookList:
                 data=book,
                 target=''))
 
+        def reserve_book_clicked(isbn):
+            return lambda e: self.reserve_book(e=ft.ControlEvent(
+                control=None,
+                name="Reserve Book Clicked",
+                page=self.page,
+                data=isbn,
+                target=''))
+
         dataRows = []
         for book in books:
             row = ft.DataRow(
@@ -63,7 +87,7 @@ class BookList:
                     ft.DataCell(ft.Text(book['title'])),
                     ft.DataCell(ft.Text(book['author']['name'])),
                     ft.DataCell(ft.PopupMenuButton(items=[
-                        ft.PopupMenuItem(text="Reserve", on_click=self.reserve_book),
+                        ft.PopupMenuItem(text="Reserve", on_click=reserve_book_clicked(book['isbn'])),
                         ft.PopupMenuItem(text="Show Details", on_click=get_on_click(book)),
                     ],
                         tooltip=None),

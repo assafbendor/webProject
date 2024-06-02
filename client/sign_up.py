@@ -88,8 +88,8 @@ class SignUp(ft.UserControl):
         # Validate password
         if not password:
             errors.append("Password is required.")
-        elif len(password) < 6:
-            errors.append("Password must be at least 6 characters long.")
+        elif len(password) < 8:
+            errors.append("Password must be at least 8 characters long.")
         elif password != repeat_password:
             errors.append("Passwords do not match.")
 
@@ -132,9 +132,15 @@ class SignUp(ft.UserControl):
             self.page.go("/login")
         except requests.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
+            if r is not None:
+                error_json = r.json()
+                self.sign_up_error.content.content.value = error_json['detail']
+            else:
+                self.sign_up_error.content.content.value = "Sign up Failed!"
+
             self.sign_up_error.visible = True
             self.page.update()
-            self.sign_up_error.content = "Sign up Failed"
+
             self.sign_up_error.visible = True
             self.page.update()
         except Exception as err:

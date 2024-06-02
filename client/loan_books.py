@@ -9,6 +9,8 @@ class LoanBooks:
 
     def __init__(self, page):
         super().__init__()
+        self.reservations_table_header_text = None
+        self.reader_reservations = None
         self.table_header_text = None
         self.table_column = None
         self.view = None
@@ -40,7 +42,8 @@ class LoanBooks:
                                                     on_click=self.return_clicked)
 
         self.actions_row = ft.Row(controls=[self.loan_book_button, self.return_book_button], spacing=25)
-        self.actions_and_isbn = ft.Column(controls=[self.isbn_text, self.borrow_isbn, self.actions_row,], visible=False)
+        self.actions_and_isbn = ft.Column(controls=[self.isbn_text, self.borrow_isbn, self.actions_row, ],
+                                          visible=False)
 
         self.borrow_result = ft.TextButton(
             visible=False,
@@ -53,6 +56,7 @@ class LoanBooks:
         )
 
         self.reader_books = ft.Container()
+        self.reader_reservations = ft.Container()
 
     def borrow_clicked(self, e):
         self.borrow_result.visible = False
@@ -74,6 +78,7 @@ class LoanBooks:
             r = requests.post(client_config.SERVER_URL + path, params=params, headers=headers)
             r.raise_for_status()
             self.reader_books.content = self.my_books.get_user_books_table(self.selected_reader)
+            self.reader_reservations.content = self.my_books.get_user_reservation_table(self.selected_reader)
             self.borrow_result.visible = True
             self.page.update()
         except requests.HTTPError as http_err:
@@ -154,7 +159,9 @@ class LoanBooks:
     def reader_selected(self, e):
         self.selected_reader = self.readers_dropdown.value
         self.reader_books.content = self.my_books.get_user_books_table(self.selected_reader)
+        self.reader_reservations.content = self.my_books.get_user_reservation_table(self.selected_reader)
         self.table_header_text.value = "Books currently borrowed by " + self.selected_reader
+        self.reservations_table_header_text.value = "Books currently reserved by " + self.selected_reader
         self.table_column.visible = True
         self.actions_and_isbn.visible = True
         self.page.update()
@@ -171,12 +178,19 @@ class LoanBooks:
         dropdown_row = ft.Row(controls=[dropdown_text, self.readers_dropdown])
 
         self.table_header_text = ft.Text("", theme_style=ft.TextThemeStyle.HEADLINE_SMALL)
-        self.table_column = ft.Column(controls=[self.table_header_text, self.reader_books], spacing=20, visible=False)
+        self.reservations_table_header_text = ft.Text("", theme_style=ft.TextThemeStyle.HEADLINE_SMALL)
+
+        self.table_column = ft.Column(controls=[self.table_header_text,
+                                                self.reader_books,
+                                                self.reservations_table_header_text,
+                                                self.reader_reservations],
+                                      spacing=20,
+                                      visible=False)
 
         self.view = ft.Container(content=
-            ft.Column(
-                controls=[dropdown_row, self.table_column, self.actions_and_isbn, self.borrow_result],
-                spacing=40),
+        ft.Column(
+            controls=[dropdown_row, self.table_column, self.actions_and_isbn, self.borrow_result],
+            spacing=40),
             padding=ft.padding.only(left=50, top=50))
 
         return self.view

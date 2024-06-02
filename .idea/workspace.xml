@@ -6,23 +6,28 @@
   <component name="ChangeListManager">
     <list default="true" id="14b0f841-f437-44a4-9515-29d18687f5ec" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/admin_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/admin_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/admin_main.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/client/book_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/book_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/book_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/book_search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/exceptions.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/client/loan_books.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/loan_books.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/login.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/login.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/my_books.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/my_books.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/sidebar.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/client/sign_up.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/sign_up.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/db/ldb.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_60o6jbb2jpehaibi.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_fpjtk3btygrqfa1k.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_s96yq6d3epcahd48.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_vxsplnuitmarvxgp.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_zpvb9b8jvnkcc26u.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/_MAIN_1190.toc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_26e9jkvlg0cp81pi.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_3zm09nm42vwus5px.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_56gj686r6dz512s3.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_7791k9n1fghd4tpg.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_hl2uisscl444rnnr.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_js0i270x3vb79zdt.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_mo9q6msxk77b4cse.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_nkmcgj8w69qpipvm.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_w4pa6suude6mhq56.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_wp9oqpjcawrh5ibq.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/_MAIN_9340.toc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/mail.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/mail.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -309,6 +314,11 @@
           <url>file://$PROJECT_DIR$/client/main.py</url>
           <line>64</line>
           <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/client/loan_books.py</url>
+          <line>182</line>
+          <option name="timeStamp" value="88" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

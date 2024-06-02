@@ -13,6 +13,29 @@ class MyBooks:
         super().__init__()
         self.page = page
 
+    def get_reservations(self, username):
+        path = "/reservations"
+
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': f"Bearer {self.page.client_storage.get('token')}"
+        }
+
+        params = {
+            "username": username
+        }
+
+        try:
+            r = requests.get(client_config.SERVER_URL + path, params=params, headers=headers)
+            r.raise_for_status()
+            reservations = r.json()
+            return reservations
+        except requests.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+        except Exception as err:
+            print("Failed to make the get request: ", client_config.SERVER_URL + path, " Error: ", err)
+
     def get_borrows(self, username):
         path = "/book_list"
 
@@ -59,11 +82,37 @@ class MyBooks:
             dataRows.append(row)
         return dataRows
 
+    def prepare_rows_reservations(self, username):
+
+        dataRows = []
+
+        reservations = self.get_reservations(username)
+        for reservation in reservations:
+            row = ft.DataRow(
+                cells=[
+                    ft.DataCell(
+                        ft.Image(src=f"{os.path.join(os.getcwd(), 'img', reservation['book']['cover_image_filename'])}",
+                                 height=45,
+                                 width=30)),
+                    ft.DataCell(ft.Text(reservation['book']['title'])),
+                    ft.DataCell(ft.Text(reservation['book']['author']['name'])),
+                    ft.DataCell(ft.Text(datetime.fromisoformat(str(datetime.now())).strftime("%d/%m/%Y"))),
+                ],
+                )
+
+            dataRows.append(row)
+        return dataRows
+
     def build(self):
         self.page.scroll = ft.ScrollMode.HIDDEN
         self.page.update()
 
-        return self.get_user_books_table(self.page.client_storage.get("username"))
+        borrows_text = ft.Text("You currently have the following borrowed books:")
+        borrows = self.get_user_books_table(self.page.client_storage.get("username"))
+        reservation_text = ft.Text("You currently has the following reserved books:")
+        reservations = self.get_user_reservation_table(self.page.client_storage.get("username"))
+
+        return ft.Column(controls=[borrows_text, borrows, reservation_text, reservations], spacing=25)
 
     def get_user_books_table(self, username):
         table = ft.DataTable(
@@ -95,5 +144,34 @@ class MyBooks:
                 ),
             ],
             rows=self.prepare_rows(username),
+        )
+        return table
+
+    def get_user_reservation_table(self, username):
+        table = ft.DataTable(
+            width=self.page.width,
+            horizontal_lines=ft.border.BorderSide(1, "white"),
+            horizontal_margin=15,
+            data_row_color={ft.MaterialState.HOVERED: ft.colors.WHITE},
+            heading_row_color=ft.colors.BLACK45,
+            column_spacing=20,
+            columns=[
+                ft.DataColumn(
+                    ft.Text("Book Cover"),
+                ),
+                ft.DataColumn(
+                    ft.Text("Book Name"),
+                    on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
+                ),
+                ft.DataColumn(
+                    ft.Text("Author"),
+                    on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
+                ),
+                ft.DataColumn(
+                    ft.Text("Reservation Date"),
+                    on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
+                ),
+            ],
+            rows=self.prepare_rows_reservations(username),
         )
         return table
