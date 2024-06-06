@@ -11,12 +11,17 @@ from pydantic import BaseModel
 import database
 import models
 
+import sched
+import time
+
 import mail
 
 import re
 SECRET_KEY = "0ae9bd5bf97167908547da34d48b18701aa0307e84c88f5a2181139e4d5ffb02"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+scheduler = sched.scheduler(time.time, time.sleep)
 
 class PasswordChangeRequest(BaseModel):
     new_password: str
@@ -116,8 +121,25 @@ def send_reserve_mail(waiting: models.Waiting):
     email = waiting.reader.email
     subject = "Your book is now available!"
     text = (f"Hello {waiting.reader.username}, \n The book you ordered, {waiting.book.title}, is now available at the "
-            f"library!")
+            f"library for 24 hours!")
     mail.send_email(to_addr=email, sub=subject, text=text)
+
+def check_waiting():
+    database.update_waiting()
+    lst = database.get_all_active_waiting()
+    for w in lst:
+        c = database.get_free_copy(book=w.book)
+        if c is not None and c.ordered_by_email is None:
+            database.save_copy(copy=c, reader=w.reader)
+            send_reserve_mail(waiting=w)
+
+
+def schedule_check_waiting(sc):
+    check_waiting()
+    # Schedule the function to be called again in 60 seconds
+    scheduler.enter(60, 1, schedule_check_waiting, (sc,))
+
+
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
@@ -169,7 +191,7 @@ async def add_reader_to_database(username: str, email: str, name: str, password:
             status_code=status.HTTP_409_CONFLICT,
             detail="One or more of the identification elements is in use"
         )
-    
+
     if not result:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -245,8 +267,14 @@ async def borrow_book(current_user: Annotated[models.Reader, Depends(get_current
                 status_code=status.HTTP_409_CONFLICT,
                 detail="All copies are borrowed"
             )
+        elif copy.ordered_by_email is not None and copy.ordered_by_email is not reader:
+            response = HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="All copies are borrowed"
+            )
         else:
             database.borrow_book(reader=reader, copy=copy)
+
             response = HTTPException(
                 status_code=status.HTTP_200_OK,
                 detail="book was borrowed successfully"
@@ -405,14 +433,29 @@ async def reservations(current_user: Annotated[models.Reader, Depends(get_curren
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="User is not exist"
+            detail="User does not exist"
         )
     if current_user.admin is True:
         return database.get_waiting_by_reader(reader=user)
     else:
         return database.get_waiting_by_reader(reader=current_user)
 
+@app.get("/history")
+async def get_history(current_user: Annotated[models.Reader, Depends(get_current_user)], username: str):
+    reader = database.find_user(username=username)
+    if reader is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User does not exists"
+        )
+    if current_user.username != username:
+        check_if_user_allowed(user=current_user)
+
+    return database.get_borrow_by_user(reader=reader)
+
 if __name__ == '__main__':
     import uvicorn
 
     uvicorn.run(app, host="0.0.0.0", port=8001)
+    scheduler.enter(60, 1, schedule_check_waiting, (scheduler,))
+    scheduler.run()

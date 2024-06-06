@@ -12,6 +12,7 @@ from flet import (
 
 from client import client_config
 from client.book_search import BookSearch
+from client.history import History
 from client.loan_books import LoanBooks
 from client.login import Login
 from client.my_books import MyBooks
@@ -224,6 +225,14 @@ def main(page: Page):
             page.views.append(
                 View(
                     controls=[MyBooks(page).build()],
+                    appbar=reader_appbar
+                )
+            )
+
+        if page.route == "/history":
+            page.views.append(
+                View(
+                    controls=[History(page).build()],
                     appbar=reader_appbar
                 )
             )

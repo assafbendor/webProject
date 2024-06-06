@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import flet as ft
 import requests
@@ -7,7 +8,7 @@ import client_config
 import single_book
 
 
-class BookList:
+class History:
 
     def __init__(self, page: ft.Page):
         super().__init__()
@@ -15,8 +16,9 @@ class BookList:
         self.page = page
         self.single_book = single_book.SingleBook(page)
 
-    def reserve_book(self, e):
-        path = "/reserve"
+    def get_history(self, username):
+
+        path = "/history"
 
         headers = {
             'accept': 'application/json',
@@ -25,80 +27,42 @@ class BookList:
         }
 
         params = {
-            'username': self.page.client_storage.get('username'),
-            'isbn': e.data
+            "username": username
         }
 
         try:
-            r = requests.post(client_config.SERVER_URL + path, headers=headers, params=params)
+            r = requests.get(client_config.SERVER_URL + path, headers=headers, params=params)
             r.raise_for_status()
+            borrow = r.json()
+            return borrow
         except requests.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
         except Exception as err:
             print("Failed to make the get request: ", client_config.SERVER_URL + path, " Error: ", err)
 
-    def show_book_details(self, e):
-        self.single_book.open_book_dlg(e)
+    def prepare_rows(self):
 
-    def get_books(self):
-        path = "/books"
-
-        headers = {
-            'accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f"Bearer {self.page.client_storage.get('token')}"
-        }
-
-        try:
-            r = requests.get(client_config.SERVER_URL + path, headers=headers)
-            r.raise_for_status()
-            books = r.json()
-            return books
-        except requests.HTTPError as http_err:
-            print(f"HTTP error occurred: {http_err}")
-        except Exception as err:
-            print("Failed to make the get request: ", client_config.SERVER_URL + path, " Error: ", err)
-
-    def prepare_rows(self, books):
-        def get_on_click(book):
-            return lambda e: self.single_book.open_book_dlg(e=ft.ControlEvent(
-                control=None,
-                name="Trending Book Clicked",
-                page=self.page,
-                data=book,
-                target=''))
-
-        def reserve_book_clicked(isbn):
-            return lambda e: self.reserve_book(e=ft.ControlEvent(
-                control=None,
-                name="Reserve Book Clicked",
-                page=self.page,
-                data=isbn,
-                target=''))
+        borrows = self.get_history(self.page.client_storage.get("username"))
 
         dataRows = []
-        for book in books:
+        for borrow in borrows:
             row = ft.DataRow(
                 cells=[
                     ft.DataCell(
-                        ft.Image(src=f"{os.path.join(os.getcwd(), 'img', book['cover_image_filename'])}",
+                        ft.Image(src=f"{os.path.join(os.getcwd(), 'img', borrow['copy']['book']['cover_image_filename'])}",
                                  height=45,
                                  width=30)),
-                    ft.DataCell(ft.Text(book['title'])),
-                    ft.DataCell(ft.Text(book['author']['name'])),
-                    ft.DataCell(ft.Text(book['free_copy'])),
-                    ft.DataCell(ft.PopupMenuButton(items=[
-                        ft.PopupMenuItem(text="Reserve", on_click=reserve_book_clicked(book['isbn'])),
-                        ft.PopupMenuItem(text="Show Details", on_click=get_on_click(book)),
+                    ft.DataCell(ft.Text(borrow['copy']['book']['title'])),
+                    ft.DataCell(ft.Text(borrow['copy']['book']['author']['name'])),
+                    ft.DataCell(ft.Text(datetime.fromisoformat(borrow['borrow_date']).strftime("%d/%m/%Y"))),
+                    ft.DataCell(ft.Text(datetime.fromisoformat(borrow['borrow_date']).strftime("%d/%m/%Y"))),
                     ],
-                        tooltip=None),
-                    )
-                ], )
+                )
 
             dataRows.append(row)
         return dataRows
 
-    def build(self, books):
+    def build(self):
         self.page.scroll = ft.ScrollMode.HIDDEN
         self.page.update()
 
@@ -128,15 +92,15 @@ class BookList:
                         on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
                     ),
                     ft.DataColumn(
-                        ft.Text("Available"),
+                        ft.Text("Borrow Date"),
                         on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
                     ),
                     ft.DataColumn(
-                        ft.Text("Actions"),
+                        ft.Text("Return Date"),
                         on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
                     ),
                 ],
-                rows=self.prepare_rows(books),
+                rows=self.prepare_rows(),
             ),
                 ft.TextButton("Back",
                               on_click=lambda e: back(),

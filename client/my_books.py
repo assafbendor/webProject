@@ -61,6 +61,12 @@ class MyBooks:
 
     def prepare_rows(self, username):
 
+        def get_status(borrow_status):
+            if datetime.fromisoformat(borrow_status['due_date']) < datetime.now():
+                return ft.Text("Late", bgcolor=ft.colors.RED)
+            else:
+                return ft.Text("On Time", bgcolor=ft.colors.GREEN)
+
         dataRows = []
 
         borrows = self.get_borrows(username)
@@ -75,6 +81,7 @@ class MyBooks:
                     ft.DataCell(ft.Text(borrow['copy']['book']['author']['name'])),
                     ft.DataCell(ft.Text(datetime.fromisoformat(borrow['borrow_date']).strftime("%d/%m/%Y"))),
                     ft.DataCell(ft.Text(datetime.fromisoformat(borrow['due_date']).strftime("%d/%m/%Y"))),
+                    ft.DataCell(get_status(borrow))
                 ],
 
                 )
@@ -96,7 +103,7 @@ class MyBooks:
                                  width=30)),
                     ft.DataCell(ft.Text(reservation['book']['title'])),
                     ft.DataCell(ft.Text(reservation['book']['author']['name'])),
-                    ft.DataCell(ft.Text(datetime.fromisoformat(str(datetime.now())).strftime("%d/%m/%Y"))),
+                    ft.DataCell(ft.Text(datetime.fromisoformat(reservation['date']).strftime("%d/%m/%Y"))),
                 ],
                 )
 
@@ -109,7 +116,7 @@ class MyBooks:
 
         borrows_text = ft.Text("You currently have the following borrowed books:")
         borrows = self.get_user_books_table(self.page.client_storage.get("username"))
-        reservation_text = ft.Text("You currently has the following reserved books:")
+        reservation_text = ft.Text("You currently have the following reserved books:")
         reservations = self.get_user_reservation_table(self.page.client_storage.get("username"))
 
         return ft.Column(controls=[borrows_text, borrows, reservation_text, reservations], spacing=25)
@@ -140,6 +147,10 @@ class MyBooks:
                 ),
                 ft.DataColumn(
                     ft.Text("Due Date"),
+                    on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
+                ),
+                ft.DataColumn(
+                    ft.Text("Status"),
                     on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
                 ),
             ],

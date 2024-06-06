@@ -20,6 +20,14 @@ Session = sessionmaker(bind=engine)
 def get_all_books() -> list[Type[Book]]:
     with Session() as session:
         book_list = session.query(Book).all()
+        for book in book_list:
+            if get_free_copy(book) is None:
+                book.free_copy = False
+            else:
+                if get_free_copy(book).ordered_by_email is None:
+                    book.free_copy = True
+                else:
+                    book.free_copy = True
         return book_list
 
 
@@ -100,9 +108,17 @@ def add_author_to_database(author: models.Author):
 
 def search_book(isbn: str | None = None,
                 author_name: str | None = None,
-                title: str | None = None) -> list[Book] | None:
+                title: str | None = None):
     with Session() as session:
         books = session.query(Book).filter_by(isbn=isbn).all()
+        for book in books:
+            if get_free_copy(book) is None:
+                book.free_copy = False
+            else:
+                if get_free_copy(book).ordered_by_email is None:
+                    book.free_copy = True
+                else:
+                    book.free_copy = True
         return books
 
 
@@ -140,20 +156,18 @@ def borrow_book(reader: Reader, copy: Copy):
         session.commit()
         session.add(borrow)
         session.commit()
-        print(borrow)
+        copy.ordered_by_email = None
+        session.commit()
+        w = find_waiting(reader=reader, book=copy.book)
+        if w is not None:
+            w.is_active = False
+            session.commit()
 
 
 def get_free_copy(book: Book) -> Copy | None:
     with Session() as session:
         copy = session.query(Copy).filter_by(book=book).filter_by(is_borrowed=False).first()
     return copy
-
-
-def get_copy_by_isbn(isbn: str):
-    book = search_book(isbn=isbn)[0]
-    copy = get_free_copy(book)
-    return copy
-
 
 def test():
     lst = get_all_borrows()
@@ -285,7 +299,9 @@ def remove_waiting(waiting: Waiting):
     if waiting.is_active is False:
         return False
     with Session() as session:
-        waiting.is_active = True
+        waiting.is_active = False
+        session.commit()
+        waiting.saved_copy.ordered_by_email = None
         session.commit()
     return True
 
@@ -297,23 +313,31 @@ def get_waiting_by_reader(reader: Reader):
     with Session() as session:
         return session.query(Waiting).filter_by(reader=reader).all()
 
+def get_borrow_by_user(reader: Reader):
+    with Session() as session:
+        return session.query(Borrow).filter_by(reader_username=reader.username).all()
+
+def get_all_active_waiting():
+    with Session() as session:
+        return session.query(Waiting).filter_by(is_active=True).all()
+
+def update_waiting():
+    lst = get_all_active_waiting()
+    with Session() as session:
+        for w in lst:
+            if datetime.datetime.now() - w.date > datetime.timedelta(hours=24):
+                w.is_active = False
+                session.commit()
+                w.saved_copy.ordered_by_email = None
+                session.commit()
+
+def save_copy(copy: Copy, reader: Reader):
+    if copy is not None:
+        with Session() as session:
+            copy.ordered_by_email = reader
+            session.commit()
+
 
 if __name__ == '__main__':
-    # Example: Search fo r books
-    # print(search_books_by_anything('fun'))
-    #asyncio.run(api.add_reader_to_database(username="admin", password="admin", email="admin@gmail.com", name="admin"))
-    # del_copies()
-    # set_copies()
-    # del_borrows()
-    # print(add_code(code=12357, email="asaf.bendor2@gmail.com"))
-    # print(get_all_codes())
-    # print(varify_code(email="asaf.bendor2@gmail.com", code=1235))
-    # print(change_password(email="asaf.bendor2@gmail.com", new_password="12345678!"))
-    print(get_all_waiting())
-    user = find_user(username="assaf44")
-    # print(user)
-    book = search_book(isbn="9785383638119")[0]
-    # print(book)
-    # add_waiting(reader=user, book=book)
-    # print(get_all_waiting())
-    # api.send_reserve_mail(get_all_waiting()[0])
+    set_copies()
+    print(get_all_copies())

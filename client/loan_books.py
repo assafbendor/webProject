@@ -165,7 +165,6 @@ class LoanBooks:
         self.table_column.visible = True
         self.actions_and_isbn.visible = True
         self.page.update()
-        print(self.selected_reader)
 
     def build(self):
         readers = self.get_readers()
@@ -177,8 +176,8 @@ class LoanBooks:
 
         dropdown_row = ft.Row(controls=[dropdown_text, self.readers_dropdown])
 
-        self.table_header_text = ft.Text("", theme_style=ft.TextThemeStyle.HEADLINE_SMALL)
-        self.reservations_table_header_text = ft.Text("", theme_style=ft.TextThemeStyle.HEADLINE_SMALL)
+        self.table_header_text = ft.Text("")
+        self.reservations_table_header_text = ft.Text("")
 
         self.table_column = ft.Column(controls=[self.table_header_text,
                                                 self.reader_books,
