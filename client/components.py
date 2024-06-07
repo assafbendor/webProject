@@ -2,6 +2,8 @@ import os
 
 import flet as ft
 
+from client import client_config
+
 
 class Logo(ft.UserControl):
 
@@ -11,9 +13,9 @@ class Logo(ft.UserControl):
         self.page = page
 
     def build(self):
-        path = os.path.join(os.getcwd(), "img", "logo.png")
+        path = os.path.join(os.getcwd(), "photos", "logo.png")
         logo = ft.Image(
-            src=f"{path}",
+            src=f"{client_config.SERVER_URL}/photos/logo.png",
             expand=True
         )
 

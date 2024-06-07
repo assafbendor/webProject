@@ -5,25 +5,115 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14b0f841-f437-44a4-9515-29d18687f5ec" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/history.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/book_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/book_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/book_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/book_search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/components.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/components.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/history.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/history.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/1984_George Orwell.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/1984_George Orwell.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/A Christmas Carol_Charles Dickens.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/A Christmas Carol_Charles Dickens.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/A Clockwork Orange_Anthony Burgess.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/A Clockwork Orange_Anthony Burgess.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/A Farewell to Arms_Ernest Hemingway.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/A Farewell to Arms_Ernest Hemingway.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/A Game of Thrones_George R.R. Martin.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/A Game of Thrones_George R.R. Martin.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/A Tale of Two Cities_Charles Dickens.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/A Tale of Two Cities_Charles Dickens.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Alice's Adventures in Wonderland_Lewis Carroll.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Alice's Adventures in Wonderland_Lewis Carroll.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Anna Karenina_Leo Tolstoy.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Anna Karenina_Leo Tolstoy.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Beloved_Toni Morrison.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Beloved_Toni Morrison.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Brave New World_Aldous Huxley.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Brave New World_Aldous Huxley.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Catch-22_Joseph Heller.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Catch-22_Joseph Heller.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Crime and Punishment_Fyodor Dostoevsky.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Crime and Punishment_Fyodor Dostoevsky.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Don Quixote_Miguel de Cervantes.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Don Quixote_Miguel de Cervantes.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Dracula_Bram Stoker.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Dracula_Bram Stoker.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Fifty Shades of Grey_E.L. James.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Fifty Shades of Grey_E.L. James.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Frankenstein_Mary Shelley.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Frankenstein_Mary Shelley.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Gone Girl_Gillian Flynn.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Gone Girl_Gillian Flynn.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Gone with the Wind_Margaret Mitchell.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Gone with the Wind_Margaret Mitchell.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Great Expectations_Charles Dickens.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Great Expectations_Charles Dickens.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Gulliver's Travels_Jonathan Swift.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Gulliver's Travels_Jonathan Swift.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Hamlet_William Shakespeare.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Hamlet_William Shakespeare.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Harry Potter and the Philosopher's Stone_J.K. Rowling.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Harry Potter and the Philosopher's Stone_J.K. Rowling.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Harry Potter and the Sorcerer's Stone_J.K. Rowling.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Harry Potter and the Sorcerer's Stone_J.K. Rowling.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Heart of Darkness_Joseph Conrad.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Heart of Darkness_Joseph Conrad.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Jane Eyre_Charlotte BrontÃ«.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Jane Eyre_Charlotte BrontÃ«.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Les MisÃ©rables_Victor Hugo.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Les MisÃ©rables_Victor Hugo.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Life of Pi_Yann Martel.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Life of Pi_Yann Martel.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Lord of the Flies_William Golding.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Lord of the Flies_William Golding.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Madame Bovary_Gustave Flaubert.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Madame Bovary_Gustave Flaubert.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Middlemarch_George Eliot.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Middlemarch_George Eliot.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Moby Dick_Herman Melville.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Moby Dick_Herman Melville.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/One Hundred Years of Solitude_Gabriel GarcÃ­a MÃ¡rquez.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/One Hundred Years of Solitude_Gabriel GarcÃ­a MÃ¡rquez.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Pride and Prejudice_Jane Austen.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Pride and Prejudice_Jane Austen.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Adventures of Huckleberry Finn_Mark Twain.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Adventures of Huckleberry Finn_Mark Twain.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Adventures of Sherlock Holmes_Arthur Conan Doyle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Adventures of Sherlock Holmes_Arthur Conan Doyle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Alchemist_Paulo Coelho.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Alchemist_Paulo Coelho.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Bell Jar_Sylvia Plath.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Bell Jar_Sylvia Plath.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Book Thief_Markus Zusak.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Book Thief_Markus Zusak.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Brothers Karamazov_Fyodor Dostoevsky.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Brothers Karamazov_Fyodor Dostoevsky.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Canterbury Tales_Geoffrey Chaucer.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Canterbury Tales_Geoffrey Chaucer.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Catcher in the Rye_J.D. Salinger.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Catcher in the Rye_J.D. Salinger.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Chronicles of Narnia_C.S. Lewis.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Chronicles of Narnia_C.S. Lewis.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Color Purple_Alice Walker.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Color Purple_Alice Walker.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Count of Monte Cristo_Alexandre Dumas.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Count of Monte Cristo_Alexandre Dumas.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Da Vinci Code_Dan Brown.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Da Vinci Code_Dan Brown.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Diary of a Young Girl_Anne Frank.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Diary of a Young Girl_Anne Frank.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Divine Comedy_Dante Alighieri.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Divine Comedy_Dante Alighieri.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Fault in Our Stars_John Green.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Fault in Our Stars_John Green.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Fountainhead_Ayn Rand.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Fountainhead_Ayn Rand.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Girl on the Train_Paula Hawkins.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Girl on the Train_Paula Hawkins.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Girl with the Dragon Tattoo_Stieg Larsson.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Girl with the Dragon Tattoo_Stieg Larsson.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Giver_Lois Lowry.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Giver_Lois Lowry.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Grapes of Wrath_John Steinbeck.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Grapes of Wrath_John Steinbeck.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Great Gatsby_F. Scott Fitzgerald.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Great Gatsby_F. Scott Fitzgerald.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Handmaid's Tale_Margaret Atwood.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Handmaid's Tale_Margaret Atwood.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Help_Kathryn Stockett.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Help_Kathryn Stockett.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Hobbit_J.R.R. Tolkien.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Hobbit_J.R.R. Tolkien.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Hunger Games_Suzanne Collins.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Hunger Games_Suzanne Collins.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Idiot_Fyodor Dostoevsky.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Idiot_Fyodor Dostoevsky.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Iliad_Homer.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Iliad_Homer.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Joy Luck Club_Amy Tan.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Joy Luck Club_Amy Tan.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Kite Runner_Khaled Hosseini.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Kite Runner_Khaled Hosseini.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Little Prince_Antoine de Saint-ExupÃ©ry.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Little Prince_Antoine de Saint-ExupÃ©ry.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Lord of the Rings_J.R.R. Tolkien.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Lord of the Rings_J.R.R. Tolkien.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Master and Margarita_Mikhail Bulgakov.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Master and Margarita_Mikhail Bulgakov.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Metamorphosis_Franz Kafka.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Metamorphosis_Franz Kafka.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Name of the Rose_Umberto Eco.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Name of the Rose_Umberto Eco.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Notebook_Nicholas Sparks.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Notebook_Nicholas Sparks.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Odyssey_Homer.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Odyssey_Homer.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Old Man and the Sea_Ernest Hemingway.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Old Man and the Sea_Ernest Hemingway.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Picture of Dorian Gray_Oscar Wilde.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Picture of Dorian Gray_Oscar Wilde.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Republic_Plato.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Republic_Plato.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Road_Cormac McCarthy.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Road_Cormac McCarthy.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Scarlet Letter_Nathaniel Hawthorne.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Scarlet Letter_Nathaniel Hawthorne.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Secret History_Donna Tartt.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Secret History_Donna Tartt.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Sound and the Fury_William Faulkner.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Sound and the Fury_William Faulkner.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Stranger_Albert Camus.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Stranger_Albert Camus.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Stranger_Harlan Coben.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Stranger_Harlan Coben.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Sun Also Rises_Ernest Hemingway.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Sun Also Rises_Ernest Hemingway.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Three Musketeers_Alexandre Dumas.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Three Musketeers_Alexandre Dumas.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Trial_Franz Kafka.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Trial_Franz Kafka.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/The Twilight Saga_Stephenie Meyer.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/The Twilight Saga_Stephenie Meyer.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/To Kill a Mockingbird_Harper Lee.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/To Kill a Mockingbird_Harper Lee.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Twilight_Stephenie Meyer.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Twilight_Stephenie Meyer.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Ulysses_James Joyce.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Ulysses_James Joyce.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/War and Peace_Leo Tolstoy.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/War and Peace_Leo Tolstoy.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/Wuthering Heights_Emily BrontÃ«.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/Wuthering Heights_Emily BrontÃ«.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/img/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/server/photos/logo.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/loan_books.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/loan_books.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/my_books.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/my_books.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/single_book.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/single_book.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/db/ldb.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_2xql0o4utv1zrdde.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_8hqdxjdxu6qqlw9e.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_am6p0r1pjjguvstw.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_kqdvomgnnjtq3ka0.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_pe5ooah20dqqsbg4.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_wi8wlhg9xh2iwvmy.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_yg1g56tmxeuelglg.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_zaisk0w5d417b4xx.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/_MAIN_11197.toc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_7ockx3q69djw75lx.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_dfyqsf5yz3uudsma.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_fbzc0whn20kl3ktw.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_hiw3m1v42jgahbl4.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_inw38psvdgodk9ud.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_ollbpeqb3hhvvvhd.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_xnj11wiodhrfsgon.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/_MAIN_15299.toc" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,9 +161,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.api.executor": "Run",
-    "Python.database (1).executor": "Run",
+    "Python.database (1).executor": "Debug",
     "Python.mail.executor": "Run",
-    "Python.main.executor": "Debug",
+    "Python.main.executor": "Run",
     "Python.models.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -96,6 +186,7 @@
       <recent name="$PROJECT_DIR$/server" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server" />
       <recent name="$PROJECT_DIR$/client/assets" />
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -312,20 +403,40 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/client/my_books.py</url>
-          <line>125</line>
-          <option name="timeStamp" value="91" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/client/my_books.py</url>
-          <line>156</line>
-          <option name="timeStamp" value="92" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/client/my_books.py</url>
           <line>64</line>
           <option name="timeStamp" value="93" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/server/database.py</url>
+          <line>369</line>
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/client/main.py</url>
+          <line>232</line>
+          <option name="timeStamp" value="103" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/client/main.py</url>
+          <line>224</line>
+          <option name="timeStamp" value="104" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/client/main.py</url>
+          <line>216</line>
+          <option name="timeStamp" value="106" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/client/main.py</url>
+          <line>262</line>
+          <option name="timeStamp" value="108" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="page.auto_scroll" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

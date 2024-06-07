@@ -160,8 +160,8 @@ class LoanBooks:
         self.selected_reader = self.readers_dropdown.value
         self.reader_books.content = self.my_books.get_user_books_table(self.selected_reader)
         self.reader_reservations.content = self.my_books.get_user_reservation_table(self.selected_reader)
-        self.table_header_text.value = "Books currently borrowed by " + self.selected_reader
-        self.reservations_table_header_text.value = "Books currently reserved by " + self.selected_reader
+        self.table_header_text.value = "Books currently borrowed by " + self.selected_reader + ":"
+        self.reservations_table_header_text.value = "Books currently reserved by " + self.selected_reader + ":"
         self.table_column.visible = True
         self.actions_and_isbn.visible = True
         self.page.update()
@@ -176,8 +176,8 @@ class LoanBooks:
 
         dropdown_row = ft.Row(controls=[dropdown_text, self.readers_dropdown])
 
-        self.table_header_text = ft.Text("")
-        self.reservations_table_header_text = ft.Text("")
+        self.table_header_text = ft.Text("", color=ft.colors.LIGHT_BLUE_200)
+        self.reservations_table_header_text = ft.Text("", color=ft.colors.LIGHT_BLUE_200)
 
         self.table_column = ft.Column(controls=[self.table_header_text,
                                                 self.reader_books,

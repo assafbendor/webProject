@@ -161,11 +161,7 @@ class BookSearch:
         self.trending_books = self.get_trending_books()
         trending_books_controls = []
 
-        paths = []
-        for i in range(5):
-            paths.append(os.path.join(os.getcwd(), "img", self.trending_books[i]['cover_image_filename']))
-
-        for i in range(len(self.trending_books)):
+        for book in self.trending_books:
             image_col = ft.Column(controls=[
                 ft.Card(
                     elevation=2,
@@ -173,13 +169,13 @@ class BookSearch:
                     shape=ft.ContinuousRectangleBorder.radius,
                     content=ft.Container(
                         content=ft.Image(
-                            src=f"{paths[i]}",
+                            src=f"{client_config.SERVER_URL}/photos/{book['cover_image_filename']}",
                         ),
                         padding=5,
                         margin=5,
                     ),
                 ),
-                self.single_book.get_stars(self.trending_books[i])],
+                self.single_book.get_stars(book)],
                 alignment=ft.alignment.center,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER)
 
@@ -193,7 +189,7 @@ class BookSearch:
 
             trending_books_controls.append(ft.Container(
                 content=image_col,
-                on_click=get_on_click(self.trending_books[i])
+                on_click=get_on_click(book)
                 # on_click=self.single_book.open_book_dlg
             ))
 

@@ -35,7 +35,7 @@ class SingleBook:
             shape=ft.ContinuousRectangleBorder.radius,
             content=ft.Container(
                 content=ft.Image(
-                    src=os.path.join(os.getcwd(), "img", book['cover_image_filename']),
+                    src=os.path.join(os.getcwd(), "photos", book['cover_image_filename']),
                 ),
                 padding=10,
                 margin=10,
@@ -50,11 +50,11 @@ class SingleBook:
                                  spacing=30)
 
         language = ft.Text("Language:" + book['language'], size=20)
-        pages = ft.Text(str(book['pages']) + " pages", size=30)
+        pages = ft.Text(str(book['pages']) + " pages", size=20)
 
         summary = ft.Text(book['description'],
                           color=ft.colors.WHITE54,
-                          size=18,
+                          size=20,
                           italic=True)
 
         summary_container = ft.Container(content=summary, margin=15, padding=30)

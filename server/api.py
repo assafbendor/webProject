@@ -1,3 +1,4 @@
+import multiprocessing
 import random
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
@@ -7,6 +8,8 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
+from fastapi.staticfiles import StaticFiles
+
 
 import database
 import models
@@ -20,8 +23,6 @@ import re
 SECRET_KEY = "0ae9bd5bf97167908547da34d48b18701aa0307e84c88f5a2181139e4d5ffb02"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
-scheduler = sched.scheduler(time.time, time.sleep)
 
 class PasswordChangeRequest(BaseModel):
     new_password: str
@@ -39,6 +40,17 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = FastAPI()
 
+app.mount("/photos", StaticFiles(directory="./photos"), name="static-photos")
+
+
+scheduler_instance = sched.scheduler(time.time, time.sleep)
+
+def scheduler():
+    # Schedule the first execution
+    scheduler_instance.enter(0, 1, schedule_check_waiting, (scheduler_instance,))
+
+    # Run the scheduler
+    scheduler_instance.run()
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
@@ -129,15 +141,17 @@ def check_waiting():
     lst = database.get_all_active_waiting()
     for w in lst:
         c = database.get_free_copy(book=w.book)
-        if c is not None and c.ordered_by_email is None:
-            database.save_copy(copy=c, reader=w.reader)
-            send_reserve_mail(waiting=w)
-
+        if c is not None:
+            if c.ordered_by_email is None:
+                database.save_copy_for_copies(copy=c, reader=w.reader)
+                database.save_copy_for_waiting(waiting=w, copy=c)
+                send_reserve_mail(waiting=w)
 
 def schedule_check_waiting(sc):
+    print("in timer")
     check_waiting()
     # Schedule the function to be called again in 60 seconds
-    scheduler.enter(60, 1, schedule_check_waiting, (sc,))
+    scheduler_instance.enter(60, 1, schedule_check_waiting, (sc,))
 
 
 
@@ -455,7 +469,10 @@ async def get_history(current_user: Annotated[models.Reader, Depends(get_current
 
 if __name__ == '__main__':
     import uvicorn
+    # Create a new process for the scheduler
+    scheduler_process = multiprocessing.Process(target=scheduler)
+
+    # Start the scheduler process
+    scheduler_process.start()
 
     uvicorn.run(app, host="0.0.0.0", port=8001)
-    scheduler.enter(60, 1, schedule_check_waiting, (scheduler,))
-    scheduler.run()

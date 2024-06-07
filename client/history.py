@@ -7,7 +7,6 @@ import requests
 import client_config
 import single_book
 
-
 class History:
 
     def __init__(self, page: ft.Page):
@@ -49,15 +48,16 @@ class History:
             row = ft.DataRow(
                 cells=[
                     ft.DataCell(
-                        ft.Image(src=f"{os.path.join(os.getcwd(), 'img', borrow['copy']['book']['cover_image_filename'])}",
-                                 height=45,
-                                 width=30)),
+                        ft.Image(
+                            src=f"{client_config.SERVER_URL}/photos/borrow['copy']['book']['cover_image_filename']",
+                            height=45,
+                            width=30)),
                     ft.DataCell(ft.Text(borrow['copy']['book']['title'])),
                     ft.DataCell(ft.Text(borrow['copy']['book']['author']['name'])),
                     ft.DataCell(ft.Text(datetime.fromisoformat(borrow['borrow_date']).strftime("%d/%m/%Y"))),
                     ft.DataCell(ft.Text(datetime.fromisoformat(borrow['borrow_date']).strftime("%d/%m/%Y"))),
-                    ],
-                )
+                ],
+            )
 
             dataRows.append(row)
         return dataRows
@@ -70,42 +70,42 @@ class History:
             self.page.views.pop()
             self.page.update()
 
+        history_text = ft.Text("Here is the history of books you borrowed:", color=ft.colors.LIGHT_BLUE_200)
+
         column = ft.Column(
-            controls=[ft.DataTable(
-                width=self.page.width,
-                show_checkbox_column=True,
-                horizontal_lines=ft.border.BorderSide(1, "white"),
-                horizontal_margin=15,
-                data_row_color={ft.MaterialState.HOVERED: ft.colors.WHITE},
-                heading_row_color=ft.colors.BLACK12,
-                column_spacing=20,
-                columns=[
-                    ft.DataColumn(
-                        ft.Text("Book Cover"),
-                    ),
-                    ft.DataColumn(
-                        ft.Text("Book Name"),
-                        on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
-                    ),
-                    ft.DataColumn(
-                        ft.Text("Author"),
-                        on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
-                    ),
-                    ft.DataColumn(
-                        ft.Text("Borrow Date"),
-                        on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
-                    ),
-                    ft.DataColumn(
-                        ft.Text("Return Date"),
-                        on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
-                    ),
-                ],
-                rows=self.prepare_rows(),
-            ),
-                ft.TextButton("Back",
-                              on_click=lambda e: back(),
-                              icon=ft.icons.ARROW_BACK)
-            ]
+            controls=[history_text,
+                      ft.DataTable(
+                          width=self.page.width,
+                          show_checkbox_column=True,
+                          horizontal_lines=ft.border.BorderSide(1, "white"),
+                          horizontal_margin=15,
+                          data_row_color={ft.MaterialState.HOVERED: ft.colors.WHITE},
+                          heading_row_color=ft.colors.BLACK12,
+                          column_spacing=20,
+                          columns=[
+                              ft.DataColumn(
+                                  ft.Text("Book Cover"),
+                              ),
+                              ft.DataColumn(
+                                  ft.Text("Book Name"),
+                                  on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
+                              ),
+                              ft.DataColumn(
+                                  ft.Text("Author"),
+                                  on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
+                              ),
+                              ft.DataColumn(
+                                  ft.Text("Borrow Date"),
+                                  on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
+                              ),
+                              ft.DataColumn(
+                                  ft.Text("Return Date"),
+                                  on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
+                              ),
+                          ],
+                          rows=self.prepare_rows(),
+                      ),
+                ]
         )
 
         return column

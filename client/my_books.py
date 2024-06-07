@@ -74,7 +74,7 @@ class MyBooks:
             row = ft.DataRow(
                 cells=[
                     ft.DataCell(
-                        ft.Image(src=f"{os.path.join(os.getcwd(), 'img', borrow['copy']['book']['cover_image_filename'])}",
+                        ft.Image(src=f"{os.path.join(os.getcwd(), 'photos', borrow['copy']['book']['cover_image_filename'])}",
                                  height=45,
                                  width=30)),
                     ft.DataCell(ft.Text(borrow['copy']['book']['title'])),
@@ -98,7 +98,7 @@ class MyBooks:
             row = ft.DataRow(
                 cells=[
                     ft.DataCell(
-                        ft.Image(src=f"{os.path.join(os.getcwd(), 'img', reservation['book']['cover_image_filename'])}",
+                        ft.Image(src=f"{os.path.join(os.getcwd(), 'photos', reservation['book']['cover_image_filename'])}",
                                  height=45,
                                  width=30)),
                     ft.DataCell(ft.Text(reservation['book']['title'])),

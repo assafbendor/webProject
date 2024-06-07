@@ -3,6 +3,7 @@ import random
 from typing import Type
 
 from sqlalchemy import create_engine
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
 from whoosh.index import open_dir
 from whoosh.qparser import MultifieldParser, FuzzyTermPlugin
@@ -245,6 +246,10 @@ def get_all_copies():
     with Session() as session:
         return session.query(Copy).all()
 
+def get_copy_by_id(id):
+    with Session() as session:
+        return session.query(Copy).filter_by(id=id)
+
 def del_copies():
     with Session() as session:
         for copy in get_all_copies():
@@ -257,7 +262,7 @@ def set_copies():
         for book in books:
             n = random.randint(1, 5)
             for x in range(n):
-                c = Copy(book=book)
+                c = Copy(book=book, )
                 session.add(c)
                 session.commit()
 
@@ -301,7 +306,7 @@ def remove_waiting(waiting: Waiting):
     with Session() as session:
         waiting.is_active = False
         session.commit()
-        waiting.saved_copy.ordered_by_email = None
+        waiting.copies.ordered_by_email = None
         session.commit()
     return True
 
@@ -328,16 +333,38 @@ def update_waiting():
             if datetime.datetime.now() - w.date > datetime.timedelta(hours=24):
                 w.is_active = False
                 session.commit()
-                w.saved_copy.ordered_by_email = None
+                #w.copy.ordered_by_email = None
                 session.commit()
 
-def save_copy(copy: Copy, reader: Reader):
+def save_copy_for_copies(copy: Copy, reader: Reader):
     if copy is not None:
         with Session() as session:
-            copy.ordered_by_email = reader
+            copy.ordered_by = reader
+            try:
+                session.commit()
+            except SQLAlchemyError as e:
+                session.rollback()  # Roll back changes if an error occurs
+
+def save_copy_for_waiting(waiting: Waiting, copy: Copy):
+    with Session() as session:
+        waiting.copy = copy
+        waiting.copy_id = copy.id
+        try:
+            session.commit()
+        except SQLAlchemyError as e:
+            session.rollback()  # Roll back changes if an error occurs
+
+
+def del_waiting():
+    with Session() as session:
+        lst = get_all_waiting()
+        for w in lst:
+            session.delete(w)
             session.commit()
 
 
 if __name__ == '__main__':
-    set_copies()
-    print(get_all_copies())
+    print(get_all_waiting())
+    api.check_waiting()
+    l = get_all_waiting()
+    print(get_all_waiting())

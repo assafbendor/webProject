@@ -81,7 +81,7 @@ class BookList:
             row = ft.DataRow(
                 cells=[
                     ft.DataCell(
-                        ft.Image(src=f"{os.path.join(os.getcwd(), 'img', book['cover_image_filename'])}",
+                        ft.Image(src=f"{client_config.SERVER_URL}/photos/{book['cover_image_filename']}",
                                  height=45,
                                  width=30)),
                     ft.DataCell(ft.Text(book['title'])),

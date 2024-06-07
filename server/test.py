@@ -32,7 +32,7 @@ import random
 # def main():
 #     with open('server/books.json', 'r') as file:
 #       books = json.load(file)
-#     img_dir = "client/img"
+#     img_dir = "client/photos"
 #     if not os.path.exists(img_dir):
 #         os.makedirs(img_dir)
 #     for book in books:
@@ -51,7 +51,7 @@ import random
 
 # Function to add cover image filename for each book
 def add_cover_image_filenames(books):
-    img_dir = "client/img"  # Assuming the images are in this directory
+    img_dir = "client/photos"  # Assuming the images are in this directory
     for book in books:
         title = book["title"]
         author = book["author"]
