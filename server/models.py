@@ -156,8 +156,10 @@ class Waiting(Base):
     copy_id = Column(Integer, ForeignKey('copies.id'), nullable=True, default=None)
     copy = relationship('Copy', back_populates='waiting', lazy='joined')
 
+    email_was_sent = Column(Boolean, default=False)
+
     def __repr__(self):
-        return f"<Waiting(id={self.id}, reader={self.reader}, book={self.book}, is_active={self.is_active}, date={self.date}, copy={self.copy})>"
+        return f"<Waiting(id={self.id}, reader={self.reader}, book={self.book}, is_active={self.is_active}, date={self.date}, copy={self.copy}, email was sent = {self.email_was_sent})>"
 
 if __name__ == '__main__':
     engine = create_engine(DATABASE_URL)

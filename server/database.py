@@ -202,13 +202,10 @@ def return_book(reader: Reader, book: Book):
                     borrow = session.query(Borrow).filter_by(copy=copy, return_date=None).first()
                     borrow.return_date = datetime.datetime.now()
                     session.commit()
-                    borrow.copy.is_borrowed = False
+                    b = session.merge(borrow)
+                    b.copy.is_borrowed = False
                     session.commit()
-                    print(borrow)
-                    w = find_waiting(reader=reader, book=book)
-                    if w is not None:
-                        w.is_active = False
-                        session.commit()
+                    save_book(copy=copy)
                     return True
     return False
 
@@ -339,7 +336,7 @@ def update_waiting():
                 session.commit()
                 session.commit()
 
-def save_copy_for_copies(copy: Copy, reader: Reader):
+def save_copy_for_reader(copy: Copy, reader: Reader):
     if copy is not None:
         with Session() as session:
             copy_in_session = session.merge(copy)
@@ -352,32 +349,13 @@ def save_copy_for_copies(copy: Copy, reader: Reader):
 
 def save_copy_for_waiting(waiting: Waiting, copy: Copy):
     with Session() as session:
-        # Check if the instance is already in the session
-        waiting_in_session = session.query(Waiting).get(waiting.id)
-
-        if waiting_in_session is None:
-            waiting_in_session = waiting
-            session.add(waiting_in_session)
-        else:
-            session.merge(waiting)
-
-        # Check if the copy instance is already in the session
-        copy_in_session = session.query(Copy).get(copy.id)
-
-        if copy_in_session is None:
-            copy_in_session = copy
-            session.add(copy_in_session)
-        else:
-            session.merge(copy)
-
-        waiting_in_session.copy = copy_in_session
-        waiting_in_session.copy_id = copy_in_session.id
-
+        waiting_in_session = session.merge(waiting)
+        waiting_in_session.copy = copy
+        waiting_in_session.copy_id = copy.id
         try:
             session.commit()
         except SQLAlchemyError as e:
             session.rollback()  # Roll back changes if an error occurs
-            raise  # Re-raise the error for further handling
 
 
 def del_waiting():
@@ -394,6 +372,8 @@ def add_copies(book: Book, num: int):
             copy = Copy(book=book)
             session.add(copy)
             session.commit()
+
+
 
 def get_copies_by_book(book: Book):
     with Session() as session:
@@ -438,6 +418,31 @@ def get_all_borrowed_copies():
     with Session() as session:
         return session.query(Copy).filter_by(is_borrowed=True).all()
 
-if __name__ == '__main__':
+def email_was_sent(waiting: Waiting):
+    with Session() as session:
+        waiting_in_session = session.merge(waiting)
+        waiting_in_session.email_was_sent = True
+        session.commit()
 
-    print(len(get_copies_by_book(search_book(isbn="9789136425919")[0])))
+def get_first_active_waiting_by_book(isbn: str):
+    book = search_book(isbn=isbn)
+    if book is not None:
+        with Session() as session:
+            return session.query(Waiting).filter_by(is_active=True, book_isbn=isbn).first()
+
+def save_book(copy: Copy):
+    waiting = get_first_active_waiting_by_book(isbn=copy.book.isbn)
+    if waiting is not None:
+        save_copy_for_reader(copy=copy, reader=waiting.reader)
+        save_copy_for_waiting(waiting=waiting.reader, copy=copy)
+
+def add_admin(username: str):
+    reader = find_user(username=username)
+    if reader is not None:
+        with Session() as session:
+            reader_in_session = session.merge(reader)
+            reader_in_session.admin = True
+            session.commit()
+
+if __name__ == '__main__':
+    pass

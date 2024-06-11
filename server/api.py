@@ -137,21 +137,14 @@ def send_reserve_mail(waiting: models.Waiting):
     mail.send_email(to_addr=email, sub=subject, text=text)
 
 def check_waiting():
-    print("1")
     database.update_waiting()
     lst = database.get_all_active_waiting()
     for w in lst:
-        c = database.get_all_free_copies(book=w.book)
-        print(c)
-        if len(c) > 0:
-            for copy in c:
-                if copy.ordered_by_email == w.reader.email:
-                    print("1.5")
-                    database.save_copy_for_copies(copy=copy, reader=w.reader)
-                    database.save_copy_for_waiting(waiting=w, copy=copy)
-                    print("2")
-                    send_reserve_mail(waiting=w)
-                    print("checked")
+        print(w)
+        print(w.email_was_sent)
+        if not w.email_was_sent:
+            send_reserve_mail(waiting=w)
+            database.email_was_sent(waiting=w)
 
 def schedule_check_waiting(sc):
     print("in timer")
@@ -277,7 +270,9 @@ async def borrow_book(current_user: Annotated[models.Reader, Depends(get_current
         )
     else:
         copy_list = database.get_all_free_copies(book[0])
+        print(copy_list)
         for c in copy_list:
+            print(c)
             if c.ordered_by_email == reader.email:
                 database.borrow_book(reader=reader, copy=c)
                 raise HTTPException(

@@ -112,8 +112,32 @@ import api
 #     store_books_to_json(books, json_file)
 #     print("Cover image filenames added and stored to the JSON file.")
 #
-#
+#database.save_copy_for_reader(copy=copy, reader=w.reader)
+                    # database.save_copy_for_waiting(waiting=w, copy=copy)
 
+import database
+import api
+import models
 
 if __name__ == "__main__":
-    pass
+
+    #database.set_copies()
+
+    readers = [
+        {"username": "assaf", "email": "asaf.bendor2@gmail.com", "name": "Peter Parker", "password": api.get_password_hash("12345678!")},
+        {"username": "shira", "email": "shira.bendor@gmail.com", "name": "Tony Stark", "password": api.get_password_hash("12345678!")},
+        {"username": "aric", "email": "asaf.bendor3@gmail.com", "name": "Bruce Wayne", "password": api.get_password_hash("12345678!")},
+    ]
+
+    reader_objects = []
+
+    # Iterate over the array and call the function
+    for reader in readers:
+        r = models.Reader(username=reader["username"], email=reader["email"], name=reader["name"], password=reader["password"])
+        reader_objects.append(r)
+        database.add_reader_to_database(r)
+
+    database.add_admin("assaf")
+
+    for i in range(4):
+        database.borrow_book(reader_objects[(i%2)+1], copy=database.get_copy_by_id(i+1))

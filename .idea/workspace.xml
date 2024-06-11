@@ -5,27 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14b0f841-f437-44a4-9515-29d18687f5ec" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/manage_books.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/components.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/components.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/loan_books.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/loan_books.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/my_books.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/my_books.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/single_book.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/single_book.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/db/ldb.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_1ns6ffuvk38hwrvf.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_2nrxnms99cigpbvg.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_3qtkk6kfs1bkiuge.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_5v91x3e7xbmv0oh5.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_8xd7w9p233paw56s.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_ik2j88lv7n8qqqzp.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_iv86pq2ct7a5ivru.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_j6e6zo9yak43dxk8.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_j9y5f1ys5z1mqf9w.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_xip4tfzyyi6nv66k.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/_MAIN_17347.toc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_d7q6f5kvm3r2m1m4.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_jqtig91c95ol1qxs.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_t6whkpxkv8eypcx0.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/_MAIN_22523.toc" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/test.py" afterDir="false" />
     </list>
@@ -74,10 +61,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Python.api.executor": "Run",
+    "Python.api.executor": "Debug",
     "Python.database (1).executor": "Run",
     "Python.mail.executor": "Run",
-    "Python.main.executor": "Debug",
+    "Python.main.executor": "Run",
     "Python.models.executor": "Run",
     "Python.test.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -253,9 +240,9 @@
       <list>
         <item itemvalue="Python.main" />
         <item itemvalue="Python.api" />
-        <item itemvalue="Python.database (1)" />
-        <item itemvalue="Python.models" />
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.models" />
+        <item itemvalue="Python.database (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -312,9 +299,14 @@
           <option name="timeStamp" value="87" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/server/database.py</url>
-          <line>196</line>
-          <option name="timeStamp" value="103" />
+          <url>file://$PROJECT_DIR$/server/test.py</url>
+          <line>142</line>
+          <option name="timeStamp" value="104" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/server/api.py</url>
+          <line>271</line>
+          <option name="timeStamp" value="106" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
