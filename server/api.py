@@ -333,6 +333,17 @@ async def return_most_high_score_books(current_user: Annotated[models.Reader, De
         return database.return_high_score_books(number_of_books=number_of_books)
 
 
+@app.get("/user_recommendation")
+async def user_recommendation_books(current_user: Annotated[models.Reader, Depends(get_current_user)],
+                                       number_of_books: int):
+    if number_of_books < 1:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Value mast be positive"
+        )
+    else:
+        return database.return_high_score_books(number_of_books=number_of_books)
+
 @app.get("/search_books_by_anything")
 async def search_books_by_anything(current_user: Annotated[models.Reader, Depends(get_current_user)], query_str: str):
     return [database.search_book(isbn=isbn)[0] for isbn in database.search_books_by_anything(query_str)]
@@ -466,6 +477,41 @@ async def get_history(current_user: Annotated[models.Reader, Depends(get_current
         check_if_user_allowed(user=current_user)
 
     return database.get_borrow_by_user(reader=reader)
+
+@app.put("/copies")
+async def change_number_of_copies(current_user: Annotated[models.Reader, Depends(get_current_user)], isbn: str, number: int):
+    check_if_user_allowed(user=current_user)
+    book = database.search_book(isbn=isbn)
+    if len(book) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book does not exist"
+        )
+    book = book[0]
+    if number < 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Number of copies nust be positive or zero"
+        )
+    database.change_number_of_copies(book=book, num=number)
+
+    raise HTTPException(
+        status_code=status.HTTP_200_OK,
+        detail=f"Number of copies was set to {len(database.get_copies_by_book(book))}"
+    )
+
+@app.get("/copies")
+async def copies(current_user: Annotated[models.Reader, Depends(get_current_user)], isbn: str):
+    check_if_user_allowed(user=current_user)
+    book = database.search_book(isbn=isbn)
+    if len(book) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book does not exist"
+        )
+    book = book[0]
+    return len(database.get_copies_by_book(book=book))
+
 
 if __name__ == '__main__':
     import uvicorn

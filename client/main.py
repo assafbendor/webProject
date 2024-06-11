@@ -16,6 +16,8 @@ from client.history import History
 from client.loan_books import LoanBooks
 from client.login import Login
 from client.my_books import MyBooks
+from client.recommendations import Recommendations
+# from client.recommendations import Recommendations
 from client.sign_up import SignUp
 
 
@@ -233,6 +235,14 @@ def main(page: Page):
             page.views.append(
                 View(
                     controls=[History(page).build()],
+                    appbar=reader_appbar
+                )
+            )
+
+        if page.route == "/recommended":
+            page.views.append(
+                View(
+                    controls=[Recommendations(page).build()],
                     appbar=reader_appbar
                 )
             )

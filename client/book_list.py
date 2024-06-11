@@ -60,12 +60,19 @@ class BookList:
             print("Failed to make the get request: ", client_config.SERVER_URL + path, " Error: ", err)
 
     def prepare_rows(self, books):
-        def get_on_click(book):
+
+        def get_availability(available: bool):
+            if not available:
+                return ft.Text("Not Available", bgcolor=ft.colors.RED)
+            else:
+                return ft.Text("Available", bgcolor=ft.colors.GREEN)
+
+        def get_on_click(clicked_book):
             return lambda e: self.single_book.open_book_dlg(e=ft.ControlEvent(
                 control=None,
                 name="Trending Book Clicked",
                 page=self.page,
-                data=book,
+                data=clicked_book,
                 target=''))
 
         def reserve_book_clicked(isbn):
@@ -75,6 +82,17 @@ class BookList:
                 page=self.page,
                 data=isbn,
                 target=''))
+
+        def get_actions(row_book):
+            if row_book['free_copy']:
+                return [
+                    ft.PopupMenuItem(text="Show Details", on_click=get_on_click(book)),
+                ]
+            else:
+                return [
+                    ft.PopupMenuItem(text="Reserve", on_click=reserve_book_clicked(book['isbn'])),
+                    ft.PopupMenuItem(text="Show Details", on_click=get_on_click(book)),
+                ]
 
         dataRows = []
         for book in books:
@@ -86,13 +104,10 @@ class BookList:
                                  width=30)),
                     ft.DataCell(ft.Text(book['title'])),
                     ft.DataCell(ft.Text(book['author']['name'])),
-                    ft.DataCell(ft.Text(book['free_copy'])),
-                    ft.DataCell(ft.PopupMenuButton(items=[
-                        ft.PopupMenuItem(text="Reserve", on_click=reserve_book_clicked(book['isbn'])),
-                        ft.PopupMenuItem(text="Show Details", on_click=get_on_click(book)),
-                    ],
-                        tooltip=None),
-                    )
+                    ft.DataCell(get_availability(book['free_copy'])),
+                    ft.DataCell(ft.PopupMenuButton(items=get_actions(book),
+                                                   tooltip=None),
+                                )
                 ], )
 
             dataRows.append(row)

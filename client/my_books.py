@@ -98,7 +98,7 @@ class MyBooks:
             row = ft.DataRow(
                 cells=[
                     ft.DataCell(
-                        ft.Image(src=f"{os.path.join(os.getcwd(), 'photos', reservation['book']['cover_image_filename'])}",
+                        ft.Image(src=f"{client_config.SERVER_URL}/photos/{reservation['book']['cover_image_filename']}",
                                  height=45,
                                  width=30)),
                     ft.DataCell(ft.Text(reservation['book']['title'])),
@@ -114,9 +114,9 @@ class MyBooks:
         self.page.scroll = ft.ScrollMode.HIDDEN
         self.page.update()
 
-        borrows_text = ft.Text("You currently have the following borrowed books:")
+        borrows_text = ft.Text("You currently have the following borrowed books:", color=ft.colors.LIGHT_BLUE_200)
         borrows = self.get_user_books_table(self.page.client_storage.get("username"))
-        reservation_text = ft.Text("You currently have the following reserved books:")
+        reservation_text = ft.Text("You currently have the following reserved books:", color=ft.colors.LIGHT_BLUE_200)
         reservations = self.get_user_reservation_table(self.page.client_storage.get("username"))
 
         return ft.Column(controls=[borrows_text, borrows, reservation_text, reservations], spacing=25)

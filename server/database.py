@@ -246,10 +246,6 @@ def get_all_copies():
     with Session() as session:
         return session.query(Copy).all()
 
-def get_copy_by_id(id):
-    with Session() as session:
-        return session.query(Copy).filter_by(id=id)
-
 def del_copies():
     with Session() as session:
         for copy in get_all_copies():
@@ -262,7 +258,7 @@ def set_copies():
         for book in books:
             n = random.randint(1, 5)
             for x in range(n):
-                c = Copy(book=book, )
+                c = Copy(book=book)
                 session.add(c)
                 session.commit()
 
@@ -363,8 +359,27 @@ def del_waiting():
             session.commit()
 
 
+def change_number_of_copies(book: Book, num: int):
+    lst = get_copies_by_book(book)
+    if num < len(lst):
+        with Session() as session:
+            for i in range(len(lst) - num):
+                session.delete(lst[i])
+                session.commit()
+    elif num > len(lst):
+        with Session() as session:
+            for x in range(num - len(lst)):
+                copy = Copy(book=book)
+                session.add(copy)
+                session.commit()
+
+def get_copies_by_book(book: Book):
+    with Session() as session:
+        return session.query(Copy).filter_by(book=book).all()
+
+
 if __name__ == '__main__':
-    print(get_all_waiting())
-    api.check_waiting()
-    l = get_all_waiting()
-    print(get_all_waiting())
+    book = search_book(isbn="9784739209986")[0]
+    print(len(get_copies_by_book(book)))
+    change_number_of_copies(book=book, num=6)
+    print(len(get_copies_by_book(book)))

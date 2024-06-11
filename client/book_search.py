@@ -156,6 +156,7 @@ class BookSearch:
 
         trending_title = ft.Text("Trending Books", theme_style=ft.TextThemeStyle.DISPLAY_MEDIUM)
         trending_title_container = ft.Container(content=trending_title,
+                                                alignment=ft.alignment.center,
                                                 padding=ft.padding.only(bottom=10))
 
         self.trending_books = self.get_trending_books()
