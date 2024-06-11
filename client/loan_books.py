@@ -60,6 +60,7 @@ class LoanBooks:
 
     def borrow_clicked(self, e):
         self.borrow_result.visible = False
+        self.page.update()
 
         path = "/borrow_book"
 
@@ -79,6 +80,11 @@ class LoanBooks:
             r.raise_for_status()
             self.reader_books.content = self.my_books.get_user_books_table(self.selected_reader)
             self.reader_reservations.content = self.my_books.get_user_reservation_table(self.selected_reader)
+            self.borrow_result.content = ft.Container(
+                content=ft.Text("Action Completed Successfully!", color=ft.colors.WHITE, size=15),
+                bgcolor=ft.colors.GREEN,
+                padding=ft.padding.all(10),
+            )
             self.borrow_result.visible = True
             self.page.update()
         except requests.HTTPError as http_err:
@@ -100,6 +106,7 @@ class LoanBooks:
 
     def return_clicked(self, e):
         self.borrow_result.visible = False
+        self.page.update()
 
         path = "/return_book"
 
@@ -118,6 +125,11 @@ class LoanBooks:
             r = requests.post(client_config.SERVER_URL + path, params=params, headers=headers)
             r.raise_for_status()
             self.reader_books.content = self.my_books.get_user_books_table(self.selected_reader)
+            self.borrow_result.content = ft.Container(
+                content=ft.Text("Action Completed Successfully!", color=ft.colors.WHITE, size=15),
+                bgcolor=ft.colors.GREEN,
+                padding=ft.padding.all(10),
+            )
             self.borrow_result.visible = True
             self.page.update()
         except requests.HTTPError as http_err:
@@ -164,6 +176,7 @@ class LoanBooks:
         self.reservations_table_header_text.value = "Books currently reserved by " + self.selected_reader + ":"
         self.table_column.visible = True
         self.actions_and_isbn.visible = True
+        self.borrow_result.visible = False
         self.page.update()
 
     def build(self):

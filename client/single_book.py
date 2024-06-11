@@ -2,6 +2,8 @@ import os
 
 import flet as ft
 
+from client import client_config
+
 
 class SingleBook:
 
@@ -35,8 +37,7 @@ class SingleBook:
             shape=ft.ContinuousRectangleBorder.radius,
             content=ft.Container(
                 content=ft.Image(
-                    src=os.path.join(os.getcwd(), "photos", book['cover_image_filename']),
-                ),
+                    src=f"{client_config.SERVER_URL}/photos/{book['cover_image_filename']}"),
                 padding=10,
                 margin=10,
             ),

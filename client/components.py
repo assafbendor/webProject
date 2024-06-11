@@ -13,7 +13,6 @@ class Logo(ft.UserControl):
         self.page = page
 
     def build(self):
-        path = os.path.join(os.getcwd(), "photos", "logo.png")
         logo = ft.Image(
             src=f"{client_config.SERVER_URL}/photos/logo.png",
             expand=True

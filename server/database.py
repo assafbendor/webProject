@@ -22,13 +22,10 @@ def get_all_books() -> list[Type[Book]]:
     with Session() as session:
         book_list = session.query(Book).all()
         for book in book_list:
-            if get_free_copy(book) is None:
+            if get_available_copy(book) is None:
                 book.free_copy = False
             else:
-                if get_free_copy(book).ordered_by_email is None:
-                    book.free_copy = True
-                else:
-                    book.free_copy = True
+                book.free_copy = True
         return book_list
 
 
@@ -113,13 +110,10 @@ def search_book(isbn: str | None = None,
     with Session() as session:
         books = session.query(Book).filter_by(isbn=isbn).all()
         for book in books:
-            if get_free_copy(book) is None:
+            if get_available_copy(book) is None:
                 book.free_copy = False
             else:
-                if get_free_copy(book).ordered_by_email is None:
-                    book.free_copy = True
-                else:
-                    book.free_copy = True
+                book.free_copy = True
         return books
 
 
@@ -164,11 +158,14 @@ def borrow_book(reader: Reader, copy: Copy):
             w.is_active = False
             session.commit()
 
-
-def get_free_copy(book: Book) -> Copy | None:
+def get_all_free_copies(book: Book) -> list[Copy] | None:
     with Session() as session:
-        copy = session.query(Copy).filter_by(book=book).filter_by(is_borrowed=False).first()
-    return copy
+        copies = session.query(Copy).filter_by(book=book).filter_by(is_borrowed=False).all()
+    return copies
+
+def get_available_copy(book: Book) -> Copy | None:
+    with Session() as session:
+        return session.query(Copy).filter_by(book=book, is_borrowed=False, ordered_by_email=None).first()
 
 def test():
     lst = get_all_borrows()
@@ -183,11 +180,17 @@ def get_all_borrows():
 
 
 def del_borrows():
-    lst = get_all_borrows()
+    lst3 = get_all_borrows()
+    lst2 = get_all_copies()
     with Session() as session:
-        for b in lst:
+        for b in lst3:
             session.delete(b)
             session.commit()
+        for d in lst2:
+            d_in_session = session.merge(d)
+            if d_in_session.is_borrowed:
+                d_in_session.is_borrowed = False
+                session.commit()
 
 
 def return_book(reader: Reader, book: Book):
@@ -202,6 +205,10 @@ def return_book(reader: Reader, book: Book):
                     borrow.copy.is_borrowed = False
                     session.commit()
                     print(borrow)
+                    w = find_waiting(reader=reader, book=book)
+                    if w is not None:
+                        w.is_active = False
+                        session.commit()
                     return True
     return False
 
@@ -326,29 +333,51 @@ def update_waiting():
     lst = get_all_active_waiting()
     with Session() as session:
         for w in lst:
+            w_in_session = session.merge(w)
             if datetime.datetime.now() - w.date > datetime.timedelta(hours=24):
-                w.is_active = False
+                w_in_session.is_active = False
                 session.commit()
-                #w.copy.ordered_by_email = None
                 session.commit()
 
 def save_copy_for_copies(copy: Copy, reader: Reader):
     if copy is not None:
         with Session() as session:
-            copy.ordered_by = reader
+            copy_in_session = session.merge(copy)
+            copy_in_session.ordered_by_email = reader.email
             try:
                 session.commit()
             except SQLAlchemyError as e:
                 session.rollback()  # Roll back changes if an error occurs
 
+
 def save_copy_for_waiting(waiting: Waiting, copy: Copy):
     with Session() as session:
-        waiting.copy = copy
-        waiting.copy_id = copy.id
+        # Check if the instance is already in the session
+        waiting_in_session = session.query(Waiting).get(waiting.id)
+
+        if waiting_in_session is None:
+            waiting_in_session = waiting
+            session.add(waiting_in_session)
+        else:
+            session.merge(waiting)
+
+        # Check if the copy instance is already in the session
+        copy_in_session = session.query(Copy).get(copy.id)
+
+        if copy_in_session is None:
+            copy_in_session = copy
+            session.add(copy_in_session)
+        else:
+            session.merge(copy)
+
+        waiting_in_session.copy = copy_in_session
+        waiting_in_session.copy_id = copy_in_session.id
+
         try:
             session.commit()
         except SQLAlchemyError as e:
             session.rollback()  # Roll back changes if an error occurs
+            raise  # Re-raise the error for further handling
 
 
 def del_waiting():
@@ -359,27 +388,56 @@ def del_waiting():
             session.commit()
 
 
-def change_number_of_copies(book: Book, num: int):
-    lst = get_copies_by_book(book)
-    if num < len(lst):
-        with Session() as session:
-            for i in range(len(lst) - num):
-                session.delete(lst[i])
-                session.commit()
-    elif num > len(lst):
-        with Session() as session:
-            for x in range(num - len(lst)):
-                copy = Copy(book=book)
-                session.add(copy)
-                session.commit()
+def add_copies(book: Book, num: int):
+    with Session() as session:
+        for i in range(num):
+            copy = Copy(book=book)
+            session.add(copy)
+            session.commit()
 
 def get_copies_by_book(book: Book):
     with Session() as session:
         return session.query(Copy).filter_by(book=book).all()
 
+def get_copy_by_id(copy_id: int):
+    with Session() as session:
+        return session.query(Copy).filter_by(id=copy_id).first()
+
+def delete_copy(copy: Copy):
+    with Session() as session:
+        session.delete(copy)
+        session.commit()
+
+def del_waiting_by_copy(copy: Copy):
+    with Session() as session:
+        lst = session.query(Waiting).filter_by(copy=copy).all()
+        for w in lst:
+            session.delete(w)
+            session.commit()
+
+def edit_books(isbn: str, language: str | None = None, average_rating: float | None = None,
+               cover_image_filename: str | None = None,
+               description: str | None = None, pages: int | None = None):
+    book = search_book(isbn=isbn)[0]
+
+    with Session() as session:
+        book_in_session = session.merge(book)
+        if language is not None:
+            book_in_session.language = language
+        if average_rating is not None:
+            book_in_session.average_rating = average_rating
+        if cover_image_filename is not None:
+            book_in_session.cover_image_filename = cover_image_filename
+        if description is not None:
+            book_in_session.description = description
+        if pages is not None:
+            book_in_session.pages = pages
+        session.commit()
+
+def get_all_borrowed_copies():
+    with Session() as session:
+        return session.query(Copy).filter_by(is_borrowed=True).all()
 
 if __name__ == '__main__':
-    book = search_book(isbn="9784739209986")[0]
-    print(len(get_copies_by_book(book)))
-    change_number_of_copies(book=book, num=6)
-    print(len(get_copies_by_book(book)))
+
+    print(len(get_copies_by_book(search_book(isbn="9789136425919")[0])))

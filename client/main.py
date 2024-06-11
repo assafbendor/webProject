@@ -15,9 +15,9 @@ from client.book_search import BookSearch
 from client.history import History
 from client.loan_books import LoanBooks
 from client.login import Login
+from client.manage_books import ManageBooks
 from client.my_books import MyBooks
 from client.recommendations import Recommendations
-# from client.recommendations import Recommendations
 from client.sign_up import SignUp
 
 
@@ -171,7 +171,7 @@ def main(page: Page):
             bgcolor=colors.CYAN_ACCENT_700,
             actions=[
                 ft.TextButton("Manage Loans", ft.icons.ASSIGNMENT_ADD, on_click=lambda e: page.go("/loan_books")),
-                ft.TextButton("Manage Books", ft.icons.LIBRARY_ADD, on_click=lambda e: page.go("/add_book")),
+                ft.TextButton("Manage Books", ft.icons.LIBRARY_ADD, on_click=lambda e: page.go("/manage_books")),
                 ft.PopupMenuButton(content=ft.Container(
                     ft.Row(controls=[
                         ft.Icon(ft.icons.ACCOUNT_CIRCLE),
@@ -260,7 +260,7 @@ def main(page: Page):
         if page.route == "/manage_books":
             page.views.append(
                 View(
-                    controls=[BookSearch(page).build()],
+                    controls=[ManageBooks(page).build()],
                     appbar=admin_appbar
                 )
             )

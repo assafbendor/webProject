@@ -5,20 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14b0f841-f437-44a4-9515-29d18687f5ec" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/recommendations.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/manage_books.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/book_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/book_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/book_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/book_search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/components.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/components.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/loan_books.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/loan_books.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/my_books.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/my_books.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/single_book.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/single_book.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/db/ldb.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_b8hrxhk4e45ijxgi.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_facin6r081n3d783.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_hswjt8lt8k3x5ahx.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_n11dzfdxcbld7o1r.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/_MAIN_16595.toc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_1ns6ffuvk38hwrvf.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_2nrxnms99cigpbvg.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_3qtkk6kfs1bkiuge.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_5v91x3e7xbmv0oh5.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_8xd7w9p233paw56s.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_ik2j88lv7n8qqqzp.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_iv86pq2ct7a5ivru.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_j6e6zo9yak43dxk8.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_j9y5f1ys5z1mqf9w.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_xip4tfzyyi6nv66k.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/_MAIN_17347.toc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,27 +72,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.api.executor&quot;: &quot;Run&quot;,
-    &quot;Python.database (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.mail.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.models.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/assafbendor/PycharmProjects/webProject/server/db&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.grazie&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.api.executor": "Run",
+    "Python.database (1).executor": "Run",
+    "Python.mail.executor": "Run",
+    "Python.main.executor": "Debug",
+    "Python.models.executor": "Run",
+    "Python.test.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "dev",
+    "last_opened_file_path": "/Users/assafbendor/PycharmProjects/webProject/server/db",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.grazie"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;Python&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Python"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/server/db" />
@@ -164,28 +174,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="mail" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="webProject" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/server" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server/mail.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
       <module name="webProject" />
       <option name="ENV_FILES" value="" />
@@ -231,9 +219,31 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="webProject" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/server" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.login" />
-      <item itemvalue="Python.mail" />
+      <item itemvalue="Python.test" />
       <item itemvalue="Python.api" />
       <item itemvalue="Python.database (1)" />
       <item itemvalue="Python.main" />
@@ -245,7 +255,7 @@
         <item itemvalue="Python.api" />
         <item itemvalue="Python.database (1)" />
         <item itemvalue="Python.models" />
-        <item itemvalue="Python.mail" />
+        <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -288,7 +298,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/client/single_book.py</url>
-          <line>25</line>
+          <line>27</line>
           <option name="timeStamp" value="45" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -302,14 +312,9 @@
           <option name="timeStamp" value="87" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/client/loan_books.py</url>
-          <line>181</line>
-          <option name="timeStamp" value="88" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/client/my_books.py</url>
-          <line>64</line>
-          <option name="timeStamp" value="93" />
+          <url>file://$PROJECT_DIR$/server/database.py</url>
+          <line>196</line>
+          <option name="timeStamp" value="103" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

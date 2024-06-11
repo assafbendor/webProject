@@ -137,22 +137,27 @@ def send_reserve_mail(waiting: models.Waiting):
     mail.send_email(to_addr=email, sub=subject, text=text)
 
 def check_waiting():
+    print("1")
     database.update_waiting()
     lst = database.get_all_active_waiting()
     for w in lst:
-        c = database.get_free_copy(book=w.book)
-        if c is not None:
-            if c.ordered_by_email is None:
-                database.save_copy_for_copies(copy=c, reader=w.reader)
-                database.save_copy_for_waiting(waiting=w, copy=c)
-                send_reserve_mail(waiting=w)
+        c = database.get_all_free_copies(book=w.book)
+        print(c)
+        if len(c) > 0:
+            for copy in c:
+                if copy.ordered_by_email == w.reader.email:
+                    print("1.5")
+                    database.save_copy_for_copies(copy=copy, reader=w.reader)
+                    database.save_copy_for_waiting(waiting=w, copy=copy)
+                    print("2")
+                    send_reserve_mail(waiting=w)
+                    print("checked")
 
 def schedule_check_waiting(sc):
     print("in timer")
     check_waiting()
     # Schedule the function to be called again in 60 seconds
     scheduler_instance.enter(60, 1, schedule_check_waiting, (sc,))
-
 
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
@@ -221,11 +226,7 @@ async def search_books(current_user: Annotated[models.Reader, Depends(get_curren
                        author_id: int | None = None,
                        title: str | None = None,
                        language: str | None = None):
-    book_list = database.search_book(isbn=isbn,
-                                     author_name=author_name,
-                                     author_id=author_id,
-                                     title=title,
-                                     language=language)
+    book_list = database.search_book(isbn=isbn, author_name=author_name, title=title)
     if book_list is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -272,10 +273,18 @@ async def borrow_book(current_user: Annotated[models.Reader, Depends(get_current
     elif database.get_number_of_copies_by_user(reader=reader) > 3:
         response = HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Reader has more then 3 books"
+            detail="Reader already has 4 books"
         )
     else:
-        copy = database.get_free_copy(book[0])
+        copy_list = database.get_all_free_copies(book[0])
+        for c in copy_list:
+            if c.ordered_by_email == reader.email:
+                database.borrow_book(reader=reader, copy=c)
+                raise HTTPException(
+                    status_code=status.HTTP_200_OK,
+                    detail="Book was borrowed successfully"
+                )
+        copy = database.get_available_copy(book[0])
         if copy is None:
             response = HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -291,7 +300,7 @@ async def borrow_book(current_user: Annotated[models.Reader, Depends(get_current
 
             response = HTTPException(
                 status_code=status.HTTP_200_OK,
-                detail="book was borrowed successfully"
+                detail="Book was borrowed successfully"
             )
     raise response
 
@@ -479,7 +488,7 @@ async def get_history(current_user: Annotated[models.Reader, Depends(get_current
     return database.get_borrow_by_user(reader=reader)
 
 @app.put("/copies")
-async def change_number_of_copies(current_user: Annotated[models.Reader, Depends(get_current_user)], isbn: str, number: int):
+async def add_copies(current_user: Annotated[models.Reader, Depends(get_current_user)], isbn: str, number: int):
     check_if_user_allowed(user=current_user)
     book = database.search_book(isbn=isbn)
     if len(book) == 0:
@@ -488,12 +497,12 @@ async def change_number_of_copies(current_user: Annotated[models.Reader, Depends
             detail="Book does not exist"
         )
     book = book[0]
-    if number < 0:
+    if number < 1:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Number of copies nust be positive or zero"
+            detail="Number of copies nust be positive"
         )
-    database.change_number_of_copies(book=book, num=number)
+    database.add_copies(book=book, num=number)
 
     raise HTTPException(
         status_code=status.HTTP_200_OK,
@@ -511,6 +520,86 @@ async def copies(current_user: Annotated[models.Reader, Depends(get_current_user
         )
     book = book[0]
     return len(database.get_copies_by_book(book=book))
+
+@app.delete("/copies")
+async def delete_copy(current_user: Annotated[models.Reader, Depends(get_current_user)], copy_id: int):
+    check_if_user_allowed(user=current_user)
+    copy = database.get_copy_by_id(copy_id=copy_id)
+    if copy is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Copy does not exist"
+        )
+
+    if copy.is_borrowed:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Copy is borrowed. Delete anyway?"
+        )
+    database.delete_copy(copy=copy)
+    raise HTTPException(
+        status_code=status.HTTP_200_OK,
+        detail="Copy was deleted successfully"
+    )
+
+@app.delete("/forced_delete")
+async def forced_delete(current_user: Annotated[models.Reader, Depends(get_current_user)], copy_id: int):
+    check_if_user_allowed(user=current_user)
+    copy = database.get_copy_by_id(copy_id=copy_id)
+    if copy is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Copy does not exist"
+        )
+    database.del_waiting_by_copy(copy=copy)
+    database.delete_copy(copy=copy)
+    raise HTTPException(
+        status_code=status.HTTP_200_OK,
+        detail="Copy was deleted successfully"
+    )
+
+@app.post("/book")
+async def add_book_to_database(current_user: Annotated[models.Reader, Depends(get_current_user)], author_name: str,
+                               isbn: str, title: str, language: str | None, average_rating: float | None,
+                               cover_image_filename: str | None,
+                               description: str | None, pages: int | None):
+    check_if_user_allowed(user=current_user)
+    if len(database.search_book(isbn=isbn)) > 0 or len(database.search_book(title=title)) > 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Book already exists"
+        )
+
+    if database.get_author(author_name=author_name) is None:
+        database.add_author_to_database(author=models.Author(name=author_name))
+    author = database.get_author(author_name=author_name)
+    book = models.Book(isbn=isbn, title=title, language=language, average_rating=average_rating,
+                       cover_image_filename=cover_image_filename, description=description, pages=pages,
+                       author_id=author.id)
+    database.add_book_to_database(book=book)
+    raise HTTPException(
+        status_code=status.HTTP_200_OK,
+        detail="Book was set successfully"
+    )
+
+@app.put("/book")
+async def edit_book(current_user: Annotated[models.Reader, Depends(get_current_user)], isbn: str, language: str | None,
+               average_rating: float | None, cover_image_filename: str | None, description: str | None,
+               pages: int | None):
+    check_if_user_allowed(user=current_user)
+    book = database.search_book(isbn=isbn)
+    if len(book) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book does not exist"
+        )
+    database.edit_books(isbn=isbn, language=language, average_rating=average_rating,
+                        cover_image_filename=cover_image_filename, description=description,
+                        pages=pages)
+    raise HTTPException(
+        status_code=status.HTTP_200_OK,
+        detail="Changes were saved"
+    )
 
 
 if __name__ == '__main__':
