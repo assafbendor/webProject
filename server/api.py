@@ -1,38 +1,38 @@
 import multiprocessing
 import random
+import re
+import sched
+import time
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.staticfiles import StaticFiles
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
-from fastapi.staticfiles import StaticFiles
-
 
 import database
+import mail
 import models
 
-import sched
-import time
-
-import mail
-
-import re
 SECRET_KEY = "0ae9bd5bf97167908547da34d48b18701aa0307e84c88f5a2181139e4d5ffb02"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+
 class PasswordChangeRequest(BaseModel):
     new_password: str
     new_password_verify: str
+
 
 class Token(BaseModel):
     access_token: str
     token_type: str
     username: str
     is_admin: bool
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -42,8 +42,8 @@ app = FastAPI()
 
 app.mount("/photos", StaticFiles(directory="./photos"), name="static-photos")
 
-
 scheduler_instance = sched.scheduler(time.time, time.sleep)
+
 
 def scheduler():
     # Schedule the first execution
@@ -51,6 +51,7 @@ def scheduler():
 
     # Run the scheduler
     scheduler_instance.run()
+
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
@@ -129,12 +130,14 @@ def is_valid_password(password):
     # If all checks passed
     return True
 
+
 def send_reserve_mail(waiting: models.Waiting):
     email = waiting.reader.email
     subject = "Your book is now available!"
     text = (f"Hello {waiting.reader.username}, \n The book you ordered, {waiting.book.title}, is now available at the "
             f"library for 24 hours!")
     mail.send_email(to_addr=email, sub=subject, text=text)
+
 
 def check_waiting():
     database.update_waiting()
@@ -145,6 +148,7 @@ def check_waiting():
         if not w.email_was_sent:
             send_reserve_mail(waiting=w)
             database.email_was_sent(waiting=w)
+
 
 def schedule_check_waiting(sc):
     print("in timer")
@@ -233,7 +237,6 @@ async def search_books(current_user: Annotated[models.Reader, Depends(get_curren
 
 @app.get("/book_list")
 async def return_book_list(username: str, current_user: Annotated[models.Reader, Depends(get_current_user)]):
-
     if username != current_user.username:
         check_if_user_allowed(current_user)
 
@@ -269,27 +272,22 @@ async def borrow_book(current_user: Annotated[models.Reader, Depends(get_current
             detail="Reader already has 4 books"
         )
     else:
-        copy_list = database.get_all_free_copies(book[0])
-        print(copy_list)
-        for c in copy_list:
-            print(c)
-            if c.ordered_by_email == reader.email:
-                database.borrow_book(reader=reader, copy=c)
-                raise HTTPException(
-                    status_code=status.HTTP_200_OK,
-                    detail="Book was borrowed successfully"
-                )
+        if database.give_copy_to_waiting(book_isbn, reader.username):
+            raise HTTPException(
+                status_code=status.HTTP_200_OK,
+                detail="Book was borrowed successfully"
+            )
         copy = database.get_available_copy(book[0])
         if copy is None:
             response = HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="All copies are borrowed"
             )
-        elif copy.ordered_by_email is not None and copy.ordered_by_email is not reader:
-            response = HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="All copies are borrowed"
-            )
+        # elif copy.ordered_by_email is not None and copy.ordered_by_email is not reader:
+        #     response = HTTPException(
+        #         status_code=status.HTTP_409_CONFLICT,
+        #         detail="All copies are borrowed"
+        #     )
         else:
             database.borrow_book(reader=reader, copy=copy)
 
@@ -339,7 +337,7 @@ async def return_most_high_score_books(current_user: Annotated[models.Reader, De
 
 @app.get("/user_recommendation")
 async def user_recommendation_books(current_user: Annotated[models.Reader, Depends(get_current_user)],
-                                       number_of_books: int):
+                                    number_of_books: int):
     if number_of_books < 1:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -348,15 +346,18 @@ async def user_recommendation_books(current_user: Annotated[models.Reader, Depen
     else:
         return database.return_high_score_books(number_of_books=number_of_books)
 
+
 @app.get("/search_books_by_anything")
 async def search_books_by_anything(current_user: Annotated[models.Reader, Depends(get_current_user)], query_str: str):
     return [database.search_book(isbn=isbn)[0] for isbn in database.search_books_by_anything(query_str)]
+
 
 @app.get("/get_readers")
 async def get_readers(current_user: Annotated[models.Reader, Depends(get_current_user)]):
     check_if_user_allowed(user=current_user)
     readers = database.get_readers(admin=False)
     return readers
+
 
 @app.post("/forgot_password")
 async def forgot_password(email: str):
@@ -367,8 +368,9 @@ async def forgot_password(email: str):
             detail="Email is not registered"
         )
     code = random.randint(1000, 9999)
-    result = mail.send_email(to_addr=email, sub="Reset Your Password", text=f"your code is {code}. \n It will be expired in 3 "
-                                                                   f"minutes from now.")
+    result = mail.send_email(to_addr=email, sub="Reset Your Password",
+                             text=f"your code is {code}. \n It will be expired in 3 "
+                                  f"minutes from now.")
     if result is True:
         database.add_code(code=code, email=email)
         raise HTTPException(
@@ -380,6 +382,7 @@ async def forgot_password(email: str):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=result
         )
+
 
 @app.post("/verify_code")
 async def verify_code(code: int, email: str, request: PasswordChangeRequest):
@@ -419,6 +422,7 @@ async def verify_code(code: int, email: str, request: PasswordChangeRequest):
     access_token = create_access_token(data={"username": user.username}, expires_delta=access_token_expires)
     return Token(access_token=access_token, token_type="bearer", username=user.username, is_admin=user.admin)
 
+
 @app.post("/change_password")
 async def change_password(current_user: Annotated[models.Reader, Depends(get_current_user)],
                           request: PasswordChangeRequest):
@@ -434,6 +438,7 @@ async def change_password(current_user: Annotated[models.Reader, Depends(get_cur
         )
 
     database.change_password(email=current_user.email, new_password=request.new_password)
+
 
 @app.post("/reserve")
 async def reserve(current_user: Annotated[models.Reader, Depends(get_current_user)], username: str, isbn: str):
@@ -456,6 +461,7 @@ async def reserve(current_user: Annotated[models.Reader, Depends(get_current_use
             detail="Something went wrong"
         )
 
+
 @app.get("/reservations")
 async def reservations(current_user: Annotated[models.Reader, Depends(get_current_user)], username: str):
     user = database.find_user(username=username)
@@ -469,6 +475,7 @@ async def reservations(current_user: Annotated[models.Reader, Depends(get_curren
     else:
         return database.get_waiting_by_reader(reader=current_user)
 
+
 @app.get("/history")
 async def get_history(current_user: Annotated[models.Reader, Depends(get_current_user)], username: str):
     reader = database.find_user(username=username)
@@ -481,6 +488,7 @@ async def get_history(current_user: Annotated[models.Reader, Depends(get_current
         check_if_user_allowed(user=current_user)
 
     return database.get_borrow_by_user(reader=reader)
+
 
 @app.put("/copies")
 async def add_copies(current_user: Annotated[models.Reader, Depends(get_current_user)], isbn: str, number: int):
@@ -504,6 +512,7 @@ async def add_copies(current_user: Annotated[models.Reader, Depends(get_current_
         detail=f"Number of copies was set to {len(database.get_copies_by_book(book))}"
     )
 
+
 @app.get("/copies")
 async def copies(current_user: Annotated[models.Reader, Depends(get_current_user)], isbn: str):
     check_if_user_allowed(user=current_user)
@@ -515,6 +524,7 @@ async def copies(current_user: Annotated[models.Reader, Depends(get_current_user
         )
     book = book[0]
     return len(database.get_copies_by_book(book=book))
+
 
 @app.delete("/copies")
 async def delete_copy(current_user: Annotated[models.Reader, Depends(get_current_user)], copy_id: int):
@@ -537,6 +547,7 @@ async def delete_copy(current_user: Annotated[models.Reader, Depends(get_current
         detail="Copy was deleted successfully"
     )
 
+
 @app.delete("/forced_delete")
 async def forced_delete(current_user: Annotated[models.Reader, Depends(get_current_user)], copy_id: int):
     check_if_user_allowed(user=current_user)
@@ -552,6 +563,7 @@ async def forced_delete(current_user: Annotated[models.Reader, Depends(get_curre
         status_code=status.HTTP_200_OK,
         detail="Copy was deleted successfully"
     )
+
 
 @app.post("/book")
 async def add_book_to_database(current_user: Annotated[models.Reader, Depends(get_current_user)], author_name: str,
@@ -577,10 +589,11 @@ async def add_book_to_database(current_user: Annotated[models.Reader, Depends(ge
         detail="Book was set successfully"
     )
 
+
 @app.put("/book")
 async def edit_book(current_user: Annotated[models.Reader, Depends(get_current_user)], isbn: str, language: str | None,
-               average_rating: float | None, cover_image_filename: str | None, description: str | None,
-               pages: int | None):
+                    average_rating: float | None, cover_image_filename: str | None, description: str | None,
+                    pages: int | None):
     check_if_user_allowed(user=current_user)
     book = database.search_book(isbn=isbn)
     if len(book) == 0:
@@ -599,6 +612,7 @@ async def edit_book(current_user: Annotated[models.Reader, Depends(get_current_u
 
 if __name__ == '__main__':
     import uvicorn
+
     # Create a new process for the scheduler
     scheduler_process = multiprocessing.Process(target=scheduler)
 

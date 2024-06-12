@@ -6,14 +6,19 @@
   <component name="ChangeListManager">
     <list default="true" id="14b0f841-f437-44a4-9515-29d18687f5ec" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/history.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/history.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/my_books.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/my_books.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/db/ldb.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_d7q6f5kvm3r2m1m4.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_jqtig91c95ol1qxs.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_t6whkpxkv8eypcx0.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/_MAIN_22523.toc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_0sdbv5m2x6fvlkm6.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_0voa7iyezf9bssuo.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_3mizu5d64s9ev2ss.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_4jkwcpqvr88y9klk.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_hq6zwbhciw9fczr1.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_wdfqdgiu9dc5h7gk.seg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/indexdir/_MAIN_24671.toc" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,7 +66,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Python.api.executor": "Debug",
+    "Python.api.executor": "Run",
     "Python.database (1).executor": "Run",
     "Python.mail.executor": "Run",
     "Python.main.executor": "Run",
@@ -295,18 +300,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/client/main.py</url>
-          <line>67</line>
+          <line>68</line>
           <option name="timeStamp" value="87" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/server/test.py</url>
-          <line>142</line>
-          <option name="timeStamp" value="104" />
+          <url>file://$PROJECT_DIR$/server/database.py</url>
+          <line>354</line>
+          <option name="timeStamp" value="109" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/server/api.py</url>
-          <line>271</line>
-          <option name="timeStamp" value="106" />
+          <url>file://$PROJECT_DIR$/server/database.py</url>
+          <line>152</line>
+          <option name="timeStamp" value="110" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/server/database.py</url>
+          <line>450</line>
+          <option name="timeStamp" value="115" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

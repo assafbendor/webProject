@@ -66,10 +66,6 @@ class History:
         self.page.scroll = ft.ScrollMode.HIDDEN
         self.page.update()
 
-        def back():
-            self.page.views.pop()
-            self.page.update()
-
         history_text = ft.Text("Here is the history of books you borrowed:", color=ft.colors.LIGHT_BLUE_200)
 
         column = ft.Column(

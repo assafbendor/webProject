@@ -121,12 +121,15 @@ import models
 
 if __name__ == "__main__":
 
-    #database.set_copies()
+    # database.set_copies()
 
     readers = [
         {"username": "assaf", "email": "asaf.bendor2@gmail.com", "name": "Peter Parker", "password": api.get_password_hash("12345678!")},
         {"username": "shira", "email": "shira.bendor@gmail.com", "name": "Tony Stark", "password": api.get_password_hash("12345678!")},
         {"username": "aric", "email": "asaf.bendor3@gmail.com", "name": "Bruce Wayne", "password": api.get_password_hash("12345678!")},
+        {"username": "bentz", "email": "asaf.bendor4@gmail.com", "name": "Bruce Wayne", "password": api.get_password_hash("12345678!")},
+        {"username": "kippi", "email": "asaf.bendor5@gmail.com", "name": "Bruce Wayne", "password": api.get_password_hash("12345678!")},
+        {"username": "moishe", "email": "asaf.bendor6@gmail.com", "name": "Bruce Wayne", "password": api.get_password_hash("12345678!")},
     ]
 
     reader_objects = []
@@ -139,5 +142,19 @@ if __name__ == "__main__":
 
     database.add_admin("assaf")
 
-    for i in range(4):
-        database.borrow_book(reader_objects[(i%2)+1], copy=database.get_copy_by_id(i+1))
+    database.borrow_book(reader_objects[1], copy=database.get_copy_by_id(5))
+    database.borrow_book(reader_objects[1], copy=database.get_copy_by_id(10))
+    database.borrow_book(reader_objects[1], copy=database.get_copy_by_id(15))
+
+    database.borrow_book(reader_objects[2], copy=database.get_copy_by_id(20))
+    database.borrow_book(reader_objects[2], copy=database.get_copy_by_id(25))
+    database.borrow_book(reader_objects[2], copy=database.get_copy_by_id(30))
+
+    database.borrow_book(reader_objects[3], copy=database.get_copy_by_id(6))
+    database.borrow_book(reader_objects[3], copy=database.get_copy_by_id(11))
+
+    database.borrow_book(reader_objects[4], copy=database.get_copy_by_id(7))
+    database.borrow_book(reader_objects[4], copy=database.get_copy_by_id(12))
+
+    database.borrow_book(reader_objects[5], copy=database.get_copy_by_id(8))
+    database.borrow_book(reader_objects[5], copy=database.get_copy_by_id(13))

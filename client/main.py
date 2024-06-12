@@ -1,3 +1,4 @@
+import flet
 import flet as ft
 import requests
 from flet import (
@@ -23,12 +24,13 @@ from client.sign_up import SignUp
 
 def main(page: Page):
     page.title = "BookForYou"
+    page.scroll = ft.ScrollMode.HIDDEN
 
     page.fonts = {
         "lato-light": "fonts/Lato/Lato-Light.ttf"
     }
 
-    page.theme = theme.Theme(font_family="lato-light")
+    page.theme = theme.Theme(font_family="lato-light" )
 
     page.bgcolor = "#083b7a"
 

@@ -81,7 +81,8 @@ class MyBooks:
                     ft.DataCell(ft.Text(borrow['copy']['book']['author']['name'])),
                     ft.DataCell(ft.Text(datetime.fromisoformat(borrow['borrow_date']).strftime("%d/%m/%Y"))),
                     ft.DataCell(ft.Text(datetime.fromisoformat(borrow['due_date']).strftime("%d/%m/%Y"))),
-                    ft.DataCell(get_status(borrow))
+                    ft.DataCell(get_status(borrow)),
+                    ft.DataCell(ft.Text(borrow['copy']['book']['isbn'])),
                 ],
 
                 )
@@ -153,6 +154,11 @@ class MyBooks:
                     ft.Text("Status"),
                     on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
                 ),
+                ft.DataColumn(
+                    ft.Text("ISBN"),
+                    on_sort=lambda e: print(f"{e.column_index}, {e.ascending}"),
+                ),
+
             ],
             rows=self.prepare_rows(username),
         )
