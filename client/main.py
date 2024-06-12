@@ -30,7 +30,7 @@ def main(page: Page):
         "lato-light": "fonts/Lato/Lato-Light.ttf"
     }
 
-    page.theme = theme.Theme(font_family="lato-light" )
+    page.theme = theme.Theme(font_family="lato-light")
 
     page.bgcolor = "#083b7a"
 

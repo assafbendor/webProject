@@ -49,7 +49,7 @@ class History:
                 cells=[
                     ft.DataCell(
                         ft.Image(
-                            src=f"{client_config.SERVER_URL}/photos/borrow['copy']['book']['cover_image_filename']",
+                            src=f"{client_config.SERVER_URL}/photos/{borrow['copy']['book']['cover_image_filename']}",
                             height=45,
                             width=30)),
                     ft.DataCell(ft.Text(borrow['copy']['book']['title'])),
