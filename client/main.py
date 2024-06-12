@@ -221,7 +221,8 @@ def main(page: Page):
             page.views.append(
                 View(
                     controls=[BookSearch(page).build()],
-                    appbar=reader_appbar
+                    appbar=reader_appbar,
+                    bgcolor="#1a1c1e"
                 )
             )
 
