@@ -5,21 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14b0f841-f437-44a4-9515-29d18687f5ec" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/history.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/history.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/my_books.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/my_books.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/db/ldb.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_0sdbv5m2x6fvlkm6.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_0voa7iyezf9bssuo.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_3mizu5d64s9ev2ss.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_4jkwcpqvr88y9klk.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_hq6zwbhciw9fczr1.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/MAIN_wdfqdgiu9dc5h7gk.seg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/indexdir/_MAIN_24671.toc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +18,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="Setup Script" />
       </list>
     </option>
   </component>
@@ -76,7 +65,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "dev",
-    "last_opened_file_path": "/Users/assafbendor/PycharmProjects/webProject/server/db",
+    "last_opened_file_path": "/Users/assafbendor/PycharmProjects/webProject",
     "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.grazie"
   },
@@ -88,6 +77,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/server/db" />
       <recent name="$PROJECT_DIR$/client" />
       <recent name="$PROJECT_DIR$/server" />
@@ -98,7 +88,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.api">
     <configuration name="api" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="webProject" />
       <option name="ENV_FILES" value="" />
@@ -243,8 +233,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.api" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.models" />
         <item itemvalue="Python.database (1)" />
@@ -284,37 +274,37 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/server/test.py</url>
+          <url>file://$PROJECT_DIR$/../test/server/test.py</url>
           <line>103</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/client/single_book.py</url>
+          <url>file://$PROJECT_DIR$/../test/client/single_book.py</url>
           <line>27</line>
           <option name="timeStamp" value="45" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/client/sign_up.py</url>
+          <url>file://$PROJECT_DIR$/../test/client/sign_up.py</url>
           <line>128</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/client/main.py</url>
-          <line>68</line>
+          <url>file://$PROJECT_DIR$/../test/client/main.py</url>
+          <line>69</line>
           <option name="timeStamp" value="87" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/server/database.py</url>
+          <url>file://$PROJECT_DIR$/../test/server/database.py</url>
           <line>354</line>
           <option name="timeStamp" value="109" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/server/database.py</url>
+          <url>file://$PROJECT_DIR$/../test/server/database.py</url>
           <line>152</line>
           <option name="timeStamp" value="110" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/server/database.py</url>
+          <url>file://$PROJECT_DIR$/../test/server/database.py</url>
           <line>450</line>
           <option name="timeStamp" value="115" />
         </line-breakpoint>
